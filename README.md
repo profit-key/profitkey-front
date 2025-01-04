@@ -23,5 +23,6 @@
 
 ```bash
 pnpm prepare # husky 설정
+pnpm install # 의존성 설치
 pnpm dev # 개발서버 구동
 ```
