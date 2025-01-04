@@ -16,11 +16,12 @@
 | test     | 테스트 코드, 리팩토링 테스트코드 추가                                          |
 | chore    | 빌드 업무 수정, 패키지 매니저 수정, 패키지 관리자 구성 등 업데이트             |
 
-## 개발환경
+## 개발환경 및 설정
 
 - node: v22.12.0
 - pnpm: v9.15.2
 
 ```bash
-pnpm run dev
+pnpm prepare # husky 설정
+pnpm dev # 개발서버 구동
 ```
