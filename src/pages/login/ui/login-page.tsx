@@ -1,9 +1,9 @@
 export function LoginPage() {
   const clientId = 'feffeb25fc42f5712e67657a36c95976';
-  const redirectUrl = 'http://localhost:5173/auth';
+  const redirectUri = `${window.location.origin}/auth`;
 
   const onKakaoLoginClick = () => {
-    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUrl}&response_type=code`;
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code`;
   };
 
   return (
