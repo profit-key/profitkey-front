@@ -1,5 +1,5 @@
 export function LoginPage() {
-  const clientId = 'feffeb25fc42f5712e67657a36c95976';
+  const clientId = '573d719fb6f97ad0b743fe2a1774c7e4';
   const redirectUri = `${window.location.origin}/auth`;
 
   const onKakaoLoginClick = () => {
