@@ -2,34 +2,34 @@ import { Link, Outlet } from 'react-router';
 
 export function Layout() {
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="border-b-[1px] border-[#dde1e6] py-4 px-4 flex items-center justify-between">
+    <div className="flex min-h-screen flex-col">
+      <header className="flex items-center justify-between border-b-[1px] border-[#dde1e6] px-4 py-4">
         <div className="flex items-center gap-24">
           <Link to="/">
-            <h1 className="font-bold text-[#fbbf24] text-[24px]">ProfitKey</h1>
+            <h1 className="text-[24px] font-bold text-[#fbbf24]">ProfitKey</h1>
           </Link>
-          <input className="w-72 h-14 border-[#cfcfcf] border-[1px] rounded-2xl py-4 px-5" />
+          <input className="h-14 w-72 rounded-2xl border-[1px] border-[#cfcfcf] px-5 py-4" />
         </div>
 
         <div className="flex items-center gap-16">
           <div className="flex items-center gap-10">
             <Link
-              className="font-medium text-[#36398c] text-[18px]"
+              className="text-[18px] font-medium text-[#36398c]"
               to="/stocks"
             >
               종목분석
             </Link>
-            <Link className="font-medium text-[#36398c] text-[18px]" to="/news">
+            <Link className="text-[18px] font-medium text-[#36398c]" to="/news">
               뉴스
             </Link>
             <Link
-              className="font-medium text-[#36398c] text-[18px]"
+              className="text-[18px] font-medium text-[#36398c]"
               to="/community"
             >
               커뮤니티
             </Link>
             <Link
-              className="font-medium text-[#36398c] text-[18px]"
+              className="text-[18px] font-medium text-[#36398c]"
               to="/topics"
             >
               공지사항/FAQ
@@ -37,7 +37,7 @@ export function Layout() {
           </div>
           <div>
             <Link
-              className="font-medium text-[#36398c] text-[18px]"
+              className="text-[18px] font-medium text-[#36398c]"
               to="/login"
             >
               로그인
@@ -45,7 +45,7 @@ export function Layout() {
           </div>
         </div>
       </header>
-      <main className="flex-1 flex">
+      <main className="flex flex-1">
         <Outlet />
       </main>
     </div>
