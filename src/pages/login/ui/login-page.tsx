@@ -12,23 +12,23 @@ export function LoginPage() {
   };
 
   return (
-    <div className="flex flex-grow justify-center items-center flex-col">
-      <img src={login} className="w-[303px] h-[104px]" />
+    <div className="flex flex-grow flex-col items-center justify-center">
+      <img src={login} className="h-[104px] w-[303px]" />
 
-      <div className="flex flex-col gap-4 mt-6">
-        <button className="border border-[#747775] rounded-md w-[414px] h-[61px] font-bold text-[#1f1f1f] text-[20px] flex gap-4 justify-center items-center hover:opacity-80">
-          <img src={google} className="w-6 h-6" />
+      <div className="mt-6 flex flex-col gap-4">
+        <button className="flex h-[61px] w-[414px] items-center justify-center gap-4 rounded-md border border-[#747775] text-[20px] font-bold text-[#1f1f1f] hover:opacity-80">
+          <img src={google} className="h-6 w-6" />
           구글 로그인
         </button>
         <button
           onClick={onKakaoLoginClick}
-          className="bg-[#FEE500] rounded-md w-[414px] h-[61px] font-bold text-[#000000] text-[20px] flex gap-4 justify-center items-center hover:opacity-80"
+          className="flex h-[61px] w-[414px] items-center justify-center gap-4 rounded-md bg-[#FEE500] text-[20px] font-bold text-[#000000] hover:opacity-80"
         >
-          <img src={kakao} className="w-6 h-6" />
+          <img src={kakao} className="h-6 w-6" />
           카카오 로그인
         </button>
-        <button className="bg-[#03C75A] rounded-md w-[414px] h-[61px] font-bold text-[#ffffff] text-[20px] flex gap-4 justify-center items-center hover:opacity-80">
-          <img src={naver} className="w-6 h-6" />
+        <button className="flex h-[61px] w-[414px] items-center justify-center gap-4 rounded-md bg-[#03C75A] text-[20px] font-bold text-[#ffffff] hover:opacity-80">
+          <img src={naver} className="h-6 w-6" />
           네이버 로그인
         </button>
       </div>
