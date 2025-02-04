@@ -4,6 +4,7 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 COPY package.json pnpm-lock.yaml* ./
+RUN echo "corepack version => $(corepack --version)"
 RUN corepack enable pnpm && pnpm i --frozen-lockfile
 
 
