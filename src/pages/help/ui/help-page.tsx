@@ -1,5 +1,6 @@
 import { Topic } from './topic';
 import { useQueryState } from 'nuqs';
+import { Tab } from './tab';
 
 export function HelpPage() {
   const [tab, setTab] = useQueryState('tab', { defaultValue: 'topic' });
@@ -11,20 +12,14 @@ export function HelpPage() {
   };
 
   return (
-    <div className="mt-[100px] flex-grow">
-      <div className="flex w-full border-b border-[#d4d4d4]">
-        <button
-          className="flex flex-1 justify-center pb-6"
-          onClick={() => onTabChange('topic')}
-        >
-          <h2 className="font-bold text-[#d4d4d4]">공지사항</h2>
-        </button>
-        <button
-          className="flex flex-1 justify-center pb-6"
-          onClick={() => onTabChange('faq')}
-        >
-          <h2 className="font-bold text-[#d4d4d4]">FAQ</h2>
-        </button>
+    <div className="mx-auto mt-[100px] max-w-5xl flex-grow">
+      <div className="flex w-full">
+        <Tab active={tab === 'topic'} onTabChange={() => onTabChange('topic')}>
+          공지사항
+        </Tab>
+        <Tab active={tab === 'faq'} onTabChange={() => onTabChange('faq')}>
+          FAQ
+        </Tab>
       </div>
 
       <div className="mt-20 border-b border-t border-[#d4d4d4] p-10">
