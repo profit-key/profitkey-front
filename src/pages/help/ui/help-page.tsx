@@ -5,8 +5,6 @@ import { Tab } from './tab';
 export function HelpPage() {
   const [tab, setTab] = useQueryState('tab', { defaultValue: 'topic' });
 
-  console.log(tab);
-
   const onTabChange = (tab: 'topic' | 'faq') => {
     setTab(tab);
   };
@@ -28,6 +26,12 @@ export function HelpPage() {
         <Topic />
         <Topic />
         <Topic />
+        <div className="flex items-center justify-center gap-8 pt-10">
+          {/* NOTE 아이콘 추후 변경 예정 */}
+          <span>{'<<'}</span>
+          <span className="text-[16px] font-medium text-[#333333]">1</span>
+          <span>{'>>'}</span>
+        </div>
       </div>
     </div>
   );

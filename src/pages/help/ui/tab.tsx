@@ -14,15 +14,19 @@ export function Tab({
   return (
     <button
       className={cn(
-        'flex flex-1 justify-center border-b pb-6',
-        active ? 'border-b-[5px] border-[#333333]' : 'border-[#d4d4d4]'
+        'group flex flex-1 justify-center border-b pb-6',
+        active
+          ? 'border-b-[5px] border-[#333333]'
+          : 'border-[#d4d4d4] hover:border-[#FFB400]'
       )}
       onClick={onTabChange}
     >
       <h2
         className={cn(
           'font-bold transition-colors duration-300',
-          active ? 'text-[#333333]' : 'text-[#d4d4d4]'
+          active
+            ? 'text-[#333333]'
+            : 'text-[#d4d4d4] group-hover:text-[#FFB400]'
         )}
       >
         {children}
