@@ -1,4 +1,5 @@
 import { AuthPage } from '@/pages/auth';
+import { HelpPage } from '@/pages/help';
 import { HomePage } from '@/pages/home';
 import { LoginPage } from '@/pages/login';
 import { Layout } from '@/shared/ui';
@@ -12,6 +13,7 @@ export function AppRouter() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/auth" element={<AuthPage />} />
+          <Route path="help" element={<HelpPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
