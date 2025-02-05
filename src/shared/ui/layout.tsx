@@ -28,10 +28,7 @@ export function Layout() {
             >
               커뮤니티
             </Link>
-            <Link
-              className="text-[18px] font-medium text-[#36398c]"
-              to="/topics"
-            >
+            <Link className="text-[18px] font-medium text-[#36398c]" to="/help">
               공지사항/FAQ
             </Link>
           </div>
