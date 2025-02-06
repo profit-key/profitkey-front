@@ -1,11 +1,27 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { announcementQuries } from '../api/query';
 import { AnnouncementItem } from './announcement-item';
+import { useState } from 'react';
 
 export default function AnnouncementList() {
+  const [page, setPage] = useState(1);
+  const [currentPageGroup, setCurrentPageGroup] = useState(0);
   const { data } = useSuspenseQuery(
-    announcementQuries.list({ page: 1, size: 10 })
+    announcementQuries.list({ page, size: 10 })
   );
+
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handlePageGroupChange = (direction: 'prev' | 'next') => {
+    setCurrentPageGroup((prev) => (direction === 'next' ? prev + 1 : prev - 1));
+  };
+
+  const totalPages = data.pagenation.totalPages;
+  const pagesPerGroup = 10;
+  const startPage = currentPageGroup * pagesPerGroup + 1;
+  const endPage = Math.min(startPage + pagesPerGroup - 1, totalPages);
 
   return (
     <div className="mt-20 border-b border-t border-[#d4d4d4] p-10">
@@ -13,10 +29,21 @@ export default function AnnouncementList() {
         <AnnouncementItem key={announcement.id} announcement={announcement} />
       ))}
       <div className="flex items-center justify-center gap-8 pt-10">
-        {/* NOTE 아이콘 추후 변경 예정 */}
-        <span>{'<<'}</span>
-        <span className="text-[16px] font-medium text-[#333333]">1</span>
-        <span>{'>>'}</span>
+        {currentPageGroup > 0 && (
+          <span onClick={() => handlePageGroupChange('prev')}>{'<<'}</span>
+        )}
+        {Array.from({ length: endPage - startPage + 1 }, (_, index) => (
+          <button
+            key={startPage + index}
+            className={`text-[16px] font-medium ${page === startPage + index ? 'text-[#333333]' : 'text-[#999999]'}`}
+            onClick={() => handlePageChange(startPage + index)}
+          >
+            {startPage + index}
+          </button>
+        ))}
+        {endPage < totalPages && (
+          <span onClick={() => handlePageGroupChange('next')}>{'>>'}</span>
+        )}
       </div>
     </div>
   );

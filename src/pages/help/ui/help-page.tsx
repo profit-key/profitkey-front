@@ -1,6 +1,7 @@
 import { useQueryState } from 'nuqs';
 import { Tab } from './tab';
 import AnnouncementList from './announcement-list';
+import { Suspense } from 'react';
 
 export function HelpPage() {
   const [tab, setTab] = useQueryState('tab', { defaultValue: 'topic' });
@@ -20,7 +21,9 @@ export function HelpPage() {
         </Tab>
       </div>
 
-      <AnnouncementList />
+      <Suspense>
+        <AnnouncementList />
+      </Suspense>
     </div>
   );
 }
