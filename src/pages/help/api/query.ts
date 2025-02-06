@@ -1,4 +1,4 @@
-import { queryOptions } from '@tanstack/react-query';
+import { keepPreviousData, queryOptions } from '@tanstack/react-query';
 import {
   getAnnouncements,
   type GetAnnouncementsRequestParams,
@@ -9,7 +9,8 @@ export const announcementQuries = {
   lists: () => [...announcementQuries.all(), 'lists'],
   list: (params: GetAnnouncementsRequestParams) =>
     queryOptions({
-      queryKey: [...announcementQuries.lists(), 'list'],
+      queryKey: [...announcementQuries.lists(), 'list', params],
       queryFn: () => getAnnouncements(params),
+      placeholderData: keepPreviousData,
     }),
 };
