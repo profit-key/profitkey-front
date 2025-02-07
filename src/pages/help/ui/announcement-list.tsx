@@ -18,7 +18,7 @@ export default function AnnouncementList() {
     setCurrentPageGroup((prev) => (direction === 'next' ? prev + 1 : prev - 1));
   };
 
-  const totalPages = data.pagenation.totalPages;
+  const totalPages = data.pagination.totalPages;
   const pagesPerGroup = 10;
   const startPage = currentPageGroup * pagesPerGroup + 1;
   const endPage = Math.min(startPage + pagesPerGroup - 1, totalPages);
