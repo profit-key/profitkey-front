@@ -4,7 +4,7 @@ import { Announcement } from './schema';
 
 const GetAnnouncementsResponse = z.object({
   announcements: z.array(Announcement),
-  pagenation: z.object({
+  pagination: z.object({
     totalPages: z.number(),
     totalElements: z.number(),
     currentPage: z.number(),
