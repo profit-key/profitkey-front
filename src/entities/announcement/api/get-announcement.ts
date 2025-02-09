@@ -1,8 +1,10 @@
 import { httpClient } from '@/shared/api';
-import { Announcement } from './schema';
+import { AnnouncementDetail } from './schema';
 
-export const getAnnouncement = async (id: number): Promise<Announcement> => {
+export const getAnnouncement = async (
+  id: number
+): Promise<AnnouncementDetail> => {
   const response = await httpClient.get(`/api/announcement/${id}`);
 
-  return Announcement.parse(response);
+  return AnnouncementDetail.parse(response);
 };
