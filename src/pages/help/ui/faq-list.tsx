@@ -22,7 +22,7 @@ export function FaqList() {
             <AccordionTrigger className="px-10 py-6 text-[16px] font-bold text-[#333333]">
               Q. {faq.question}
             </AccordionTrigger>
-            <AccordionContent className="px-16 text-[16px] font-bold text-[#333333]">
+            <AccordionContent className="px-16 py-6 text-[16px] font-bold text-[#333333]">
               A. {faq.title}
             </AccordionContent>
           </AccordionItem>
