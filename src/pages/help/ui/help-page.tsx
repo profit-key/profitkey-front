@@ -11,7 +11,7 @@ export function HelpPage() {
   };
 
   return (
-    <div className="mx-auto mt-[100px] max-w-5xl flex-grow">
+    <div className="mx-auto mt-[100px] max-w-5xl">
       <div className="flex w-full">
         <Tab active={tab === 'topic'} onTabChange={() => onTabChange('topic')}>
           공지사항

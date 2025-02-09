@@ -1,5 +1,5 @@
+import { type Announcement } from '@/entities/announcement';
 import { Link } from 'react-router';
-import { type Announcement } from '../api/schema';
 
 type Props = {
   announcement: Announcement;
