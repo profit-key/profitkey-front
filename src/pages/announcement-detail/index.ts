@@ -1,1 +1,1 @@
-export { AnnouncementDetailPage } from './ui/announcement.detail-page';
+export { AnnouncementDetailPage } from './ui/announcement-detail-page';
