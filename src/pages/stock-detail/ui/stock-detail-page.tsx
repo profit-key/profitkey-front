@@ -1,15 +1,37 @@
 import { useParams } from 'react-router';
+import { useQueryState } from 'nuqs';
+import { Tab } from './tab';
+import { StockAnalyst } from './stock-analyst';
+import { Community } from './community';
 
 export function StockDetailPage() {
   const { stockCode } = useParams();
 
-  console.log('stockCode:', stockCode);
+  const [tab, setTab] = useQueryState('tab', { defaultValue: 'analyst' });
+
+  const onTabChange = (tab: 'analyst' | 'community') => {
+    setTab(tab);
+  };
+
   return (
-    <div>
-      <h2>주식 상세 페이지</h2>
-      <h3>
-        종목코드 : <span>{stockCode}</span>
-      </h3>
+    <div className="mx-auto mt-[100px] max-w-5xl flex-grow">
+      <h2>주식 ({stockCode})</h2>
+      <menu className="flex w-full">
+        <Tab
+          active={tab === 'analyst'}
+          onTabChange={() => onTabChange('analyst')}
+        >
+          종목분석
+        </Tab>
+        <Tab
+          active={tab === 'community'}
+          onTabChange={() => onTabChange('community')}
+        >
+          커뮤니티
+        </Tab>
+      </menu>
+      {tab === 'analyst' && <StockAnalyst />}
+      {tab === 'community' && <Community />}
     </div>
   );
 }
