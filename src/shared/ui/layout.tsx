@@ -2,7 +2,7 @@ import { Link, Outlet } from 'react-router';
 
 export function Layout() {
   return (
-    <div className="flex min-h-screen flex-col">
+    <>
       <header className="flex items-center justify-between border-b-[1px] border-[#dde1e6] px-4 py-4">
         <div className="flex items-center gap-24">
           <Link to="/">
@@ -42,9 +42,9 @@ export function Layout() {
           </div>
         </div>
       </header>
-      <main className="flex flex-1">
+      <main>
         <Outlet />
       </main>
-    </div>
+    </>
   );
 }
