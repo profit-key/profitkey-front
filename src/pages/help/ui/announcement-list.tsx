@@ -1,7 +1,7 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { announcementQuries } from '../api/query';
 import { AnnouncementItem } from './announcement-item';
 import { useState } from 'react';
+import { announcementQuries } from '@/entities/announcement';
 
 export default function AnnouncementList() {
   const [page, setPage] = useState(1);
