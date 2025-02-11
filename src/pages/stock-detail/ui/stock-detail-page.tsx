@@ -30,8 +30,10 @@ export function StockDetailPage() {
           커뮤니티
         </Tab>
       </menu>
-      {tab === 'analyst' && <StockAnalyst />}
-      {tab === 'community' && <Community />}
+      <div className="mt-14">
+        {tab === 'analyst' && <StockAnalyst />}
+        {tab === 'community' && <Community />}
+      </div>
     </div>
   );
 }
