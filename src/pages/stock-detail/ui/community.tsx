@@ -11,7 +11,10 @@ export function Community() {
           <ProfileV username={username} />
         </div>
         <div className="grow">
-          <CommentForm />
+          <CommentForm
+            rows={2}
+            placeholder={`${username}님\n댓글을 남겨보세요`}
+          />
         </div>
       </div>
     </div>

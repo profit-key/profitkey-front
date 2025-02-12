@@ -1,7 +1,15 @@
 import { useId } from 'react';
 import './comment-form.css';
 
-export function CommentForm(): JSX.Element {
+type CommentFormProps = {
+  placeholder?: string;
+  rows?: number;
+};
+
+export function CommentForm({
+  placeholder,
+  rows = 1,
+}: CommentFormProps): JSX.Element {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
     // 브라우저 새로고침 방지
     e.preventDefault();
@@ -29,8 +37,8 @@ export function CommentForm(): JSX.Element {
         <textarea
           id={postTextAreaId}
           name="content"
-          placeholder="댓글을 남겨보세요."
-          rows={1}
+          placeholder={placeholder}
+          rows={rows}
           className="min-h-[50px] w-full resize-none overflow-auto overscroll-none bg-transparent p-4 focus:outline-none"
         />
         <button
