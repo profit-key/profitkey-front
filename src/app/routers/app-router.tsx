@@ -7,6 +7,7 @@ import { StockDetailPage } from '@/pages/stock-detail';
 import { Layout } from '@/shared/ui';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { AnnouncementDetailPage } from '@/pages/announcement-detail';
+import { NewsPage } from '@/pages/news';
 
 export function AppRouter() {
   return (
@@ -23,6 +24,7 @@ export function AppRouter() {
             path="/announcements/:announcementId"
             element={<AnnouncementDetailPage />}
           />
+          <Route path="/news" element={<NewsPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
