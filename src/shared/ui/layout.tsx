@@ -3,42 +3,52 @@ import { Link, Outlet } from 'react-router';
 export function Layout() {
   return (
     <>
-      <header className="flex items-center justify-between border-b-[1px] border-[#dde1e6] px-4 py-4">
-        <div className="flex items-center gap-24">
-          <Link to="/">
-            <h1 className="text-[24px] font-bold text-[#fbbf24]">ProfitKey</h1>
-          </Link>
-          <input className="h-14 w-72 rounded-2xl border-[1px] border-[#cfcfcf] px-5 py-4" />
-        </div>
-
-        <div className="flex items-center gap-16">
-          <div className="flex items-center gap-10">
-            <Link
-              className="text-[18px] font-medium text-[#36398c]"
-              to="/stocks"
-            >
-              종목분석
+      <header className="border-b border-[#dde1e6] px-4 py-4">
+        <div className="mx-auto flex max-w-5xl items-center justify-between">
+          <div className="flex items-center gap-24">
+            <Link to="/">
+              <h1 className="text-[24px] font-bold text-[#fbbf24]">
+                ProfitKey
+              </h1>
             </Link>
-            <Link className="text-[18px] font-medium text-[#36398c]" to="/news">
-              뉴스
-            </Link>
-            <Link
-              className="text-[18px] font-medium text-[#36398c]"
-              to="/community"
-            >
-              커뮤니티
-            </Link>
-            <Link className="text-[18px] font-medium text-[#36398c]" to="/help">
-              공지사항/FAQ
-            </Link>
+            <input className="h-14 w-72 rounded-2xl border-[1px] border-[#cfcfcf] px-5 py-4" />
           </div>
-          <div>
-            <Link
-              className="text-[18px] font-medium text-[#36398c]"
-              to="/login"
-            >
-              로그인
-            </Link>
+
+          <div className="flex items-center gap-16">
+            <div className="flex items-center gap-10">
+              <Link
+                className="text-[18px] font-medium text-[#36398c]"
+                to="/stocks"
+              >
+                종목분석
+              </Link>
+              <Link
+                className="text-[18px] font-medium text-[#36398c]"
+                to="/news"
+              >
+                뉴스
+              </Link>
+              <Link
+                className="text-[18px] font-medium text-[#36398c]"
+                to="/community"
+              >
+                커뮤니티
+              </Link>
+              <Link
+                className="text-[18px] font-medium text-[#36398c]"
+                to="/help"
+              >
+                공지사항/FAQ
+              </Link>
+            </div>
+            <div>
+              <Link
+                className="text-[18px] font-medium text-[#36398c]"
+                to="/login"
+              >
+                로그인
+              </Link>
+            </div>
           </div>
         </div>
       </header>

@@ -11,9 +11,11 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@radix-ui/react-accordion": "^1.2.3",
     "@tanstack/react-query": "^5.66.0",
     "axios": "^1.7.9",
     "clsx": "^2.1.1",
+    "lucide-react": "^0.475.0",
     "nuqs": "^2.3.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
