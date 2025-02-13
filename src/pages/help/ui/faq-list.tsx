@@ -10,6 +10,7 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 
 export function FaqList() {
   const { data } = useSuspenseQuery(faqQueries.list({ page: 1, size: 20 }));
+
   return (
     <div className="border-b border-[#333333] pb-10 pt-6">
       <Accordion type="single" collapsible>
@@ -29,9 +30,12 @@ export function FaqList() {
         ))}
       </Accordion>
       <div className="mt-10 flex justify-end">
-        <button className="rounded-md bg-[#333333] px-8 py-4 text-[20px] font-bold text-[#fff]">
+        <a
+          href="mailto:profitkey@help.com"
+          className="rounded-md bg-[#333333] px-8 py-4 text-[20px] font-bold text-[#fff]"
+        >
           1:1 문의
-        </button>
+        </a>
       </div>
     </div>
   );
