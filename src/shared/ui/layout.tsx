@@ -3,7 +3,7 @@ import { Link, Outlet } from 'react-router';
 export function Layout() {
   return (
     <>
-      <header className="border-b border-[#dde1e6] px-4 py-4">
+      <header className="border-b border-[#d4d4d4] px-4 py-4">
         <div className="mx-auto flex max-w-5xl items-center justify-between">
           <div className="flex items-center gap-24">
             <Link to="/">
@@ -17,25 +17,19 @@ export function Layout() {
           <div className="flex items-center gap-16">
             <div className="flex items-center gap-10">
               <Link
-                className="text-[18px] font-medium text-[#36398c]"
+                className="text-[18px] text-[#333333] transition-all duration-200 hover:text-[#ffb400]"
                 to="/stocks"
               >
                 종목분석
               </Link>
               <Link
-                className="text-[18px] font-medium text-[#36398c]"
+                className="text-[18px] text-[#333333] transition-all duration-200 hover:text-[#ffb400]"
                 to="/news"
               >
                 뉴스
               </Link>
               <Link
-                className="text-[18px] font-medium text-[#36398c]"
-                to="/community"
-              >
-                커뮤니티
-              </Link>
-              <Link
-                className="text-[18px] font-medium text-[#36398c]"
+                className="text-[18px] text-[#333333] transition-all duration-200 hover:text-[#ffb400]"
                 to="/help"
               >
                 공지사항/FAQ
@@ -43,7 +37,7 @@ export function Layout() {
             </div>
             <div>
               <Link
-                className="text-[18px] font-medium text-[#36398c]"
+                className="px-4 py-2 text-[16px] font-bold text-[#333333]"
                 to="/login"
               >
                 로그인
