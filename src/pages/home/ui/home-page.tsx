@@ -1,3 +1,9 @@
+import { AiRecommendSection } from './ai-recommend-section';
+
 export function HomePage() {
-  return <div>Home Page</div>;
+  return (
+    <div>
+      <AiRecommendSection />
+    </div>
+  );
 }
