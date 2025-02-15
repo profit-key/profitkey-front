@@ -6,6 +6,8 @@ import { StockListPage } from '@/pages/stock-list';
 import { StockDetailPage } from '@/pages/stock-detail';
 import { Layout } from '@/shared/ui';
 import { BrowserRouter, Route, Routes } from 'react-router';
+import { AnnouncementDetailPage } from '@/pages/announcement-detail';
+import { NewsPage } from '@/pages/news';
 
 export function AppRouter() {
   return (
@@ -17,7 +19,12 @@ export function AppRouter() {
           <Route path="/auth" element={<AuthPage />} />
           <Route path="/stocks" element={<StockListPage />} />
           <Route path="/stocks/:stockCode" element={<StockDetailPage />} />
-          <Route path="help" element={<HelpPage />} />
+          <Route path="/help" element={<HelpPage />} />
+          <Route
+            path="/announcements/:announcementId"
+            element={<AnnouncementDetailPage />}
+          />
+          <Route path="/news" element={<NewsPage />} />
         </Route>
       </Routes>
     </BrowserRouter>

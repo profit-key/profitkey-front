@@ -2,6 +2,7 @@ import { useQueryState } from 'nuqs';
 import { Tab } from './tab';
 import AnnouncementList from './announcement-list';
 import { Suspense } from 'react';
+import { FaqList } from './faq-list';
 
 export function HelpPage() {
   const [tab, setTab] = useQueryState('tab', { defaultValue: 'topic' });
@@ -11,7 +12,7 @@ export function HelpPage() {
   };
 
   return (
-    <div className="mx-auto mt-[100px] max-w-5xl flex-grow">
+    <div className="mx-auto mt-[100px] max-w-5xl">
       <div className="flex w-full">
         <Tab active={tab === 'topic'} onTabChange={() => onTabChange('topic')}>
           공지사항
@@ -22,7 +23,16 @@ export function HelpPage() {
       </div>
 
       <Suspense>
-        <AnnouncementList />
+        {(() => {
+          switch (tab) {
+            case 'topic':
+              return <AnnouncementList />;
+            case 'faq':
+              return <FaqList />;
+            default:
+              return null;
+          }
+        })()}
       </Suspense>
     </div>
   );
