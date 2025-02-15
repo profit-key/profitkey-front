@@ -4,26 +4,24 @@ import './comment-form.css';
 type CommentFormProps = {
   placeholder?: string;
   rows?: number;
+  onSubmit?: (content: string) => void;
 };
 
 export function CommentForm({
   placeholder,
   rows = 1,
+  onSubmit,
 }: CommentFormProps): JSX.Element {
   function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
-    // 브라우저 새로고침 방지
     e.preventDefault();
-
-    // form data 읽기
     const form = e.currentTarget;
     const formData = new FormData(form);
+    const content = formData.get('content') as string;
 
-    // body에 formData을 넣어 전송 가능:
-    // fetch('/some-api', { method: form.method, body: formData });
-
-    // 또는 일반(plain) 객체로 작업 가능
-    const formJson = Object.fromEntries(formData.entries());
-    console.log(formJson);
+    if (content.trim() && onSubmit) {
+      onSubmit(content);
+      form.reset(); // 폼 초기화
+    }
   }
 
   const postTextAreaId = useId();

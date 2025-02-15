@@ -15,3 +15,17 @@ export function HeartIcon({ className }: IconProps) {
     </svg>
   );
 }
+
+export function CommentIcon({ className }: IconProps) {
+  return (
+    <svg
+      className={className}
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path d="M12 20.2943C16.97 20.2943 21 16.7123 21 12.2943C21 7.87631 16.97 4.29431 12 4.29431C7.03 4.29431 3 7.87631 3 12.2943C3 13.8683 3.512 15.3363 4.395 16.5743L3 20.2943L7.745 19.3453C9.07479 19.9751 10.5286 20.2993 12 20.2943Z" />
+    </svg>
+  );
+}
