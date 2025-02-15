@@ -18,7 +18,10 @@ export function AiRecommendSection() {
           <div className="text-[24px] font-bold text-[#333333]">
             AI 추천종목
           </div>
-          <div className="mt-8 h-[524px] w-[514px] bg-gray-200"></div>
+          <iframe
+            className="mt-8 h-[524px] w-[514px] border-none"
+            src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_123&symbol=AAPL&interval=D&theme=light"
+          />
         </div>
       </div>
     </div>
