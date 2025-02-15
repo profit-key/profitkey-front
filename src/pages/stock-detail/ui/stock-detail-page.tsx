@@ -14,7 +14,7 @@ export function StockDetailPage() {
   };
 
   return (
-    <div className="mx-auto mt-[100px] max-w-5xl flex-grow">
+    <div className="mx-auto my-[100px] max-w-5xl flex-grow">
       <h2>주식 ({stockCode})</h2>
       <menu className="flex w-full">
         <Tab

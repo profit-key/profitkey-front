@@ -1,3 +1,4 @@
+import { Comment } from './comment';
 import { CommentForm } from './comment-form';
 import { ProfileV } from './profile-v';
 
@@ -16,6 +17,11 @@ export function Community() {
             placeholder={`${username}님\n댓글을 남겨보세요`}
           />
         </div>
+      </div>
+      <div className="mt-10 flex flex-col">
+        <ul>
+          <Comment>댓글입니다.</Comment>
+        </ul>
       </div>
     </div>
   );
