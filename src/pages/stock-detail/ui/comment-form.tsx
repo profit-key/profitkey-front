@@ -1,15 +1,19 @@
 import { useId, useEffect, useRef } from 'react';
 
 type CommentFormProps = {
+  initialValue?: string;
   placeholder?: string;
   rows?: number;
   onSubmit?: (content: string) => void;
+  onCancel?: () => void;
 };
 
 export function CommentForm({
+  initialValue = '',
   placeholder,
   rows = 1,
   onSubmit,
+  onCancel,
 }: CommentFormProps): JSX.Element {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -40,6 +44,15 @@ export function CommentForm({
       };
     }
   }, []);
+
+  // 초기값 설정을 위한 useEffect 추가
+  useEffect(() => {
+    const textarea = textareaRef.current;
+    if (textarea && initialValue) {
+      textarea.value = initialValue;
+      adjustHeight(); // 초기 높이 조절
+    }
+  }, [initialValue]);
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
@@ -75,22 +88,45 @@ export function CommentForm({
       <label htmlFor={postTextAreaId} className="sr-only">
         댓글 작성
       </label>
-      <div className="flex items-end rounded-[5px] bg-[#E8E8E8] ring-1 ring-[#E8E8E8] focus-within:ring-2 focus-within:ring-[#FFB400]">
-        <textarea
-          ref={textareaRef}
-          id={postTextAreaId}
-          name="content"
-          placeholder={placeholder}
-          rows={rows}
-          onKeyDown={handleKeyDown}
-          className="min-h-[50px] w-full resize-none overflow-hidden overscroll-none bg-transparent p-4 focus:outline-none"
-        />
-        <button
-          type="submit"
-          className="m-2 h-[36px] flex-none rounded-[5px] border-b border-white bg-[#FFB400] px-4 text-base font-bold text-white hover:bg-[#B86F00] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFB400]"
-        >
-          등록
-        </button>
+      <div className="flex flex-col gap-2">
+        <div className="flex items-end rounded-[5px] bg-[#E8E8E8] ring-1 ring-[#E8E8E8] focus-within:ring-2 focus-within:ring-[#FFB400]">
+          <textarea
+            ref={textareaRef}
+            id={postTextAreaId}
+            name="content"
+            placeholder={placeholder}
+            rows={rows}
+            onKeyDown={handleKeyDown}
+            defaultValue={initialValue}
+            className="min-h-[50px] w-full resize-none overflow-hidden overscroll-none bg-transparent p-4 focus:outline-none"
+          />
+          <div className="flex w-[96px] flex-col gap-2 p-2">
+            {onCancel ? (
+              <>
+                <button
+                  type="button"
+                  onClick={onCancel}
+                  className="h-[36px] w-full flex-none rounded-[5px] border-2 border-[#FFB400] px-4 text-base font-bold text-[#FFB400] hover:bg-[#FFB400] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFB400]"
+                >
+                  취소
+                </button>
+                <button
+                  type="submit"
+                  className="h-[36px] w-full flex-none rounded-[5px] border-b border-white bg-[#FFB400] px-4 text-base font-bold text-white hover:bg-[#B86F00] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFB400]"
+                >
+                  수정
+                </button>
+              </>
+            ) : (
+              <button
+                type="submit"
+                className="h-[36px] w-full flex-none rounded-[5px] border-b border-white bg-[#FFB400] px-4 text-base font-bold text-white hover:bg-[#B86F00] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFB400]"
+              >
+                등록
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </form>
   );

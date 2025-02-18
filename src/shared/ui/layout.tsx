@@ -18,7 +18,7 @@ export function Layout() {
             <div className="flex items-center gap-10">
               <Link
                 className="text-[18px] text-[#333333] transition-all duration-200 hover:text-[#ffb400]"
-                to="/stocks"
+                to="/stocks/035720"
               >
                 종목분석
               </Link>
