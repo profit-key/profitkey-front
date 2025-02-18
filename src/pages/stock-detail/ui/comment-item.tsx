@@ -31,16 +31,16 @@ export function CommentItem({ content, onEdit, onDelete }: CommentItemProps) {
   const [comment, setComment] = useState(content);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
-  function handleLikeButton() {
+  const handleLikeButton = () => {
     setIsLiked(!isLiked);
     if (isLiked) {
       setLikeCount((c) => c - 1);
       return;
     }
     setLikeCount((c) => c + 1);
-  }
+  };
 
-  function handleAddRecomment(content: string) {
+  const handleAddRecomment = (content: string) => {
     setRecomments((prev) => [
       ...prev,
       {
@@ -48,23 +48,23 @@ export function CommentItem({ content, onEdit, onDelete }: CommentItemProps) {
         recomment: content,
       },
     ]);
-  }
+  };
 
-  function handleEditSubmit(newContent: string): void {
+  const handleEditSubmit = (newContent: string): void => {
     setComment(newContent);
     setIsEditing(false);
     onEdit?.(newContent);
-  }
+  };
 
-  function confirmDelete(): void {
+  const confirmDelete = (): void => {
     onDelete?.();
     setIsDeleteModalOpen(false);
-  }
+  };
 
-  function cancelEdit() {
+  const cancelEdit = (): void => {
     setIsEditing(false);
     setComment(content);
-  }
+  };
 
   return (
     <>

@@ -17,11 +17,11 @@ export function Community() {
   const [nextId, setNextId] = useState(1);
   const [sort, setSort] = useState<'최신순' | '인기순'>('최신순');
 
-  function handleSortBtnClick() {
+  const handleSortBtnClick = () => {
     setSort((prev) => (prev === '인기순' ? '최신순' : '인기순'));
-  }
+  };
 
-  function handleAddComment(content: string) {
+  const handleAddComment = (content: string) => {
     setComments((prev) => [
       ...prev,
       {
@@ -32,19 +32,19 @@ export function Community() {
       },
     ]);
     setNextId((prev) => prev + 1);
-  }
+  };
 
-  function handleEditComment(id: number, newContent: string) {
+  const handleEditComment = (id: number, newContent: string) => {
     setComments((prev) =>
       prev.map((comment) =>
         comment.id === id ? { ...comment, comment: newContent } : comment
       )
     );
-  }
+  };
 
-  function handleDeleteComment(id: number) {
+  const handleDeleteComment = (id: number) => {
     setComments((prev) => prev.filter((comment) => comment.id !== id));
-  }
+  };
 
   return (
     <div className="mx-auto max-w-2xl">

@@ -54,7 +54,7 @@ export function CommentForm({
     }
   }, [initialValue]);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>): void {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     const form = e.currentTarget;
     const formData = new FormData(form);
@@ -65,10 +65,10 @@ export function CommentForm({
       form.reset(); // 폼 초기화
       adjustHeight(); // reset 후 높이 조절 함수 호출
     }
-  }
+  };
 
   // Enter 키 처리 함수
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>): void => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       const content = e.currentTarget.value;

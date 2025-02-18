@@ -12,14 +12,14 @@ export function RecommentItem({ username, comment }: Props) {
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(0);
 
-  function handleLikeButton() {
+  const handleLikeButton = (): void => {
     setIsLiked(!isLiked);
     if (isLiked) {
       setLikeCount((c) => c - 1);
       return;
     }
     setLikeCount((c) => c + 1);
-  }
+  };
 
   return (
     <div className="flex flex-col gap-[10px]">
