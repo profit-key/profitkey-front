@@ -3,9 +3,10 @@ import { useQueryState } from 'nuqs';
 import { Tab } from './tab';
 import { StockAnalyst } from './stock-analyst';
 import { Community } from './community';
+import { StockHeader } from './stock-header';
 
 export function StockDetailPage() {
-  const { stockCode } = useParams();
+  const { stockCode } = useParams<{ stockCode: string }>();
 
   const [tab, setTab] = useQueryState('tab', { defaultValue: 'analyst' });
 
@@ -15,7 +16,8 @@ export function StockDetailPage() {
 
   return (
     <div className="mx-auto my-[100px] max-w-5xl flex-grow">
-      <h2>주식 ({stockCode})</h2>
+      <StockHeader stockCode={stockCode || '035720'} />
+
       <menu className="flex w-full">
         <Tab
           active={tab === 'analyst'}
