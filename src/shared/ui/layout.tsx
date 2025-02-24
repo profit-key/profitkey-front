@@ -1,6 +1,9 @@
+import { useUser } from '@/app/providers/user-provider';
 import { Link, Outlet } from 'react-router';
 
 export function Layout() {
+  const user = useUser();
+
   return (
     <>
       <header className="border-b border-[#d4d4d4] px-4 py-4">
@@ -36,12 +39,20 @@ export function Layout() {
               </Link>
             </div>
             <div>
-              <Link
-                className="px-4 py-2 text-[16px] font-bold text-[#333333]"
-                to="/login"
-              >
-                로그인
-              </Link>
+              {user ? (
+                <img
+                  src={user.profileImage}
+                  alt="프로필 사진"
+                  className="h-[52px] w-[52px] rounded-full"
+                />
+              ) : (
+                <Link
+                  className="px-4 py-2 text-[16px] font-bold text-[#333333]"
+                  to="/login"
+                >
+                  로그인
+                </Link>
+              )}
             </div>
           </div>
         </div>
