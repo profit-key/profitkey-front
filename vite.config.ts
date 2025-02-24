@@ -10,12 +10,4 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-  server: {
-    proxy: {
-      '/api': {
-        target: 'https://dev-server.profitkey.click',
-        changeOrigin: true,
-      },
-    },
-  },
 });

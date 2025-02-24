@@ -3,13 +3,16 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { NuqsAdapter } from 'nuqs/adapters/react';
 
 import { type PropsWithChildren } from 'react';
+import { UserProvider } from './user-provider';
 
 const queryClient = new QueryClient();
 
 export function Providers({ children }: PropsWithChildren) {
   return (
     <QueryClientProvider client={queryClient}>
-      <NuqsAdapter>{children}</NuqsAdapter>
+      <NuqsAdapter>
+        <UserProvider>{children}</UserProvider>
+      </NuqsAdapter>
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
