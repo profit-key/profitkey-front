@@ -1,6 +1,6 @@
 import { useParams } from 'react-router';
 import { useQueryState } from 'nuqs';
-import { Tab } from './tab';
+import { Tab, Tabs } from '@/shared/ui';
 import { StockAnalyst } from './stock-analyst';
 import { Community } from './community';
 import { StockHeader } from './stock-header';
@@ -18,20 +18,20 @@ export function StockDetailPage() {
     <div className="mx-auto my-[100px] max-w-5xl flex-grow">
       <StockHeader stockCode={stockCode || '035720'} />
 
-      <menu className="flex w-full">
+      <Tabs>
         <Tab
-          active={tab === 'analyst'}
+          selected={tab === 'analyst'}
           onTabChange={() => onTabChange('analyst')}
         >
           종목분석
         </Tab>
         <Tab
-          active={tab === 'community'}
+          selected={tab === 'community'}
           onTabChange={() => onTabChange('community')}
         >
           커뮤니티
         </Tab>
-      </menu>
+      </Tabs>
       <div className="mt-14">
         {tab === 'analyst' && <StockAnalyst />}
         {tab === 'community' && <Community />}
