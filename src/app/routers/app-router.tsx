@@ -8,6 +8,7 @@ import { Layout } from '@/shared/ui';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { AnnouncementDetailPage } from '@/pages/announcement-detail';
 import { NewsPage } from '@/pages/news';
+import { Mypage } from '@/pages/my';
 
 export function AppRouter() {
   return (
@@ -25,6 +26,9 @@ export function AppRouter() {
             element={<AnnouncementDetailPage />}
           />
           <Route path="/news" element={<NewsPage />} />
+          <Route path="/profile/stocks" element={<Mypage />} />
+          <Route path="/profile/comments" element={<Mypage />} />
+          <Route path="/profile/my" element={<Mypage />} />
         </Route>
       </Routes>
     </BrowserRouter>

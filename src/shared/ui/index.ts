@@ -5,3 +5,4 @@ export {
   AccordionItem,
   AccordionTrigger,
 } from './accordion';
+export { Tab, Tabs } from './tab';
