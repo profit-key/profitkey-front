@@ -40,11 +40,13 @@ export function Layout() {
             </div>
             <div>
               {user ? (
-                <img
-                  src={user.profileImage}
-                  alt="프로필 사진"
-                  className="h-[52px] w-[52px] rounded-full"
-                />
+                <Link to="/profile/stocks">
+                  <img
+                    src={user.profileImage}
+                    alt="프로필 사진"
+                    className="h-[52px] w-[52px] rounded-full"
+                  />
+                </Link>
               ) : (
                 <Link
                   className="px-4 py-2 text-[16px] font-bold text-[#333333]"
