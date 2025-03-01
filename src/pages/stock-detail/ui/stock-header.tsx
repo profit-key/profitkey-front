@@ -1,5 +1,7 @@
 import { HeartIcon } from './icon.tsx';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { stockQueries } from '@/entities/stock/api/query.ts';
 
 type StockProps = {
   stockCode: string;
@@ -7,38 +9,33 @@ type StockProps = {
 
 export function StockHeader({ stockCode }: StockProps) {
   const [isLiked, setIsLiked] = useState(false);
-  const [priceColor, setPriceColor] = useState('text-neutral-500');
-  const [priceSymbol, setPriceSymbol] = useState('');
+
+  const { data: stock } = useSuspenseQuery(stockQueries.detail(stockCode));
 
   const handleLikeButton = () => {
     setIsLiked(!isLiked);
   };
 
-  useEffect(() => {
-    // prdy_ctrt 요소의 텍스트 값을 가져옴
-    const prdyCtrtElement = document.querySelector('.prdy_ctrt');
-    const changeRate = prdyCtrtElement?.textContent;
+  const getPriceColor = (changeRate: number) => {
+    if (changeRate > 0) return 'text-[#D9001B]';
+    if (changeRate < 0) return 'text-[#0074D9]';
+    return 'text-neutral-500';
+  };
 
-    // 변동률에 따른 색상과 화살표 설정
-    if (changeRate) {
-      const rate = parseFloat(changeRate);
-      if (rate > 0) {
-        setPriceColor('text-[#28B16C]'); // 상승 시 초록색
-        setPriceSymbol('▲'); // 상승 화살표
-      } else if (rate < 0) {
-        setPriceColor('text-[#D94F70]'); // 하락 시 빨간색
-        setPriceSymbol('▼'); // 하락 화살표
-      } else {
-        setPriceColor('text-neutral-500'); // 보합 시 회색
-        setPriceSymbol(''); // 보합 시 화살표 없음
-      }
-    }
-  }, []);
+  const getPriceSymbol = (changeRate: number) => {
+    if (changeRate > 0) return '▲';
+    if (changeRate < 0) return '▼';
+    return '';
+  };
+
+  const changeRate = parseFloat(stock.changeRate);
+  const priceColor = getPriceColor(changeRate);
+  const priceSymbol = getPriceSymbol(changeRate);
 
   return (
     <div className="mb-8 flex flex-col gap-4">
-      <div className="rprs_mrkt_kor_name w-fit rounded-[5px] bg-[#FFB400] px-4 py-1 font-bold text-white">
-        KOSPI200
+      <div className="w-fit rounded-[5px] bg-[#FFB400] px-4 py-1 font-bold text-white">
+        {stock.mrktName}
       </div>
       <div className="flex items-center gap-4">
         <button
@@ -51,19 +48,15 @@ export function StockHeader({ stockCode }: StockProps) {
         </button>
         <div className="flex gap-6">
           <h2>
-            <span className="text-3xl font-bold">카카오</span> (
+            <span className="text-3xl font-bold">{stock.name}</span> (
             <span className="code text-neutral-600">{stockCode}</span>)
           </h2>
           <div className={`flex items-end gap-2 ${priceColor}`}>
-            <p className="text-3xl font-bold">
-              <span className="stck_prpr">39,750</span>원
-            </p>
+            <p className="text-3xl font-bold"> {stock.price}원 </p>
             <p className="font-bold">
-              {priceSymbol} <span className="prdy_vrss">450</span>
+              {priceSymbol} {stock.change}
             </p>
-            <p className="font-bold">
-              (<span className="prdy_ctrt">-1.15</span>%)
-            </p>
+            <p className="font-bold"> ({stock.changeRate}%) </p>
           </div>
         </div>
       </div>
