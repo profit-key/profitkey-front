@@ -1,19 +1,64 @@
 import { HeartIcon } from './icon.tsx';
-import { useState } from 'react';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import {
+  useQuery,
+  useSuspenseQuery,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 import { stockQueries } from '@/entities/stock/api/query.ts';
+import { userQueries } from '@/shared/api/query';
+import { stockFavoriteMutation, stockFavoriteQueries } from '../api/query';
 
 type StockProps = {
   stockCode: string;
 };
 
 export function StockHeader({ stockCode }: StockProps) {
-  const [isLiked, setIsLiked] = useState(false);
-
+  const queryClient = useQueryClient();
   const { data: stock } = useSuspenseQuery(stockQueries.detail(stockCode));
+  const { data: user } = useQuery(userQueries.me());
+  const { data: favoriteStocks } = useQuery({
+    ...stockFavoriteQueries.like({ userId: user?.userId ?? 0, stockCode }),
+    refetchOnWindowFocus: false,
+    placeholderData: (prev) => prev,
+  });
+
+  const addFavoriteMutation = useMutation({
+    ...stockFavoriteMutation.like,
+    onSuccess: () => {
+      queryClient.setQueryData(
+        ['favorite-stocks', { userId: user?.userId, stockCode }],
+        true
+      );
+    },
+  });
+
+  const removeFavoriteMutation = useMutation({
+    ...stockFavoriteMutation.unlike,
+    onSuccess: () => {
+      queryClient.setQueryData(
+        ['favorite-stocks', { userId: user?.userId, stockCode }],
+        false
+      );
+    },
+  });
+
+  const isFavorite = favoriteStocks;
 
   const handleLikeButton = () => {
-    setIsLiked(!isLiked);
+    if (!user?.userId) return;
+
+    if (isFavorite) {
+      removeFavoriteMutation.mutate({
+        userId: user.userId,
+        stockCode,
+      });
+    } else {
+      addFavoriteMutation.mutate({
+        userId: user.userId,
+        stockCode,
+      });
+    }
   };
 
   const getPriceColor = (changeRate: number) => {
@@ -43,7 +88,7 @@ export function StockHeader({ stockCode }: StockProps) {
           className="flex items-center justify-center p-1"
         >
           <HeartIcon
-            className={`h-8 w-8 ${isLiked ? 'fill-[#D94F70]' : 'fill-neutral-300'}`}
+            className={`h-8 w-8 ${isFavorite ? 'fill-[#D94F70]' : 'fill-neutral-300'}`}
           />
         </button>
         <div className="flex gap-6">
