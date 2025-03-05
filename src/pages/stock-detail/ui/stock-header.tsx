@@ -15,7 +15,7 @@ type StockProps = {
 
 export function StockHeader({ stockCode }: StockProps) {
   const queryClient = useQueryClient();
-  const { data: stock } = useSuspenseQuery(stockQueries.detail(stockCode));
+  const { data: stock } = useSuspenseQuery(stockQueries.summary(stockCode));
   const { data: user } = useQuery(userQueries.me());
   const { data: favoriteStocks } = useQuery({
     ...stockFavoriteQueries.like({ userId: user?.userId ?? 0, stockCode }),

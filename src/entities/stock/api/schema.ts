@@ -91,9 +91,6 @@ export const StockPriceResponse = z.object({
   msg1: z.string(),
 });
 
-// 주식 이름 응답
-export const StockName = z.string();
-
 // 주식 검색 응답 구조
 export const StockSearchResponse = z.object({
   stockCode: z.string(),
@@ -111,7 +108,33 @@ export const StockSummary = z.object({
   changeRate: z.string(),
 });
 
+// 주식 상세 정보
+export const StockDetailResponse = z.object({
+  stockCode: z.object({
+    stockCode: z.string(),
+    stockName: z.string(),
+    marketCategory: z.string(),
+  }),
+  baseDate: z.string(),
+  division: z.string(),
+  endingPrice: z.number(),
+  openingPrice: z.number(),
+  highPrice: z.number(),
+  lowPrice: z.number(),
+  tradingVolume: z.number(),
+  tradingValue: z.number(),
+  marketCap: z.number(),
+  fiftyTwoWeekHigh: z.number(),
+  fiftyTwoWeekLow: z.number(),
+  per: z.number(),
+  eps: z.number(),
+  pbr: z.number(),
+  bps: z.number(),
+  diviRate: z.number(),
+  diviAmt: z.number(),
+});
+
 export type StockPriceResponse = z.infer<typeof StockPriceResponse>;
-export type StockName = z.infer<typeof StockName>;
 export type StockSearchResponse = z.infer<typeof StockSearchResponse>;
 export type StockSummary = z.infer<typeof StockSummary>;
+export type StockDetailResponse = z.infer<typeof StockDetailResponse>;
