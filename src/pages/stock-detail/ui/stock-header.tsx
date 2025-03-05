@@ -8,6 +8,7 @@ import {
 import { stockQueries } from '@/entities/stock/api/query.ts';
 import { userQueries } from '@/shared/api/query';
 import { stockFavoriteMutation, stockFavoriteQueries } from '../api/query';
+import { useNavigate } from 'react-router';
 
 type StockProps = {
   stockCode: string;
@@ -15,6 +16,7 @@ type StockProps = {
 
 export function StockHeader({ stockCode }: StockProps) {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const { data: stock } = useSuspenseQuery(stockQueries.summary(stockCode));
   const { data: user } = useQuery(userQueries.me());
   const { data: favoriteStocks } = useQuery({
@@ -43,12 +45,20 @@ export function StockHeader({ stockCode }: StockProps) {
     },
   });
 
-  const isFavorite = favoriteStocks;
-
   const handleLikeButton = () => {
-    if (!user?.userId) return;
+    if (!user?.userId) {
+      // 로그인하지 않은 경우 확인 대화상자 표시
+      const confirmLogin = window.confirm(
+        '로그인이 필요한 서비스입니다. 로그인을 하시겠습니까?'
+      );
+      if (confirmLogin) {
+        // 확인 버튼 클릭 시 로그인 페이지로 리다이렉트
+        navigate('/login');
+      }
+      return;
+    }
 
-    if (isFavorite) {
+    if (favoriteStocks) {
       removeFavoriteMutation.mutate({
         userId: user.userId,
         stockCode,
@@ -88,7 +98,7 @@ export function StockHeader({ stockCode }: StockProps) {
           className="flex items-center justify-center p-1"
         >
           <HeartIcon
-            className={`h-8 w-8 ${isFavorite ? 'fill-[#D94F70]' : 'fill-neutral-300'}`}
+            className={`h-8 w-8 ${favoriteStocks ? 'fill-[#D94F70]' : 'fill-neutral-300'}`}
           />
         </button>
         <div className="flex gap-6">
