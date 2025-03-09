@@ -3,7 +3,11 @@ import { FinancialTable } from './financial-table';
 import { InvestorOpinionTable } from './investor-opinion-table';
 import { InvestorOpinionChart } from './investor-opinion-chart';
 
-export function StockAnalyst() {
+type StockProps = {
+  stockCode: string;
+};
+
+export function StockAnalyst({ stockCode }: StockProps) {
   const analysisData = {
     yearHighPrice: 90000000,
     yearLowPrice: 29000000,
@@ -23,7 +27,7 @@ export function StockAnalyst() {
   return (
     <div className="flex flex-col gap-16">
       <section className="border-b border-black pb-8">
-        <h3 className="sr-only">종목 분석</h3>
+        <h3 className="sr-only">종목({stockCode}) 분석</h3>
         <div className="flex gap-8">
           <div className="flex-1">
             <h4 className="sr-only">종목 테이블</h4>

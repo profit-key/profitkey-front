@@ -33,7 +33,9 @@ export function StockDetailPage() {
         </Tab>
       </Tabs>
       <div className="mt-14">
-        {tab === 'analyst' && <StockAnalyst />}
+        {tab === 'analyst' && (
+          <StockAnalyst stockCode={stockCode || '035720'} />
+        )}
         {tab === 'community' && <Community />}
       </div>
     </div>
