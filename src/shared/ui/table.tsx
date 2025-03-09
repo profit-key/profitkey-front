@@ -64,7 +64,7 @@ const HEADER_BASE_CLASSES =
   'bg-[#f3f3f3] border-b border-gray-300 font-bold p-2.5 text-center whitespace-nowrap overflow-hidden text-ellipsis';
 const CELL_BASE_CLASSES = 'p-3 whitespace-nowrap overflow-hidden text-ellipsis';
 const CONTAINER_CLASSES =
-  'w-full h-full overflow-auto border-t-[5px] border-b border-black';
+  'w-full max-h-full overflow-auto border-t-[5px] border-b border-black';
 const TABLE_CLASSES = 'w-full table-auto';
 
 // ===== Utility Functions =====

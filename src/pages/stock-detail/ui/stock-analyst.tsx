@@ -1,6 +1,7 @@
 import { StockAnalysisTable } from './stock-analysis-table';
 import { FinancialTable } from './financial-table';
 import { InvestorOpinionTable } from './investor-opinion-table';
+import { InvestorOpinionChart } from './investor-opinion-chart';
 
 export function StockAnalyst() {
   const analysisData = {
@@ -49,17 +50,22 @@ export function StockAnalyst() {
         <h3 className="text-3xl font-bold">
           재무지표 <small className="text-base text-[#6e6e6e]">(분기별)</small>
         </h3>
-        <div className="mt-4">
-          <FinancialTable />
-        </div>
+        <FinancialTable />
       </section>
 
-      <section className="flex flex-col gap-4">
+      <section className="flex flex-col gap-8">
         <h3 className="text-3xl font-bold">투자사별 주식 분석</h3>
-        <h4 className="text-2xl font-bold">통계 한눈에 보기</h4>
-        <div className="flex flex-col gap-4">
-          <h4 className="text-2xl font-bold">투자사별 의견</h4>
-          <InvestorOpinionTable />
+        <div className="flex h-[400px] gap-12">
+          <div className="flex-1">
+            <h4 className="text-2xl font-bold">통계 한눈에 보기</h4>
+            <InvestorOpinionChart />
+          </div>
+          <div className="flex flex-1 flex-col gap-4">
+            <h4 className="text-2xl font-bold">투자사별 의견</h4>
+            <div className="flex-1 overflow-auto">
+              <InvestorOpinionTable />
+            </div>
+          </div>
         </div>
       </section>
     </div>
