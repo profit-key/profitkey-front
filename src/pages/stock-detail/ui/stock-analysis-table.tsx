@@ -7,8 +7,8 @@ type StockAnalysisData = {
   pbr: number;
   eps: number;
   bps: number;
-  highPriceRatio: number;
-  lowPriceRatio: number;
+  highPriceRatio: string;
+  lowPriceRatio: string;
   dividend: number;
   dividendYield: number;
 };
@@ -38,7 +38,7 @@ function Tooltip({ text, isVisible }: TooltipProps) {
   if (!isVisible) return null;
 
   return (
-    <div className="absolute left-[-20px] top-[30px] z-10 h-14 w-[600px]">
+    <div className="absolute left-[-20px] top-[30px] z-10 h-14 w-[345px]">
       <div data-svg-wrapper className="absolute left-5 top-0">
         <svg
           width="29"
@@ -50,7 +50,7 @@ function Tooltip({ text, isVisible }: TooltipProps) {
           <path d="M14.4999 0L28.7893 12H0.210449L14.4999 0Z" fill="#D4D4D4" />
         </svg>
       </div>
-      <div className="absolute left-0 top-[11.20px] inline-flex h-12 items-center justify-center gap-2.5 rounded-[5px] bg-neutral-300 p-2.5">
+      <div className="absolute left-0 top-[11.20px] inline-flex items-center justify-center gap-2.5 rounded-[5px] bg-neutral-300 p-2.5">
         <div className="text-xs font-normal text-[#333333]">{text}</div>
       </div>
     </div>
@@ -64,7 +64,7 @@ function QuestionMark({ tooltip }: { tooltip?: string }) {
 
   return (
     <div
-      className="relative flex h-5 w-5 cursor-help items-center justify-center rounded-full bg-neutral-300"
+      className="relative flex h-4 w-4 cursor-help items-center justify-center rounded-full bg-neutral-300"
       onMouseEnter={() => setIsTooltipVisible(true)}
       onMouseLeave={() => setIsTooltipVisible(false)}
     >
@@ -86,8 +86,8 @@ function StockAnalysisRow({
   rightTooltip,
 }: StockAnalysisRowProps) {
   const Label = ({ text, tooltip }: { text: string; tooltip?: string }) => (
-    <div className="mr-2 flex items-center justify-start gap-4">
-      <div className="text-base font-medium text-black">{text}</div>
+    <div className="mr-2 flex items-center justify-start gap-2">
+      <div className="text-xs font-medium text-black">{text}</div>
       {showQuestionMark && <QuestionMark tooltip={tooltip} />}
     </div>
   );
@@ -99,14 +99,14 @@ function StockAnalysisRow({
     value: string | number;
     unit?: string;
   }) => (
-    <div className="text-base font-medium text-black">
+    <div className="text-xs font-medium text-black">
       {value}
       {unit}
     </div>
   );
 
   return (
-    <div className="inline-flex h-14 w-full items-start justify-center gap-10 bg-[#f2f2f2] px-6 pb-5 pt-5">
+    <div className="inline-flex h-12 w-full items-start justify-center gap-8 bg-[#f2f2f2] px-4 py-3">
       <div className="inline-flex flex-1 items-center justify-between self-stretch">
         <Label text={leftLabel} tooltip={leftTooltip} />
         <Value value={leftValue} unit={leftValueUnit} />
@@ -136,14 +136,14 @@ export function StockAnalysisTable({ data }: StockAnalysisTableProps) {
       />
       <StockAnalysisRow
         leftLabel="PER"
-        leftValue={data.per.toFixed(2)}
+        leftValue={data.per}
         rightLabel="PBR"
-        rightValue={data.pbr.toFixed(2)}
+        rightValue={data.pbr}
         showQuestionMark={true}
         leftValueUnit="배"
         rightValueUnit="배"
-        leftTooltip="주가를 주당 순이익(EPS)으로 나눈 값으로, 기업의 주식이 수익 대비 얼마나 높은 가격에 거래되는지를 나타내는 지표"
-        rightTooltip="주가를 주당 순자산(BPS)으로 나눈 값으로, 기업의 주식이 순자산 대비 얼마나 높은 가격에 거래되는지를 나타내는 지표"
+        leftTooltip="현재 주가가 1주당 순이익의 몇 배인지 보여주는 지표입니다. 낮을수록 주가가 저평가되었다고 볼 수 있습니다."
+        rightTooltip="현재 주가가 1주당 순자산의 몇 배인지 보여주는 지표입니다. 1보다 작으면 주가가 자산가치보다 낮게 평가된 것입니다."
       />
       <StockAnalysisRow
         leftLabel="EPS"
@@ -151,8 +151,10 @@ export function StockAnalysisTable({ data }: StockAnalysisTableProps) {
         rightLabel="BPS"
         rightValue={formatNumber(data.bps)}
         showQuestionMark={true}
-        leftTooltip="주당순이익(Earnings Per Share)으로, 기업의 당기순이익을 발행주식수로 나눈 값"
-        rightTooltip="주당순자산(Book-value Per Share)으로, 기업의 순자산을 발행주식수로 나눈 값"
+        leftTooltip="회사가 1년 동안 번 순이익을 주식 수로 나눈 값입니다. 높을수록 수익성이 좋다는 의미입니다."
+        rightTooltip="회사의 모든 자산에서 부채를 뺀 금액을 주식 수로 나눈 값입니다. 회사 청산 시 주주가 받을 수 있는 금액을 의미합니다."
+        leftValueUnit="원"
+        rightValueUnit="원"
       />
       <StockAnalysisRow
         leftLabel="연중 최대가 대비 현재가 비율"
@@ -170,8 +172,8 @@ export function StockAnalysisTable({ data }: StockAnalysisTableProps) {
         showQuestionMark={true}
         leftValueUnit="원"
         rightValueUnit="%"
-        leftTooltip="주주에게 지급되는 1주당 이익 분배금"
-        rightTooltip="주가 대비 배당금의 비율로, 투자금액 대비 배당금의 수익률을 나타냄"
+        leftTooltip="주주에게 지급되는 1주당 현금 이익 분배금입니다. 회사가 벌어들인 이익 중 일부를 주주에게 돌려주는 금액입니다."
+        rightTooltip="주가 대비 배당금의 비율로, 투자 금액 대비 매년 받는 배당금 수익률을 의미합니다. 높을수록 현금 수익이 많은 주식입니다."
       />
     </div>
   );
