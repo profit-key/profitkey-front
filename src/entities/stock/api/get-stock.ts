@@ -50,7 +50,7 @@ export const getStockDetail = async (
     custtype: 'P',
     cts: 'string',
     gb1: '0',
-    fdt: '20241031',
+    fdt: '20240101',
     tdt: '20241231',
     highGb: 'string',
   };

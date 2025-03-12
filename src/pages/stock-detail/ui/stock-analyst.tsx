@@ -3,23 +3,30 @@ import { FinancialTable } from './financial-table';
 import { InvestorOpinionTable } from './investor-opinion-table';
 import { InvestorOpinionChart } from './investor-opinion-chart';
 import { Suspense } from 'react';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { stockQueries } from '@/entities/stock/api/query';
 
 type StockProps = {
   stockCode: string;
 };
 
 export function StockAnalyst({ stockCode }: StockProps) {
+  const { data: stockDetail } = useSuspenseQuery(
+    stockQueries.detail(stockCode)
+  );
+  const { data: stockPrice } = useSuspenseQuery(stockQueries.price(stockCode));
+
   const analysisData = {
-    yearHighPrice: 90000000,
-    yearLowPrice: 29000000,
-    per: 3000.22,
-    pbr: 500.0,
-    eps: 30000.0,
-    bps: 310000.0,
-    highPriceRatio: 90,
-    lowPriceRatio: -90,
-    dividend: 19000,
-    dividendYield: 120.0,
+    yearHighPrice: stockDetail.fiftyTwoWeekHigh,
+    yearLowPrice: stockDetail.fiftyTwoWeekLow,
+    per: stockDetail.per,
+    pbr: stockDetail.pbr,
+    eps: stockDetail.eps,
+    bps: stockDetail.bps,
+    highPriceRatio: stockPrice.output.dryy_hgpr_vrss_prpr_rate,
+    lowPriceRatio: stockPrice.output.dryy_lwpr_vrss_prpr_rate,
+    dividend: stockDetail.diviAmt,
+    dividendYield: stockDetail.diviRate,
   };
 
   const aiComment =
@@ -29,12 +36,12 @@ export function StockAnalyst({ stockCode }: StockProps) {
     <div className="flex flex-col gap-16">
       <section className="border-b border-black pb-8">
         <h3 className="sr-only">주요 정보</h3>
-        <div className="flex gap-8">
-          <div className="flex-1">
+        <div className="flex">
+          <div className="w-1/2">
             <h4 className="sr-only">종목 테이블</h4>
             <StockAnalysisTable data={analysisData} />
           </div>
-          <div className="flex-1">
+          <div className="ml-8 flex-1">
             <h4 className="sr-only">종목 차트</h4>
             <iframe
               className="h-full w-full border-none"
