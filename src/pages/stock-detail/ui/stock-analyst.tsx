@@ -73,7 +73,7 @@ export function StockAnalyst({ stockCode }: StockProps) {
         <div className="flex h-[400px] gap-12">
           <div className="flex-1">
             <h4 className="text-2xl font-bold">통계 한눈에 보기</h4>
-            <InvestorOpinionChart />
+            <InvestorOpinionChart data={investorOpinions} />
           </div>
           <div className="flex flex-1 flex-col gap-4">
             <h4 className="text-2xl font-bold">투자사별 의견</h4>
