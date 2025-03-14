@@ -20,7 +20,7 @@ export function StockHeader({ stockCode }: StockProps) {
   const { data: stock } = useSuspenseQuery(stockQueries.summary(stockCode));
   const { data: user } = useQuery(userQueries.me());
   const { data: favoriteStocks } = useQuery({
-    ...stockFavoriteQueries.like({ userId: user?.userId ?? 0, stockCode }),
+    ...stockFavoriteQueries.isLiked({ stockCode }),
     refetchOnWindowFocus: false,
     placeholderData: (prev) => prev,
   });
@@ -28,20 +28,14 @@ export function StockHeader({ stockCode }: StockProps) {
   const addFavoriteMutation = useMutation({
     ...stockFavoriteMutation.like,
     onSuccess: () => {
-      queryClient.setQueryData(
-        ['favorite-stocks', { userId: user?.userId, stockCode }],
-        true
-      );
+      queryClient.setQueryData(['favorite-stocks', { stockCode }], true);
     },
   });
 
   const removeFavoriteMutation = useMutation({
     ...stockFavoriteMutation.unlike,
     onSuccess: () => {
-      queryClient.setQueryData(
-        ['favorite-stocks', { userId: user?.userId, stockCode }],
-        false
-      );
+      queryClient.setQueryData(['favorite-stocks', { stockCode }], false);
     },
   });
 
@@ -59,15 +53,9 @@ export function StockHeader({ stockCode }: StockProps) {
     }
 
     if (favoriteStocks) {
-      removeFavoriteMutation.mutate({
-        userId: user.userId,
-        stockCode,
-      });
+      removeFavoriteMutation.mutate({ stockCode });
     } else {
-      addFavoriteMutation.mutate({
-        userId: user.userId,
-        stockCode,
-      });
+      addFavoriteMutation.mutate({ stockCode });
     }
   };
 

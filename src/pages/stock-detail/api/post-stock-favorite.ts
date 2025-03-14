@@ -4,11 +4,8 @@ import { StockFavorite, UserFavoriteStock } from './schema';
 export const postStockFavorite = async (
   params: StockFavorite
 ): Promise<UserFavoriteStock> => {
-  const response = await httpClient.post(
-    `/api/users/${params.userId}/favorite-stocks`,
-    {
-      stockCode: params.stockCode,
-    }
-  );
+  const response = await httpClient.post(`/api/users/favorite-stocks`, {
+    stockCode: params.stockCode,
+  });
   return UserFavoriteStock.parse(response);
 };

@@ -5,7 +5,7 @@ export const getStockFavorite = async (
   params: StockFavorite
 ): Promise<UserFavoriteStock> => {
   const response = await httpClient.get(
-    `/api/users/${params.userId}/favorite-stocks/${params.stockCode}`
+    `/api/users/favorite-stocks/${params.stockCode}`
   );
   return UserFavoriteStock.parse(response);
 };
