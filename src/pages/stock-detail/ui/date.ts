@@ -17,3 +17,16 @@ export function formatDate(date: Date | string | number): string {
   }
   return format(d, 'PPP EEEE', { locale: ko }); // 날짜 포맷
 }
+
+export function formatDateString(date: string): string {
+  // 문자열(YYYYMMDD)에서 연도, 월, 일을 추출
+  const year = date.substring(0, 4);
+  const month = date.substring(4, 6);
+  const day = date.substring(6, 8);
+
+  // Date 객체 생성
+  const d = new Date(`${year}-${month}-${day}`);
+
+  // 원하는 형식으로 포맷
+  return format(d, 'yyyy.MM.dd');
+}

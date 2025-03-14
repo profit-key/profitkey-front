@@ -1,5 +1,6 @@
 import { queryOptions } from '@tanstack/react-query';
 import { getStockDetail, getStockPrice, getStockSummary } from './get-stock';
+import { getInvestorOpinions } from './get-investor-opinions';
 
 export const stockQueries = {
   all: () => ['stocks', 'all'],
@@ -18,5 +19,10 @@ export const stockQueries = {
     queryOptions({
       queryKey: [...stockQueries.details(), 'summary', stockCode],
       queryFn: () => getStockSummary(stockCode),
+    }),
+  investorOpinions: (stockCode: string) =>
+    queryOptions({
+      queryKey: [...stockQueries.details(), 'investorOpinions', stockCode],
+      queryFn: () => getInvestorOpinions(stockCode),
     }),
 };

@@ -31,6 +31,10 @@ export function StockAnalyst({ stockCode }: StockProps) {
   const aiComment =
     '매출액 증가율(21.74%)은 299910보다 낮지만, 자기자본 증가율(46.63%)과 총자산 증가율(27.50%)이 긍정적임 수익성 지표에서 총자본 순이익율(4.81%), 자기자본 순이익율(11.69%), 매출액 순이익율(6.24%)이 양호하며, 299910의 수익성 지표가 모두 음수인 것과 대조됨 안정성 지표에서 부채 비율(109.58%)이 299910(806.53%)보다 낮고, 차입금 의존도(13.31%)도 양호함 유동 비율(151.64%)이 299910(86.72%)보다 높아 재무 건전성이 우수함';
 
+  const {
+    data: { output: investorOpinions },
+  } = useSuspenseQuery(stockQueries.investorOpinions(stockCode));
+
   return (
     <div className="flex flex-col gap-16">
       <section className="border-b border-black pb-8">
@@ -74,7 +78,7 @@ export function StockAnalyst({ stockCode }: StockProps) {
           <div className="flex flex-1 flex-col gap-4">
             <h4 className="text-2xl font-bold">투자사별 의견</h4>
             <div className="flex-1 overflow-auto">
-              <InvestorOpinionTable />
+              <InvestorOpinionTable data={investorOpinions} />
             </div>
           </div>
         </div>
