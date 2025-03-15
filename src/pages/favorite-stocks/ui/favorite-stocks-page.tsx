@@ -1,7 +1,8 @@
 import { useUser } from '@/app/providers/user-provider';
 import { Tab, Tabs } from '@/shared/ui';
-import { EllipsisVertical, Heart } from 'lucide-react';
 import { useNavigate } from 'react-router';
+import { StockList } from './stock-list';
+import { Suspense } from 'react';
 
 const tabs = [
   { label: '내 관심종목', path: '/profile/stocks' },
@@ -44,107 +45,9 @@ export function FavoriteStocksPage() {
           </div>
         </div>
 
-        <div className="flex flex-1 flex-col gap-4">
-          <div className="flex items-center px-4 py-6 shadow-[0px_2px_8px_0px_#63636333]">
-            <Heart className="mr-2 h-6 w-6" />
-            <span className="mr-2 text-[16px] font-bold text-[#6e6e6e]">1</span>
-            <span className="mr-2 text-[16px] font-bold text-[#333333]">
-              피엔케이피부임상연구센타피엔케이피부임
-            </span>
-            <span className="flex-1 text-[16px] font-bold text-[#333333]">
-              (1234567)
-            </span>
-            <EllipsisVertical />
-          </div>
-          <div className="flex items-center px-4 py-6 shadow-[0px_2px_8px_0px_#63636333]">
-            <Heart className="mr-2 h-6 w-6" />
-            <span className="mr-2 text-[16px] font-bold text-[#6e6e6e]">1</span>
-            <span className="mr-2 text-[16px] font-bold text-[#333333]">
-              피엔케이피부임상연구센타피엔케이피부임
-            </span>
-            <span className="flex-1 text-[16px] font-bold text-[#333333]">
-              (1234567)
-            </span>
-            <EllipsisVertical />
-          </div>
-          <div className="flex items-center px-4 py-6 shadow-[0px_2px_8px_0px_#63636333]">
-            <Heart className="mr-2 h-6 w-6" />
-            <span className="mr-2 text-[16px] font-bold text-[#6e6e6e]">1</span>
-            <span className="mr-2 text-[16px] font-bold text-[#333333]">
-              피엔케이피부임상연구센타피엔케이피부임
-            </span>
-            <span className="flex-1 text-[16px] font-bold text-[#333333]">
-              (1234567)
-            </span>
-            <EllipsisVertical />
-          </div>
-          <div className="flex items-center px-4 py-6 shadow-[0px_2px_8px_0px_#63636333]">
-            <Heart className="mr-2 h-6 w-6" />
-            <span className="mr-2 text-[16px] font-bold text-[#6e6e6e]">1</span>
-            <span className="mr-2 text-[16px] font-bold text-[#333333]">
-              피엔케이피부임상연구센타피엔케이피부임
-            </span>
-            <span className="flex-1 text-[16px] font-bold text-[#333333]">
-              (1234567)
-            </span>
-            <EllipsisVertical />
-          </div>
-          <div className="flex items-center px-4 py-6 shadow-[0px_2px_8px_0px_#63636333]">
-            <Heart className="mr-2 h-6 w-6" />
-            <span className="mr-2 text-[16px] font-bold text-[#6e6e6e]">1</span>
-            <span className="mr-2 text-[16px] font-bold text-[#333333]">
-              피엔케이피부임상연구센타피엔케이피부임
-            </span>
-            <span className="flex-1 text-[16px] font-bold text-[#333333]">
-              (1234567)
-            </span>
-            <EllipsisVertical />
-          </div>
-          <div className="flex items-center px-4 py-6 shadow-[0px_2px_8px_0px_#63636333]">
-            <Heart className="mr-2 h-6 w-6" />
-            <span className="mr-2 text-[16px] font-bold text-[#6e6e6e]">1</span>
-            <span className="mr-2 text-[16px] font-bold text-[#333333]">
-              피엔케이피부임상연구센타피엔케이피부임
-            </span>
-            <span className="flex-1 text-[16px] font-bold text-[#333333]">
-              (1234567)
-            </span>
-            <EllipsisVertical />
-          </div>
-          <div className="flex items-center px-4 py-6 shadow-[0px_2px_8px_0px_#63636333]">
-            <Heart className="mr-2 h-6 w-6" />
-            <span className="mr-2 text-[16px] font-bold text-[#6e6e6e]">1</span>
-            <span className="mr-2 text-[16px] font-bold text-[#333333]">
-              피엔케이피부임상연구센타피엔케이피부임
-            </span>
-            <span className="flex-1 text-[16px] font-bold text-[#333333]">
-              (1234567)
-            </span>
-            <EllipsisVertical />
-          </div>
-          <div className="flex items-center px-4 py-6 shadow-[0px_2px_8px_0px_#63636333]">
-            <Heart className="mr-2 h-6 w-6" />
-            <span className="mr-2 text-[16px] font-bold text-[#6e6e6e]">1</span>
-            <span className="mr-2 text-[16px] font-bold text-[#333333]">
-              피엔케이피부임상연구센타피엔케이피부임
-            </span>
-            <span className="flex-1 text-[16px] font-bold text-[#333333]">
-              (1234567)
-            </span>
-            <EllipsisVertical />
-          </div>
-          <div className="flex items-center px-4 py-6 shadow-[0px_2px_8px_0px_#63636333]">
-            <Heart className="mr-2 h-6 w-6" />
-            <span className="mr-2 text-[16px] font-bold text-[#6e6e6e]">1</span>
-            <span className="mr-2 text-[16px] font-bold text-[#333333]">
-              피엔케이피부임상연구센타피엔케이피부임
-            </span>
-            <span className="flex-1 text-[16px] font-bold text-[#333333]">
-              (1234567)
-            </span>
-            <EllipsisVertical />
-          </div>
-        </div>
+        <Suspense>
+          <StockList />
+        </Suspense>
       </div>
     </div>
   );
