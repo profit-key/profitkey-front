@@ -3,18 +3,18 @@ import {
   CategoryScale,
   LinearScale,
   BarElement,
-  Title,
   Tooltip,
   Legend,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
+import { InvestorOpinion } from '@/entities/stock/api/schema';
+import { INVESTMENT_OPINION } from './utill';
 
 ChartJS.register(
   CategoryScale,
   LinearScale,
   BarElement,
-  Title,
   Tooltip,
   Legend,
   ChartDataLabels
@@ -81,25 +81,58 @@ const options = {
   },
 };
 
-const labels = ['적극매수', '매수', '유지', '매도', '적극매도'];
+const labels = Object.values(INVESTMENT_OPINION);
+const backgroundColor = [
+  '#0074D9',
+  '#0074D980',
+  '#0074D940',
+  '#6ABF4B',
+  '#FFB40080',
+  '#FFB400',
+];
 
-const data = {
-  labels,
-  datasets: [
-    {
-      label: '의견 수',
-      data: [15, 10, 5, 3, 1], // 고정된 데이터 값으로 대체
-      backgroundColor: [
-        '#0074D9',
-        '#0074D980',
-        '#6ABF4B',
-        '#FFB40080',
-        '#FFB400',
-      ],
+export function InvestorOpinionChart({ data }: { data: InvestorOpinion[] }) {
+  // 의견 개수 카운팅
+  const opinionCounts = labels.map(() => 0);
+  data.forEach((item) => {
+    const translatedOpinion =
+      INVESTMENT_OPINION[
+        item.invt_opnn.toUpperCase() as keyof typeof INVESTMENT_OPINION
+      ];
+    if (translatedOpinion) {
+      // 데이터에 있는 의견이 있으면 개수를 증가
+      const index = labels.indexOf(translatedOpinion);
+      if (index !== -1) {
+        opinionCounts[index]++;
+      }
+    }
+  });
+
+  // x축의 최대값을 계산 (최대값의 10% 여유 공간 추가)
+  const maxOpinionCount = Math.max(...opinionCounts);
+  const xMaxValue = Math.ceil(maxOpinionCount * 1.1);
+
+  const chartOptions = {
+    ...options,
+    scales: {
+      ...options.scales,
+      x: {
+        ...options.scales.x,
+        max: xMaxValue,
+      },
     },
-  ],
-};
+  };
 
-export function InvestorOpinionChart() {
-  return <Bar options={options} data={data} />;
+  const chartData = {
+    labels,
+    datasets: [
+      {
+        label: '의견 수',
+        data: opinionCounts,
+        backgroundColor,
+      },
+    ],
+  };
+
+  return <Bar options={chartOptions} data={chartData} />;
 }
