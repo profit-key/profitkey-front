@@ -1,8 +1,8 @@
 import { CommentItem } from './comment-item';
 import { CommentForm } from './comment-form';
-import { ProfileV } from './profile-v';
+import { Profile } from '../../../shared/ui/profile';
 import { useState } from 'react';
-import switchSort from './switch-sort.svg';
+import { ArrowDownUp } from 'lucide-react';
 
 type Comment = {
   id: number;
@@ -50,7 +50,7 @@ export function Community() {
     <div className="mx-auto max-w-2xl">
       <div className="flex items-start gap-5">
         <div className="flex-none">
-          <ProfileV username={username} />
+          <Profile username={username} orientation="vertical" />
         </div>
         <div className="grow">
           <CommentForm
@@ -64,9 +64,9 @@ export function Community() {
         <div className="flex-none">
           <button
             onClick={handleSortBtnClick}
-            className="align-center flex gap-2 rounded-[5px] border-b-[2px] border-[#333333] p-1 shadow-md hover:bg-[#F3F3F3]"
+            className="align-center flex items-center justify-center gap-2 rounded-[2px] border-b-[3px] border-[#333333] p-1 shadow-md hover:bg-[#F3F3F3]"
           >
-            <img src={switchSort} />
+            <ArrowDownUp className="h-5 w-5" />
             {sort}
           </button>
         </div>
