@@ -2,6 +2,7 @@ import { StockAnalysisTable } from './stock-analysis-table';
 import { FinancialTable } from './financial-table';
 import { InvestorOpinionTable } from './investor-opinion-table';
 import { InvestorOpinionChart } from './investor-opinion-chart';
+import { Suspense } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { stockQueries } from '@/entities/stock/api/query';
 
@@ -34,7 +35,7 @@ export function StockAnalyst({ stockCode }: StockProps) {
   return (
     <div className="flex flex-col gap-16">
       <section className="border-b border-black pb-8">
-        <h3 className="sr-only">종목({stockCode}) 분석</h3>
+        <h3 className="sr-only">주요 정보</h3>
         <div className="flex">
           <div className="w-1/2">
             <h4 className="sr-only">종목 테이블</h4>
@@ -61,7 +62,9 @@ export function StockAnalyst({ stockCode }: StockProps) {
         <h3 className="text-3xl font-bold">
           재무지표 <small className="text-base text-[#6e6e6e]">(분기별)</small>
         </h3>
-        <FinancialTable />
+        <Suspense>
+          <FinancialTable stockCode={stockCode} />
+        </Suspense>
       </section>
 
       <section className="flex flex-col gap-8">
