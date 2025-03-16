@@ -5,6 +5,7 @@ import { queryOptions, infiniteQueryOptions } from '@tanstack/react-query';
 import { deleteStockFavorite } from './delete-stock-favorite';
 import { GetCommentsRequestParams } from './get-comments';
 import { getComments } from './get-comments';
+import { getFinancialData } from './get-financial-data';
 
 export const stockFavoriteMutation = {
   like: {
@@ -23,6 +24,14 @@ export const stockFavoriteQueries = {
     }),
 };
 
+export const financialDataQueries = {
+  financialData: (stockCode: string) =>
+    queryOptions({
+      queryKey: ['financial-data', stockCode],
+      queryFn: () => getFinancialData(stockCode),
+    }),
+};
+
 export const communityQueries = {
   all: () => ['community', 'all'],
   lists: () => [...communityQueries.all(), 'lists'],
@@ -31,9 +40,9 @@ export const communityQueries = {
       queryKey: [...communityQueries.lists(), params],
       queryFn: ({ pageParam }) => getComments({ ...params, page: pageParam }),
       initialPageParam: 1,
-      getNextPageParam: (lastPage) =>
-        lastPage.number < lastPage.totalPages - 1
-          ? lastPage.number + 1
-          : undefined,
+      getNextPageParam: (lastPage) => {
+        if (lastPage.last) return;
+        return lastPage.number + 2;
+      },
     }),
 };
