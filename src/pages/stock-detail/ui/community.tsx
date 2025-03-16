@@ -2,19 +2,20 @@ import { CommentItem } from './comment-item';
 import { CommentForm } from './comment-form';
 import { Profile } from '../../../shared/ui/profile';
 import { useState } from 'react';
-import { ArrowDownUp } from 'lucide-react';
+import { ArrowDownUp, Loader2 } from 'lucide-react';
+import { communityQueries } from '../api/query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
-type Comment = {
-  id: number;
-  username: string;
-  comment: string;
-  createdAt: string;
-};
-
-export function Community() {
+export function Community({ stockCode }: { stockCode: string }) {
   const username: string = 'user';
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [nextId, setNextId] = useState(1);
+  const {
+    data: comments,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    ...communityQueries.list({ stockCode }),
+  });
   const [sort, setSort] = useState<'최신순' | '인기순'>('최신순');
 
   const handleSortBtnClick = () => {
@@ -22,28 +23,30 @@ export function Community() {
   };
 
   const handleAddComment = (content: string) => {
-    setComments((prev) => [
-      ...prev,
-      {
-        id: nextId,
-        username: 'user',
-        comment: content,
-        createdAt: new Date().toISOString(),
-      },
-    ]);
-    setNextId((prev) => prev + 1);
+    // 댓글 추가 로직은 API 연동 후 구현
+    console.log('댓글 추가:', content);
   };
 
-  const handleEditComment = (id: number, newContent: string) => {
-    setComments((prev) =>
-      prev.map((comment) =>
-        comment.id === id ? { ...comment, comment: newContent } : comment
-      )
-    );
+  const handleEditComment = (id: string, newContent: string) => {
+    // 댓글 수정 로직은 API 연동 후 구현
+    console.log('댓글 수정:', id, newContent);
   };
 
-  const handleDeleteComment = (id: number) => {
-    setComments((prev) => prev.filter((comment) => comment.id !== id));
+  const handleDeleteComment = (id: string) => {
+    // 댓글 삭제 로직은 API 연동 후 구현
+    console.log('댓글 삭제:', id);
+  };
+
+  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
+    // 스크롤이 하단에 도달하고 다음 페이지가 있으며 현재 로딩 중이 아닐 때
+    if (
+      scrollHeight - scrollTop <= clientHeight * 1.2 &&
+      hasNextPage &&
+      !isFetchingNextPage
+    ) {
+      fetchNextPage();
+    }
   };
 
   return (
@@ -70,16 +73,35 @@ export function Community() {
             {sort}
           </button>
         </div>
-        <ul className="flex flex-col gap-5">
-          {comments.map((comment) => (
-            <CommentItem
-              key={comment.id}
-              content={comment.comment}
-              onEdit={(newContent) => handleEditComment(comment.id, newContent)}
-              onDelete={() => handleDeleteComment(comment.id)}
-            />
-          ))}
-        </ul>
+        <div className="h-[500px] overflow-y-auto" onScroll={handleScroll}>
+          <ul className="flex flex-col gap-5">
+            {comments?.pages.flatMap((page) =>
+              page.content.map((comment) => (
+                <CommentItem
+                  key={comment.id}
+                  content={comment.content}
+                  onEdit={(newContent) =>
+                    handleEditComment(comment.id, newContent)
+                  }
+                  onDelete={() => handleDeleteComment(comment.id)}
+                />
+              ))
+            )}
+          </ul>
+          {isFetchingNextPage && (
+            <div className="my-4 text-center text-gray-500">
+              <Loader2 className="mx-auto h-6 w-6 animate-spin" />
+            </div>
+          )}
+          {!hasNextPage &&
+            comments &&
+            comments.pages &&
+            comments.pages.length > 0 && (
+              <div className="my-4 text-center text-gray-500">
+                더 이상 댓글이 없습니다.
+              </div>
+            )}
+        </div>
       </div>
     </div>
   );

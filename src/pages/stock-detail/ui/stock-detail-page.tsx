@@ -36,7 +36,7 @@ export function StockDetailPage() {
         {tab === 'analyst' && (
           <StockAnalyst stockCode={stockCode || '035720'} />
         )}
-        {tab === 'community' && <Community />}
+        {tab === 'community' && <Community stockCode={stockCode || '035720'} />}
       </div>
     </div>
   );
