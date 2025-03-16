@@ -138,3 +138,27 @@ export type StockPriceResponse = z.infer<typeof StockPriceResponse>;
 export type StockSearchResponse = z.infer<typeof StockSearchResponse>;
 export type StockSummary = z.infer<typeof StockSummary>;
 export type StockDetailResponse = z.infer<typeof StockDetailResponse>;
+
+export const InvestorOpinion = z.object({
+  stck_bsop_date: z.string(),
+  invt_opnn: z.string(),
+  invt_opnn_cls_code: z.string(),
+  rgbf_invt_opnn: z.string(),
+  rgbf_invt_opnn_cls_code: z.string(),
+  mbcr_name: z.string(),
+  hts_goal_prc: z.string(),
+  stck_prdy_clpr: z.string(),
+  stck_nday_esdg: z.string(),
+  nday_dprt: z.string(),
+  stft_esdg: z.string(),
+  dprt: z.string(),
+});
+export type InvestorOpinion = z.infer<typeof InvestorOpinion>;
+
+export const InvestorOpinionResponse = z.object({
+  output: z.array(InvestorOpinion),
+  rt_cd: z.string(),
+  msg_cd: z.string(),
+  msg1: z.string(),
+});
+export type InvestorOpinionResponse = z.infer<typeof InvestorOpinionResponse>;
