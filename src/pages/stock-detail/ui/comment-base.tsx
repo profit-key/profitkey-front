@@ -1,6 +1,6 @@
 import { Profile } from '../../../shared/ui/profile.tsx';
 import { formatDate } from './date.ts';
-import { HeartIcon, CommentIcon } from '../../../shared/ui/icon.tsx';
+import { HeartIcon, CommentIcon } from '@/shared/ui/icon.tsx';
 import { CommentForm } from './comment-form.tsx';
 import { useState } from 'react';
 import { CommentMenu } from './comment-menu';

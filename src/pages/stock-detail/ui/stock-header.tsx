@@ -1,4 +1,4 @@
-import { HeartIcon } from './icon.tsx';
+import { HeartIcon } from '@/shared/ui/icon.tsx';
 import {
   useQuery,
   useSuspenseQuery,

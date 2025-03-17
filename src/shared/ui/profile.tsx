@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
-import { UserIcon } from './icon';
+import { UserIcon } from '@/shared/ui/icon.tsx';
 
 type ProfileProps = {
   username?: string;
