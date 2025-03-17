@@ -1,7 +1,7 @@
 import { CommentItem } from './comment-item';
 import { CommentForm } from './comment-form';
 import { Profile } from '../../../shared/ui/profile';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ArrowDownUp, Loader2 } from 'lucide-react';
 import { communityQueries } from '../api/query';
 import { useInfiniteQuery } from '@tanstack/react-query';
@@ -37,17 +37,26 @@ export function Community({ stockCode }: { stockCode: string }) {
     console.log('댓글 삭제:', id);
   };
 
-  const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
-    const { scrollTop, clientHeight, scrollHeight } = e.currentTarget;
-    // 스크롤이 하단에 도달하고 다음 페이지가 있으며 현재 로딩 중이 아닐 때
-    if (
-      scrollHeight - scrollTop <= clientHeight * 1.2 &&
-      hasNextPage &&
-      !isFetchingNextPage
-    ) {
-      fetchNextPage();
-    }
-  };
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight;
+      const clientHeight = document.documentElement.clientHeight;
+
+      if (
+        scrollHeight - scrollTop <= clientHeight * 1.2 &&
+        hasNextPage &&
+        !isFetchingNextPage
+      ) {
+        fetchNextPage();
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
     <div className="mx-auto max-w-2xl">
@@ -73,35 +82,30 @@ export function Community({ stockCode }: { stockCode: string }) {
             {sort}
           </button>
         </div>
-        <div className="h-[500px] overflow-y-auto" onScroll={handleScroll}>
-          <ul className="flex flex-col gap-5">
-            {comments?.pages.flatMap((page) =>
-              page.content.map((comment) => (
-                <CommentItem
-                  key={comment.id}
-                  content={comment.content}
-                  onEdit={(newContent) =>
-                    handleEditComment(comment.id, newContent)
-                  }
-                  onDelete={() => handleDeleteComment(comment.id)}
-                />
-              ))
-            )}
-          </ul>
-          {isFetchingNextPage && (
-            <div className="my-4 text-center text-gray-500">
-              <Loader2 className="mx-auto h-6 w-6 animate-spin" />
-            </div>
+        <ul className="flex flex-col gap-5">
+          {comments?.pages.flatMap((page) =>
+            page.content.map((comment) => (
+              <CommentItem
+                key={comment.id}
+                content={comment.content}
+                onEdit={(newContent) =>
+                  handleEditComment(comment.id, newContent)
+                }
+                onDelete={() => handleDeleteComment(comment.id)}
+              />
+            ))
           )}
-          {!hasNextPage &&
-            comments &&
-            comments.pages &&
-            comments.pages.length > 0 && (
-              <div className="my-4 text-center text-gray-500">
-                더 이상 댓글이 없습니다.
-              </div>
-            )}
-        </div>
+        </ul>
+        {isFetchingNextPage && (
+          <div className="my-4 text-center text-gray-500">
+            <Loader2 className="mx-auto h-6 w-6 animate-spin" />
+          </div>
+        )}
+        {!hasNextPage && (
+          <div className="my-4 text-center text-gray-500">
+            댓글을 남겨보세요 :)
+          </div>
+        )}
       </div>
     </div>
   );
