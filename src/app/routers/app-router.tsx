@@ -10,6 +10,7 @@ import { AnnouncementDetailPage } from '@/pages/announcement-detail';
 import { NewsPage } from '@/pages/news';
 import { Mypage } from '@/pages/my';
 import { FavoriteStocksPage } from '@/pages/favorite-stocks';
+import { MyCommentPage } from '@/pages/my-comment';
 
 export function AppRouter() {
   return (
@@ -28,7 +29,7 @@ export function AppRouter() {
           />
           <Route path="/news" element={<NewsPage />} />
           <Route path="/profile/stocks" element={<FavoriteStocksPage />} />
-          <Route path="/profile/comments" element={<Mypage />} />
+          <Route path="/profile/comments" element={<MyCommentPage />} />
           <Route path="/profile/my" element={<Mypage />} />
         </Route>
       </Routes>
