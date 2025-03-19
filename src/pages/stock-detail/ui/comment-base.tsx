@@ -1,4 +1,4 @@
-import { Profile } from '../../../shared/ui/profile.tsx';
+import { Profile } from '@/shared/ui/profile.tsx';
 import { formatDate } from './date.ts';
 import { HeartIcon, CommentIcon } from '@/shared/ui/icon.tsx';
 import { CommentForm } from './comment-form.tsx';
@@ -6,45 +6,61 @@ import { useState } from 'react';
 import { CommentMenu } from './comment-menu';
 import { Modal } from './modal';
 import { cn } from '@/shared/lib/utils.ts';
+import { Loader2 } from 'lucide-react';
 
-type Recomment = {
+type Reply = {
   id: string;
   username: string;
-  recomment: string;
+  reply: string;
 };
 
 type CommentBaseProps = {
-  id?: string;
-  username: string;
-  content: string;
-  isRecomment?: boolean;
+  comment: {
+    id?: string;
+    writerNickname: string;
+    writerImageUrl?: string;
+    likeCount: number;
+    replieCount: number;
+    content: string;
+  };
+  user?: {
+    id: string;
+    nickname: string;
+    imgUrl: string;
+  };
+  isReply?: boolean;
   onEdit?: (id: string | undefined, newContent: string) => void;
   onDelete?: (id: string | undefined) => void;
-  onAddRecomment?: (content: string) => void;
-  recomments?: Recomment[];
-  onRecommentEdit?: (id: string | undefined, newContent: string) => void;
-  onRecommentDelete?: (id: string | undefined) => void;
+  onAddReply?: (content: string) => void;
+  replies?: Reply[];
+  onReplyEdit?: (id: string | undefined, newContent: string) => void;
+  onReplyDelete?: (id: string | undefined) => void;
+  hasMoreReplies?: boolean;
+  isFetchingMoreReplies?: boolean;
+  onLoadMoreReplies?: () => void;
 };
 
 export function CommentBase({
-  id,
-  username,
-  content: initialContent,
-  isRecomment = false,
+  comment,
+  user,
+  isReply = false,
   onEdit,
   onDelete,
-  onAddRecomment,
-  recomments = [],
-  onRecommentEdit,
-  onRecommentDelete,
+  onAddReply,
+  replies = [],
+  onReplyEdit,
+  onReplyDelete,
+  hasMoreReplies,
+  isFetchingMoreReplies,
+  onLoadMoreReplies,
 }: CommentBaseProps) {
   // 상태 관리
   const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(0);
-  const [isRecommentVisible, setIsRecommentVisible] = useState(false);
+  const [likeCount, setLikeCount] = useState(comment.likeCount);
+  const [isReplyVisible, setIsReplyVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [comment, setComment] = useState(initialContent);
+  const [content, setContent] = useState(comment.content);
 
   // 좋아요 버튼 처리
   const handleLikeButton = () => {
@@ -58,9 +74,9 @@ export function CommentBase({
 
   // 댓글 수정 제출
   const handleEditSubmit = (newContent: string): void => {
-    setComment(newContent);
+    setContent(newContent);
     setIsEditing(false);
-    onEdit?.(id, newContent);
+    onEdit?.(comment.id, newContent);
   };
 
   // 수정 시작
@@ -70,19 +86,19 @@ export function CommentBase({
 
   // 삭제 처리
   const handleDelete = (): void => {
-    onDelete?.(id);
+    onDelete?.(comment.id);
   };
 
   // 삭제 확인
   const confirmDelete = (): void => {
-    onDelete?.(id);
+    onDelete?.(comment.id);
     setIsDeleteModalOpen(false);
   };
 
   // 수정 취소
   const cancelEdit = (): void => {
     setIsEditing(false);
-    setComment(initialContent);
+    setContent(comment.content);
   };
 
   // 대댓글 컨텐츠 렌더링
@@ -91,7 +107,7 @@ export function CommentBase({
       {isEditing ? (
         <div className="flex flex-col gap-2">
           <CommentForm
-            initialValue={comment}
+            initialValue={content}
             rows={3}
             placeholder="댓글을 수정하세요"
             onSubmit={handleEditSubmit}
@@ -103,10 +119,10 @@ export function CommentBase({
           <div
             className={cn(
               'min-h-[50px] w-full rounded-[5px] bg-[#FFB40033] p-4',
-              isRecomment ? '' : 'break-words'
+              isReply ? '' : 'break-words'
             )}
           >
-            {isRecomment ? <p>{comment}</p> : comment}
+            {isReply ? <p>{content}</p> : content}
           </div>
           <div className="flex items-center justify-between">
             <div className="flex">
@@ -119,13 +135,15 @@ export function CommentBase({
                 />
                 <span>{likeCount ? likeCount : null}</span>
               </button>
-              {!isRecomment && (
+              {!isReply && (
                 <button
-                  onClick={() => setIsRecommentVisible(!isRecommentVisible)}
+                  onClick={() => setIsReplyVisible(!isReplyVisible)}
                   className="flex gap-2 p-2"
                 >
                   <CommentIcon className="fill-neutral-300" />
-                  <span>{recomments.length ? recomments.length : null}</span>
+                  <span>
+                    {comment.replieCount ? comment.replieCount : null}
+                  </span>
                 </button>
               )}
             </div>
@@ -138,34 +156,52 @@ export function CommentBase({
   );
 
   // 대댓글 영역 렌더링
-  const renderRecomments = () => {
-    if (isRecomment || !onAddRecomment) return null;
+  const renderReplies = () => {
+    if (isReply || !onAddReply) return null;
 
     return (
-      isRecommentVisible && (
+      isReplyVisible && (
         <div className="flex flex-col gap-5 ps-16">
-          {recomments.length > 0 && (
-            <div className="recomments-list flex flex-col gap-5">
-              {recomments.map(({ id, username, recomment }) => (
+          {replies.length > 0 && (
+            <div className="replies-list flex max-h-[520px] flex-col gap-5 overflow-y-auto pb-1 pr-1">
+              {replies.map(({ id, username, reply }) => (
                 <CommentBase
                   key={id}
-                  id={id}
-                  username={username}
-                  content={recomment}
-                  isRecomment={true}
-                  onEdit={onRecommentEdit}
-                  onDelete={onRecommentDelete}
+                  comment={{
+                    id,
+                    writerNickname: username,
+                    likeCount: 0,
+                    replieCount: 0,
+                    content: reply,
+                  }}
+                  isReply={true}
+                  onEdit={onReplyEdit}
+                  onDelete={onReplyDelete}
                 />
               ))}
+              {hasMoreReplies && isFetchingMoreReplies && (
+                <div className="my-4 text-center text-gray-500">
+                  <Loader2 className="mx-auto h-6 w-6 animate-spin" />
+                </div>
+              )}
+              {hasMoreReplies && (
+                <button
+                  onClick={onLoadMoreReplies}
+                  className="text-center text-sm text-gray-500 hover:text-gray-700"
+                  disabled={isFetchingMoreReplies}
+                >
+                  댓글 더보기
+                </button>
+              )}
             </div>
           )}
           <div className="flex items-center justify-center gap-4">
-            <Profile />
+            <Profile imgUrl={user?.imgUrl} orientation="horizontal" />
             <div className="grow">
               <CommentForm
                 rows={1}
                 placeholder={`댓글을 남겨보세요`}
-                onSubmit={onAddRecomment}
+                onSubmit={onAddReply}
               />
             </div>
           </div>
@@ -176,16 +212,20 @@ export function CommentBase({
 
   return (
     <>
-      {isRecomment ? (
+      {isReply ? (
         <div className="flex flex-col gap-[10px]">
           <div className="flex items-center gap-[10px]">
-            <Profile username={username} orientation="horizontal" />
+            <Profile
+              username={comment.writerNickname}
+              imgUrl={comment.writerImageUrl}
+              orientation="horizontal"
+            />
             {formatDate('2025-02-13T16:48:11.338Z')}
           </div>
           <div
             className={cn(
               'ps-16',
-              isRecomment
+              isReply
                 ? 'relative before:absolute before:left-5 before:top-1 before:h-full before:w-[1px] before:bg-neutral-500'
                 : ''
             )}
@@ -197,13 +237,17 @@ export function CommentBase({
         <li className="flex flex-col gap-5">
           <div className="flex flex-col gap-[10px]">
             <div className="flex items-center gap-[10px]">
-              <Profile username={username} orientation="horizontal" />
+              <Profile
+                username={comment.writerNickname}
+                imgUrl={comment.writerImageUrl}
+                orientation="horizontal"
+              />
               {formatDate('2025-02-13T16:48:11.338Z')}
             </div>
             <div
               className={cn(
                 'ps-16',
-                isRecomment
+                isReply
                   ? 'relative before:absolute before:left-5 before:top-1 before:h-full before:w-[1px] before:bg-neutral-500'
                   : ''
               )}
@@ -211,7 +255,7 @@ export function CommentBase({
               {renderContent()}
             </div>
           </div>
-          {renderRecomments()}
+          {renderReplies()}
         </li>
       )}
 

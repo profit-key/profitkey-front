@@ -31,6 +31,8 @@ export type FinancialDataResponse = z.infer<typeof FinancialDataResponse>;
 export const Comment = z.object({
   id: z.string(),
   writerId: z.number(),
+  writerNickname: z.string(),
+  writerImageUrl: z.string(),
   parentId: z.string(),
   content: z.string(),
   createdAt: z.string(),

@@ -6,6 +6,10 @@ import { deleteStockFavorite } from './delete-stock-favorite';
 import { GetCommentsRequestParams } from './get-comments';
 import { getComments } from './get-comments';
 import { getFinancialData } from './get-financial-data';
+import {
+  getCommentReplies,
+  GetCommentRepliesRequestParams,
+} from './get-comment-replies';
 
 export const stockFavoriteMutation = {
   like: {
@@ -39,6 +43,18 @@ export const communityQueries = {
     infiniteQueryOptions({
       queryKey: [...communityQueries.lists(), params],
       queryFn: ({ pageParam }) => getComments({ ...params, page: pageParam }),
+      initialPageParam: 1,
+      getNextPageParam: (lastPage) => {
+        if (lastPage.last) return;
+        return lastPage.number + 2;
+      },
+    }),
+  replies: () => [...communityQueries.all(), 'replies'],
+  replyList: (params: GetCommentRepliesRequestParams) =>
+    infiniteQueryOptions({
+      queryKey: [...communityQueries.replies(), params],
+      queryFn: ({ pageParam }) =>
+        getCommentReplies({ ...params, page: pageParam }),
       initialPageParam: 1,
       getNextPageParam: (lastPage) => {
         if (lastPage.last) return;

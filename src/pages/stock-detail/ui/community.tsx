@@ -1,13 +1,17 @@
 import { CommentItem } from './comment-item';
 import { CommentForm } from './comment-form';
-import { Profile } from '../../../shared/ui/profile';
+import { Profile } from '@/shared/ui/profile';
 import { useEffect, useState } from 'react';
 import { ArrowDownUp, Loader2 } from 'lucide-react';
 import { communityQueries } from '../api/query';
 import { useInfiniteQuery } from '@tanstack/react-query';
 
 export function Community({ stockCode }: { stockCode: string }) {
-  const username: string = 'user';
+  const user = {
+    id: 'user-id',
+    nickname: '사용자',
+    imgUrl: 'https://github.com/shadcn.png',
+  };
   const {
     data: comments,
     fetchNextPage,
@@ -24,7 +28,7 @@ export function Community({ stockCode }: { stockCode: string }) {
 
   const handleAddComment = (content: string) => {
     // 댓글 추가 로직은 API 연동 후 구현
-    console.log('댓글 추가:', content);
+    console.log('댓글 추가:', { content, user });
   };
 
   const handleEditComment = (id: string, newContent: string) => {
@@ -62,12 +66,16 @@ export function Community({ stockCode }: { stockCode: string }) {
     <div className="mx-auto max-w-2xl">
       <div className="flex items-start gap-5">
         <div className="flex-none">
-          <Profile username={username} orientation="vertical" />
+          <Profile
+            username={user.nickname}
+            imgUrl={user.imgUrl}
+            orientation="vertical"
+          />
         </div>
         <div className="grow">
           <CommentForm
             rows={2}
-            placeholder={`${username}님\n댓글을 남겨보세요`}
+            placeholder={`${user.nickname}님\n댓글을 남겨보세요`}
             onSubmit={handleAddComment}
           />
         </div>
@@ -87,7 +95,8 @@ export function Community({ stockCode }: { stockCode: string }) {
             page.content.map((comment) => (
               <CommentItem
                 key={comment.id}
-                content={comment.content}
+                comment={comment}
+                user={user}
                 onEdit={(newContent) =>
                   handleEditComment(comment.id, newContent)
                 }

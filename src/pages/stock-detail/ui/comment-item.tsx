@@ -1,57 +1,94 @@
 import { useState } from 'react';
 import { CommentBase } from './comment-base';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { communityQueries } from '../api/query';
 
-type Recomment = {
+type Reply = {
   id: string;
   username: string;
-  recomment: string;
+  reply: string;
 };
 
 type CommentItemProps = {
-  content: string;
+  comment: {
+    id: string;
+    writerNickname: string;
+    likeCount: number;
+    replieCount: number;
+    content: string;
+  };
+  user: {
+    id: string;
+    nickname: string;
+    imgUrl: string;
+  };
   onEdit?: (content: string) => void;
   onDelete?: () => void;
 };
 
-export function CommentItem({ content, onEdit, onDelete }: CommentItemProps) {
-  const username: string = 'user';
-  const [recomments, setRecomments] = useState<Recomment[]>([]);
+export function CommentItem({
+  comment,
+  user,
+  onEdit,
+  onDelete,
+}: CommentItemProps) {
+  const [localReplies, setLocalReplies] = useState<Reply[]>([]);
 
-  const handleAddRecomment = (content: string) => {
-    setRecomments((prev) => [
+  const {
+    data: replies,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    ...communityQueries.replyList({ id: comment.id, page: 1 }),
+  });
+
+  const handleAddReply = (content: string) => {
+    setLocalReplies((prev) => [
       ...prev,
       {
         id: Date.now().toString(),
-        username: 'user',
-        recomment: content,
+        username: user.nickname,
+        reply: content,
       },
     ]);
   };
 
-  const handleRecommentEdit = (id: string | undefined, newContent: string) => {
+  const handleReplyEdit = (id: string | undefined, newContent: string) => {
     if (!id) return;
-    setRecomments((prev) =>
+    setLocalReplies((prev) =>
       prev.map((item) =>
-        item.id === id ? { ...item, recomment: newContent } : item
+        item.id === id ? { ...item, reply: newContent } : item
       )
     );
   };
 
-  const handleRecommentDelete = (id: string | undefined) => {
+  const handleReplyDelete = (id: string | undefined) => {
     if (!id) return;
-    setRecomments((prev) => prev.filter((item) => item.id !== id));
+    setLocalReplies((prev) => prev.filter((item) => item.id !== id));
   };
 
   return (
     <CommentBase
-      username={username}
-      content={content}
+      comment={comment}
+      user={user}
       onEdit={(_, newContent) => onEdit?.(newContent)}
       onDelete={() => onDelete?.()}
-      onAddRecomment={handleAddRecomment}
-      recomments={recomments}
-      onRecommentEdit={handleRecommentEdit}
-      onRecommentDelete={handleRecommentDelete}
+      onAddReply={handleAddReply}
+      replies={
+        replies?.pages.flatMap((page) =>
+          page.content.map((reply) => ({
+            id: reply.id,
+            username: reply.writerNickname,
+            reply: reply.content,
+          }))
+        ) || localReplies
+      }
+      onReplyEdit={handleReplyEdit}
+      onReplyDelete={handleReplyDelete}
+      hasMoreReplies={hasNextPage}
+      isFetchingMoreReplies={isFetchingNextPage}
+      onLoadMoreReplies={() => fetchNextPage()}
     />
   );
 }

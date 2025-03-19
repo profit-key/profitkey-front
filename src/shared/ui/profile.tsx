@@ -3,20 +3,20 @@ import { UserIcon } from '@/shared/ui/icon.tsx';
 
 type ProfileProps = {
   username?: string;
-  imgSrc?: string;
+  imgUrl?: string;
   orientation?: 'horizontal' | 'vertical';
 };
 
 export function Profile({
   username,
   orientation = 'horizontal',
-  imgSrc,
+  imgUrl,
 }: ProfileProps): JSX.Element {
   if (orientation === 'horizontal') {
     return (
       <div className="flex items-center justify-center gap-4">
         <Avatar>
-          <AvatarImage src={imgSrc || '#'} />
+          <AvatarImage src={imgUrl || '#'} />
           <AvatarFallback className="bg-neutral-300">
             <UserIcon className="h-4 w-4 fill-neutral-500" />
           </AvatarFallback>
@@ -29,7 +29,7 @@ export function Profile({
   return (
     <div className="flex max-w-[128px] flex-col items-center justify-center gap-2">
       <Avatar>
-        <AvatarImage src={imgSrc || '#'} />
+        <AvatarImage src={imgUrl || '#'} />
         <AvatarFallback className="bg-neutral-300">
           <UserIcon className="h-4 w-4 fill-neutral-500" />
         </AvatarFallback>
