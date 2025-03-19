@@ -1,4 +1,4 @@
-import { HeartIcon } from './icon.tsx';
+import { HeartIcon } from '@/shared/ui/icon.tsx';
 import {
   useQuery,
   useSuspenseQuery,
@@ -84,6 +84,7 @@ export function StockHeader({ stockCode }: StockProps) {
         <button
           onClick={handleLikeButton}
           className="flex items-center justify-center p-1"
+          aria-label="관심 종목 추가/삭제"
         >
           <HeartIcon
             className={`h-8 w-8 ${favoriteStocks ? 'fill-[#D94F70]' : 'fill-neutral-300'}`}

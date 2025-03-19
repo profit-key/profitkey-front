@@ -1,9 +1,15 @@
 import { StockFavorite } from './schema';
 import { postStockFavorite } from './post-stock-favorite';
 import { getStockFavorite } from './get-stock-favorite';
-import { queryOptions } from '@tanstack/react-query';
+import { queryOptions, infiniteQueryOptions } from '@tanstack/react-query';
 import { deleteStockFavorite } from './delete-stock-favorite';
+import { GetCommentsRequestParams } from './get-comments';
+import { getComments } from './get-comments';
 import { getFinancialData } from './get-financial-data';
+import {
+  getCommentReplies,
+  GetCommentRepliesRequestParams,
+} from './get-comment-replies';
 
 export const stockFavoriteMutation = {
   like: {
@@ -27,5 +33,32 @@ export const financialDataQueries = {
     queryOptions({
       queryKey: ['financial-data', stockCode],
       queryFn: () => getFinancialData(stockCode),
+    }),
+};
+
+export const communityQueries = {
+  all: () => ['community', 'all'],
+  lists: () => [...communityQueries.all(), 'lists'],
+  list: (params: GetCommentsRequestParams) =>
+    infiniteQueryOptions({
+      queryKey: [...communityQueries.lists(), params],
+      queryFn: ({ pageParam }) => getComments({ ...params, page: pageParam }),
+      initialPageParam: 1,
+      getNextPageParam: (lastPage) => {
+        if (lastPage.last) return;
+        return lastPage.number + 2;
+      },
+    }),
+  replies: () => [...communityQueries.all(), 'replies'],
+  replyList: (params: GetCommentRepliesRequestParams) =>
+    infiniteQueryOptions({
+      queryKey: [...communityQueries.replies(), params],
+      queryFn: ({ pageParam }) =>
+        getCommentReplies({ ...params, page: pageParam }),
+      initialPageParam: 1,
+      getNextPageParam: (lastPage) => {
+        if (lastPage.last) return;
+        return lastPage.number + 2;
+      },
     }),
 };

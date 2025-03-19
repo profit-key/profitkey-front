@@ -1,20 +1,25 @@
 import { CommentItem } from './comment-item';
 import { CommentForm } from './comment-form';
-import { ProfileV } from './profile-v';
-import { useState } from 'react';
-import switchSort from './switch-sort.svg';
+import { Profile } from '@/shared/ui/profile';
+import { useEffect, useState } from 'react';
+import { ArrowDownUp, Loader2 } from 'lucide-react';
+import { communityQueries } from '../api/query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 
-type Comment = {
-  id: number;
-  username: string;
-  comment: string;
-  createdAt: string;
-};
-
-export function Community() {
-  const username: string = 'user';
-  const [comments, setComments] = useState<Comment[]>([]);
-  const [nextId, setNextId] = useState(1);
+export function Community({ stockCode }: { stockCode: string }) {
+  const user = {
+    id: 'user-id',
+    nickname: '사용자',
+    imgUrl: 'https://github.com/shadcn.png',
+  };
+  const {
+    data: comments,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  } = useInfiniteQuery({
+    ...communityQueries.list({ stockCode }),
+  });
   const [sort, setSort] = useState<'최신순' | '인기순'>('최신순');
 
   const handleSortBtnClick = () => {
@@ -22,40 +27,55 @@ export function Community() {
   };
 
   const handleAddComment = (content: string) => {
-    setComments((prev) => [
-      ...prev,
-      {
-        id: nextId,
-        username: 'user',
-        comment: content,
-        createdAt: new Date().toISOString(),
-      },
-    ]);
-    setNextId((prev) => prev + 1);
+    // 댓글 추가 로직은 API 연동 후 구현
+    console.log('댓글 추가:', { content, user });
   };
 
-  const handleEditComment = (id: number, newContent: string) => {
-    setComments((prev) =>
-      prev.map((comment) =>
-        comment.id === id ? { ...comment, comment: newContent } : comment
-      )
-    );
+  const handleEditComment = (id: string, newContent: string) => {
+    // 댓글 수정 로직은 API 연동 후 구현
+    console.log('댓글 수정:', id, newContent);
   };
 
-  const handleDeleteComment = (id: number) => {
-    setComments((prev) => prev.filter((comment) => comment.id !== id));
+  const handleDeleteComment = (id: string) => {
+    // 댓글 삭제 로직은 API 연동 후 구현
+    console.log('댓글 삭제:', id);
   };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY || document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight;
+      const clientHeight = document.documentElement.clientHeight;
+
+      if (
+        scrollHeight - scrollTop <= clientHeight * 1.2 &&
+        hasNextPage &&
+        !isFetchingNextPage
+      ) {
+        fetchNextPage();
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   return (
     <div className="mx-auto max-w-2xl">
       <div className="flex items-start gap-5">
         <div className="flex-none">
-          <ProfileV username={username} />
+          <Profile
+            username={user.nickname}
+            imgUrl={user.imgUrl}
+            orientation="vertical"
+          />
         </div>
         <div className="grow">
           <CommentForm
             rows={2}
-            placeholder={`${username}님\n댓글을 남겨보세요`}
+            placeholder={`${user.nickname}님\n댓글을 남겨보세요`}
             onSubmit={handleAddComment}
           />
         </div>
@@ -64,22 +84,37 @@ export function Community() {
         <div className="flex-none">
           <button
             onClick={handleSortBtnClick}
-            className="align-center flex gap-2 rounded-[5px] border-b-[2px] border-[#333333] p-1 shadow-md hover:bg-[#F3F3F3]"
+            className="align-center flex items-center justify-center gap-2 rounded-[2px] border-b-[3px] border-[#333333] p-1 shadow-md hover:bg-[#F3F3F3]"
           >
-            <img src={switchSort} />
+            <ArrowDownUp className="h-5 w-5" />
             {sort}
           </button>
         </div>
         <ul className="flex flex-col gap-5">
-          {comments.map((comment) => (
-            <CommentItem
-              key={comment.id}
-              content={comment.comment}
-              onEdit={(newContent) => handleEditComment(comment.id, newContent)}
-              onDelete={() => handleDeleteComment(comment.id)}
-            />
-          ))}
+          {comments?.pages.flatMap((page) =>
+            page.content.map((comment) => (
+              <CommentItem
+                key={comment.id}
+                comment={comment}
+                user={user}
+                onEdit={(newContent) =>
+                  handleEditComment(comment.id, newContent)
+                }
+                onDelete={() => handleDeleteComment(comment.id)}
+              />
+            ))
+          )}
         </ul>
+        {isFetchingNextPage && (
+          <div className="my-4 text-center text-gray-500">
+            <Loader2 className="mx-auto h-6 w-6 animate-spin" />
+          </div>
+        )}
+        {!hasNextPage && (
+          <div className="my-4 text-center text-gray-500">
+            댓글을 남겨보세요 :)
+          </div>
+        )}
       </div>
     </div>
   );

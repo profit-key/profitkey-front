@@ -100,19 +100,19 @@ export function CommentForm({
             defaultValue={initialValue}
             className="min-h-[50px] w-full resize-none overflow-hidden overscroll-none bg-transparent p-4 focus:outline-none"
           />
-          <div className="flex w-[96px] flex-col gap-2 p-2">
+          <div className="flex w-[84px] flex-none flex-col gap-2 p-2">
             {onCancel ? (
               <>
                 <button
                   type="button"
                   onClick={onCancel}
-                  className="h-[36px] w-full flex-none rounded-[5px] border-2 border-[#FFB400] px-4 text-base font-bold text-[#FFB400] hover:bg-[#FFB400] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFB400]"
+                  className="h-[36px] w-full flex-none rounded-[5px] border-2 border-[#FFB400] px-4 font-bold text-[#FFB400] hover:bg-[#FFB400] hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFB400]"
                 >
                   취소
                 </button>
                 <button
                   type="submit"
-                  className="h-[36px] w-full flex-none rounded-[5px] border-b border-white bg-[#FFB400] px-4 text-base font-bold text-white hover:bg-[#B86F00] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFB400]"
+                  className="h-[36px] w-full flex-none rounded-[5px] border-b border-white bg-[#FFB400] px-4 font-bold text-white hover:bg-[#B86F00] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFB400]"
                 >
                   수정
                 </button>
@@ -120,7 +120,7 @@ export function CommentForm({
             ) : (
               <button
                 type="submit"
-                className="h-[36px] w-full flex-none rounded-[5px] border-b border-white bg-[#FFB400] px-4 text-base font-bold text-white hover:bg-[#B86F00] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFB400]"
+                className="h-[36px] w-full flex-none rounded-[5px] border-b border-white bg-[#FFB400] px-4 font-bold text-white hover:bg-[#B86F00] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FFB400]"
               >
                 등록
               </button>

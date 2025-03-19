@@ -15,7 +15,9 @@ export function formatDate(date: Date | string | number): string {
     // 3일 미만일땐 시간차이 출력(몇시간 전, 몇일 전)
     return formatDistanceToNow(d, { addSuffix: true, locale: ko });
   }
-  return format(d, 'PPP EEEE', { locale: ko }); // 날짜 포맷
+  return format(d, 'PPP', { locale: ko }).replace(/^\d{4}/, (year) =>
+    year.slice(2)
+  ); // 날짜 포맷
 }
 
 export function formatDateString(date: string): string {

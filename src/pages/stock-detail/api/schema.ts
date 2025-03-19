@@ -27,3 +27,47 @@ export const FinancialDataResponse = z.object({
   msg1: z.string(),
 });
 export type FinancialDataResponse = z.infer<typeof FinancialDataResponse>;
+
+export const Comment = z.object({
+  id: z.string(),
+  writerId: z.number(),
+  writerNickname: z.string(),
+  writerImageUrl: z.string(),
+  parentId: z.string(),
+  content: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  likeCount: z.number(),
+  replieCount: z.number(),
+});
+export type Comment = z.infer<typeof Comment>;
+
+export const CommunityResponse = z.object({
+  content: z.array(Comment),
+  pageable: z.object({
+    pageNumber: z.number(),
+    pageSize: z.number(),
+    sort: z.object({
+      empty: z.boolean(),
+      sorted: z.boolean(),
+      unsorted: z.boolean(),
+    }),
+    offset: z.number(),
+    paged: z.boolean(),
+    unpaged: z.boolean(),
+  }),
+  totalPages: z.number(),
+  totalElements: z.number(),
+  last: z.boolean(),
+  size: z.number(),
+  number: z.number(),
+  sort: z.object({
+    empty: z.boolean(),
+    sorted: z.boolean(),
+    unsorted: z.boolean(),
+  }),
+  numberOfElements: z.number(),
+  first: z.boolean(),
+  empty: z.boolean(),
+});
+export type CommunityResponse = z.infer<typeof CommunityResponse>;
