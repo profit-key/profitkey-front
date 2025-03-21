@@ -46,7 +46,7 @@ export function FavoriteStocksPage() {
           </div>
         </div>
 
-        <Suspense>
+        <Suspense fallback={<StockList.Loading />}>
           <StockList />
         </Suspense>
       </div>

@@ -46,7 +46,7 @@ export function MyCommentPage() {
           </div>
         </div>
 
-        <Suspense>
+        <Suspense fallback={<CommentList.Loading />}>
           <CommentList />
         </Suspense>
       </div>

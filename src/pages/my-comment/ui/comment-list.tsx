@@ -1,8 +1,9 @@
 import { userQueries } from '@/entities/user';
+import { Skeleton } from '@/shared/ui/skeleton';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
 
-export function CommentList() {
+function CommentList() {
   const { data: comments } = useSuspenseQuery(userQueries.commentList());
 
   return (
@@ -19,3 +20,44 @@ export function CommentList() {
     </div>
   );
 }
+
+function Loading() {
+  return (
+    <div className="flex flex-1 flex-col gap-3">
+      <div className="border-b border-b-[#d4d4d4] px-8 py-6">
+        <Skeleton className="h-6 w-full" />
+      </div>
+      <div className="border-b border-b-[#d4d4d4] px-8 py-6">
+        <Skeleton className="h-6 w-full" />
+      </div>
+      <div className="border-b border-b-[#d4d4d4] px-8 py-6">
+        <Skeleton className="h-6 w-full" />
+      </div>
+      <div className="border-b border-b-[#d4d4d4] px-8 py-6">
+        <Skeleton className="h-6 w-full" />
+      </div>
+      <div className="border-b border-b-[#d4d4d4] px-8 py-6">
+        <Skeleton className="h-6 w-full" />
+      </div>
+      <div className="border-b border-b-[#d4d4d4] px-8 py-6">
+        <Skeleton className="h-6 w-full" />
+      </div>
+      <div className="border-b border-b-[#d4d4d4] px-8 py-6">
+        <Skeleton className="h-6 w-full" />
+      </div>
+      <div className="border-b border-b-[#d4d4d4] px-8 py-6">
+        <Skeleton className="h-6 w-full" />
+      </div>
+      <div className="border-b border-b-[#d4d4d4] px-8 py-6">
+        <Skeleton className="h-6 w-full" />
+      </div>
+      <div className="border-b border-b-[#d4d4d4] px-8 py-6">
+        <Skeleton className="h-6 w-full" />
+      </div>
+    </div>
+  );
+}
+
+CommentList.Loading = Loading;
+
+export { CommentList };

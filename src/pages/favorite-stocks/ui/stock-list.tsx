@@ -1,8 +1,9 @@
 import { userQueries } from '@/entities/user';
+import { Skeleton } from '@/shared/ui/skeleton';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { EllipsisVertical, Heart } from 'lucide-react';
 
-export function StockList() {
+function StockList() {
   const { data: stocks } = useSuspenseQuery(userQueries.favoriteStocksList());
 
   return (
@@ -28,3 +29,21 @@ export function StockList() {
     </div>
   );
 }
+
+function Loading() {
+  return (
+    <div className="flex flex-1 flex-col gap-4">
+      <Skeleton className="h-[72px] w-full" />
+      <Skeleton className="h-[72px] w-full" />
+      <Skeleton className="h-[72px] w-full" />
+      <Skeleton className="h-[72px] w-full" />
+      <Skeleton className="h-[72px] w-full" />
+      <Skeleton className="h-[72px] w-full" />
+      <Skeleton className="h-[72px] w-full" />
+    </div>
+  );
+}
+
+StockList.Loading = Loading;
+
+export { StockList };
