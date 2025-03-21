@@ -1,5 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/shared/ui/avatar';
-import { UserIcon } from '@/shared/ui/icon.tsx';
+import { Avatar } from './avatar';
 
 type ProfileProps = {
   username?: string;
@@ -15,12 +14,7 @@ export function Profile({
   if (orientation === 'horizontal') {
     return (
       <div className="flex items-center justify-center gap-4">
-        <Avatar>
-          <AvatarImage src={imgUrl || '#'} />
-          <AvatarFallback className="bg-neutral-300">
-            <UserIcon className="h-4 w-4 fill-neutral-500" />
-          </AvatarFallback>
-        </Avatar>
+        <Avatar src={imgUrl} />
         {username && <p className="truncate font-bold">{username}</p>}
       </div>
     );
@@ -28,12 +22,7 @@ export function Profile({
 
   return (
     <div className="flex max-w-[128px] flex-col items-center justify-center gap-2">
-      <Avatar>
-        <AvatarImage src={imgUrl || '#'} />
-        <AvatarFallback className="bg-neutral-300">
-          <UserIcon className="h-4 w-4 fill-neutral-500" />
-        </AvatarFallback>
-      </Avatar>
+      <Avatar src={imgUrl} />
       {username && (
         <p className="w-full truncate text-center font-bold">{username}</p>
       )}

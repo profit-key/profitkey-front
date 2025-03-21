@@ -1,5 +1,6 @@
 import { useUser } from '@/app/providers/user-provider';
 import { Tab, Tabs } from '@/shared/ui';
+import { Avatar } from '@/shared/ui/avatar';
 import { useLocation, useNavigate } from 'react-router';
 
 const tabs = [
@@ -34,10 +35,10 @@ export function Mypage() {
 
       <div className="flex justify-around pt-16">
         <div className="flex flex-col items-center justify-center gap-4">
-          <img
+          <Avatar
             src={user.profileImage}
-            alt="프로필 사진"
-            className="h-[100px] w-[100px] rounded-full"
+            className="h-[100px] w-[100px]"
+            fallbackSize={44}
           />
           <div className="text-[16px] font-bold text-[#333333]">
             {user.nickname}
