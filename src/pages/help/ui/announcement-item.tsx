@@ -1,11 +1,12 @@
 import { type Announcement } from '@/entities/announcement';
+import { Skeleton } from '@/shared/ui/skeleton';
 import { Link } from 'react-router';
 
 type Props = {
   announcement: Announcement;
 };
 
-export function AnnouncementItem({ announcement }: Props) {
+function AnnouncementItem({ announcement }: Props) {
   return (
     <Link
       to={`/announcements/${announcement.id}`}
@@ -20,3 +21,16 @@ export function AnnouncementItem({ announcement }: Props) {
     </Link>
   );
 }
+
+function Loading() {
+  return (
+    <div className="flex items-center justify-between border-b border-[#d4d4d4] px-8 py-6">
+      <Skeleton className="h-6 w-52" />
+      <Skeleton className="h-6 w-24" />
+    </div>
+  );
+}
+
+AnnouncementItem.Loading = Loading;
+
+export { AnnouncementItem };

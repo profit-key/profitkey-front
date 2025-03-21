@@ -3,7 +3,7 @@ import { AnnouncementItem } from './announcement-item';
 import { useState } from 'react';
 import { announcementQuries } from '@/entities/announcement';
 
-export default function AnnouncementList() {
+function AnnouncementList() {
   const [page, setPage] = useState(1);
   const [currentPageGroup, setCurrentPageGroup] = useState(0);
   const { data } = useSuspenseQuery(
@@ -24,7 +24,7 @@ export default function AnnouncementList() {
   const endPage = Math.min(startPage + pagesPerGroup - 1, totalPages);
 
   return (
-    <div className="mt-20 border-b border-t border-[#d4d4d4] p-10">
+    <div className="mt-6 border-b border-[#d4d4d4] pb-6">
       {data.announcements.map((announcement) => (
         <AnnouncementItem key={announcement.id} announcement={announcement} />
       ))}
@@ -48,3 +48,24 @@ export default function AnnouncementList() {
     </div>
   );
 }
+
+function Loading() {
+  return (
+    <div className="mt-6 border-b border-[#d4d4d4]">
+      <AnnouncementItem.Loading />
+      <AnnouncementItem.Loading />
+      <AnnouncementItem.Loading />
+      <AnnouncementItem.Loading />
+      <AnnouncementItem.Loading />
+      <AnnouncementItem.Loading />
+      <AnnouncementItem.Loading />
+      <AnnouncementItem.Loading />
+      <AnnouncementItem.Loading />
+      <AnnouncementItem.Loading />
+    </div>
+  );
+}
+
+AnnouncementList.Loading = Loading;
+
+export { AnnouncementList };
