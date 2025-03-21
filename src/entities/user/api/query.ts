@@ -6,12 +6,12 @@ export const userQueries = {
   all: () => ['users'],
   favoriteStocksList: () =>
     queryOptions({
-      queryKey: [...userQueries.all()],
+      queryKey: [...userQueries.all(), 'favorite-stocks'],
       queryFn: () => getFavoriteStocks(),
     }),
   commentList: () =>
     queryOptions({
-      queryKey: [...userQueries.all()],
+      queryKey: [...userQueries.all(), 'comments'],
       queryFn: () => getComments(),
     }),
 };

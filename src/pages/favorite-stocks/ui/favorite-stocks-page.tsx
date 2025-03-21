@@ -3,6 +3,7 @@ import { Tab, Tabs } from '@/shared/ui';
 import { useNavigate } from 'react-router';
 import { StockList } from './stock-list';
 import { Suspense } from 'react';
+import { Avatar } from '@/shared/ui/avatar';
 
 const tabs = [
   { label: '내 관심종목', path: '/profile/stocks' },
@@ -35,10 +36,10 @@ export function FavoriteStocksPage() {
 
       <div className="flex items-start justify-around gap-10 px-6 pt-16">
         <div className="flex flex-col items-center justify-center gap-4">
-          <img
+          <Avatar
             src={user.profileImage}
-            alt="프로필 사진"
-            className="h-[100px] w-[100px] rounded-full"
+            className="h-[100px] w-[100px]"
+            fallbackSize={44}
           />
           <div className="text-[16px] font-bold text-[#333333]">
             {user.nickname}

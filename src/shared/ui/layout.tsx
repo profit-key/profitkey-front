@@ -1,5 +1,6 @@
 import { useUser } from '@/app/providers/user-provider';
 import { Link, Outlet } from 'react-router';
+import { Avatar } from './avatar';
 
 export function Layout() {
   const user = useUser();
@@ -41,11 +42,7 @@ export function Layout() {
             <div>
               {user ? (
                 <Link to="/profile/stocks">
-                  <img
-                    src={user.profileImage}
-                    alt="프로필 사진"
-                    className="h-[52px] w-[52px] rounded-full"
-                  />
+                  <Avatar src={user.profileImage} />
                 </Link>
               ) : (
                 <Link
