@@ -1,8 +1,9 @@
 import { useQueryState } from 'nuqs';
-import AnnouncementList from './announcement-list';
+
 import { Suspense } from 'react';
 import { FaqList } from './faq-list';
 import { Tab, Tabs } from '@/shared/ui';
+import { AnnouncementList } from './announcement-list';
 
 export function HelpPage() {
   const [tab, setTab] = useQueryState('tab', { defaultValue: 'topic' });
@@ -25,7 +26,18 @@ export function HelpPage() {
         </Tab>
       </Tabs>
 
-      <Suspense>
+      <Suspense
+        fallback={(() => {
+          switch (tab) {
+            case 'topic':
+              return <AnnouncementList.Loading />;
+            case 'faq':
+              return <FaqList.Loading />;
+            default:
+              return null;
+          }
+        })()}
+      >
         {(() => {
           switch (tab) {
             case 'topic':

@@ -5,10 +5,11 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/shared/ui';
+import { Skeleton } from '@/shared/ui/skeleton';
 
 import { useSuspenseQuery } from '@tanstack/react-query';
 
-export function FaqList() {
+function FaqList() {
   const { data } = useSuspenseQuery(faqQueries.list({ page: 1, size: 20 }));
 
   return (
@@ -40,3 +41,44 @@ export function FaqList() {
     </div>
   );
 }
+
+function Loading() {
+  return (
+    <div className="border-b border-[#333333] pb-10 pt-6">
+      <div className="border-b border-[#d4d4d4] px-10 py-6">
+        <Skeleton className="h-5 w-52" />
+      </div>
+      <div className="border-b border-[#d4d4d4] px-10 py-6">
+        <Skeleton className="h-5 w-52" />
+      </div>
+      <div className="border-b border-[#d4d4d4] px-10 py-6">
+        <Skeleton className="h-5 w-52" />
+      </div>
+      <div className="border-b border-[#d4d4d4] px-10 py-6">
+        <Skeleton className="h-5 w-52" />
+      </div>
+      <div className="border-b border-[#d4d4d4] px-10 py-6">
+        <Skeleton className="h-5 w-52" />
+      </div>
+      <div className="border-b border-[#d4d4d4] px-10 py-6">
+        <Skeleton className="h-5 w-52" />
+      </div>
+      <div className="border-b border-[#d4d4d4] px-10 py-6">
+        <Skeleton className="h-5 w-52" />
+      </div>
+      <div className="border-b border-[#d4d4d4] px-10 py-6">
+        <Skeleton className="h-5 w-52" />
+      </div>
+      <div className="border-b border-[#d4d4d4] px-10 py-6">
+        <Skeleton className="h-5 w-52" />
+      </div>
+      <div className="border-b border-[#d4d4d4] px-10 py-6">
+        <Skeleton className="h-5 w-52" />
+      </div>
+    </div>
+  );
+}
+
+FaqList.Loading = Loading;
+
+export { FaqList };
