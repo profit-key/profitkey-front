@@ -7,32 +7,17 @@ import { CommentMenu } from './comment-menu';
 import { Modal } from './modal';
 import { cn } from '@/shared/lib/utils.ts';
 import { Loader2 } from 'lucide-react';
-
-type Reply = {
-  id: string;
-  username: string;
-  reply: string;
-};
+import { Comment } from '../api/schema';
+import { User } from '@/shared/api/schema.ts';
 
 type CommentBaseProps = {
-  comment: {
-    id?: string;
-    writerNickname: string;
-    writerImageUrl?: string;
-    likeCount: number;
-    replieCount: number;
-    content: string;
-  };
-  user?: {
-    id: string;
-    nickname: string;
-    imgUrl: string;
-  };
+  comment: Comment;
+  user?: User;
   isReply?: boolean;
   onEdit?: (id: string | undefined, newContent: string) => void;
   onDelete?: (id: string | undefined) => void;
   onAddReply?: (content: string) => void;
-  replies?: Reply[];
+  replies?: Comment[];
   onReplyEdit?: (id: string | undefined, newContent: string) => void;
   onReplyDelete?: (id: string | undefined) => void;
   hasMoreReplies?: boolean;
@@ -129,7 +114,7 @@ export function CommentBase({
               <button onClick={handleLikeButton} className="flex gap-2 p-2">
                 <HeartIcon
                   className={cn(
-                    'fill-neutral-300',
+                    'fill-neutral-300 hover:fill-[#D94F70]',
                     isLiked ? 'fill-[#D94F70]' : ''
                   )}
                 />
@@ -147,8 +132,9 @@ export function CommentBase({
                 </button>
               )}
             </div>
-
-            <CommentMenu onEdit={handleStartEdit} onDelete={handleDelete} />
+            {user?.userId === comment.writerId && (
+              <CommentMenu onEdit={handleStartEdit} onDelete={handleDelete} />
+            )}
           </div>
         </>
       )}
@@ -162,18 +148,13 @@ export function CommentBase({
     return (
       isReplyVisible && (
         <div className="flex flex-col gap-5 ps-16">
-          {replies.length > 0 && (
+          {replies && (
             <div className="replies-list flex max-h-[520px] flex-col gap-5 overflow-y-auto pb-1 pr-1">
-              {replies.map(({ id, username, reply }) => (
+              {replies.map((reply) => (
                 <CommentBase
-                  key={id}
-                  comment={{
-                    id,
-                    writerNickname: username,
-                    likeCount: 0,
-                    replieCount: 0,
-                    content: reply,
-                  }}
+                  key={reply.id}
+                  user={user}
+                  comment={reply}
                   isReply={true}
                   onEdit={onReplyEdit}
                   onDelete={onReplyDelete}
@@ -196,11 +177,13 @@ export function CommentBase({
             </div>
           )}
           <div className="flex items-center justify-center gap-4">
-            <Profile imgUrl={user?.imgUrl} orientation="horizontal" />
+            <Profile imgUrl={user?.profileImage} orientation="horizontal" />
             <div className="grow">
               <CommentForm
                 rows={1}
-                placeholder={`댓글을 남겨보세요`}
+                placeholder={
+                  user ? `댓글을 남겨보세요` : '로그인 후 댓글을 작성해보세요'
+                }
                 onSubmit={onAddReply}
               />
             </div>
@@ -220,13 +203,13 @@ export function CommentBase({
               imgUrl={comment.writerImageUrl}
               orientation="horizontal"
             />
-            {formatDate('2025-02-13T16:48:11.338Z')}
+            {formatDate(comment.createdAt)}
           </div>
           <div
             className={cn(
               'ps-16',
               isReply
-                ? 'relative before:absolute before:left-5 before:top-1 before:h-full before:w-[1px] before:bg-neutral-500'
+                ? 'relative before:absolute before:left-6 before:top-1 before:h-full before:w-[1px] before:bg-neutral-500'
                 : ''
             )}
           >
@@ -242,7 +225,7 @@ export function CommentBase({
                 imgUrl={comment.writerImageUrl}
                 orientation="horizontal"
               />
-              {formatDate('2025-02-13T16:48:11.338Z')}
+              {formatDate(comment.createdAt)}
             </div>
             <div
               className={cn(

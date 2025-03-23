@@ -1,27 +1,12 @@
-import { useState } from 'react';
 import { CommentBase } from './comment-base';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { communityQueries } from '../api/query';
-
-type Reply = {
-  id: string;
-  username: string;
-  reply: string;
-};
+import { Comment } from '../api/schema';
+import { User } from '@/shared/api/schema';
 
 type CommentItemProps = {
-  comment: {
-    id: string;
-    writerNickname: string;
-    likeCount: number;
-    replieCount: number;
-    content: string;
-  };
-  user: {
-    id: string;
-    nickname: string;
-    imgUrl: string;
-  };
+  comment: Comment;
+  user?: User;
   onEdit?: (content: string) => void;
   onDelete?: () => void;
 };
@@ -32,8 +17,6 @@ export function CommentItem({
   onEdit,
   onDelete,
 }: CommentItemProps) {
-  const [localReplies, setLocalReplies] = useState<Reply[]>([]);
-
   const {
     data: replies,
     fetchNextPage,
@@ -44,28 +27,20 @@ export function CommentItem({
   });
 
   const handleAddReply = (content: string) => {
-    setLocalReplies((prev) => [
-      ...prev,
-      {
-        id: Date.now().toString(),
-        username: user.nickname,
-        reply: content,
-      },
-    ]);
+    // TODO : 대댓글 추가 로직 구현
+    console.log('대댓글 추가:', { content });
   };
 
   const handleReplyEdit = (id: string | undefined, newContent: string) => {
     if (!id) return;
-    setLocalReplies((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, reply: newContent } : item
-      )
-    );
+    // TODO : 대댓글 수정 로직 구현
+    console.log('대댓글 수정:', { id, newContent });
   };
 
   const handleReplyDelete = (id: string | undefined) => {
     if (!id) return;
-    setLocalReplies((prev) => prev.filter((item) => item.id !== id));
+    // TODO : 대댓글 삭제 로직 구현현
+    console.log('대댓글 삭제:', { id });
   };
 
   return (
@@ -75,15 +50,7 @@ export function CommentItem({
       onEdit={(_, newContent) => onEdit?.(newContent)}
       onDelete={() => onDelete?.()}
       onAddReply={handleAddReply}
-      replies={
-        replies?.pages.flatMap((page) =>
-          page.content.map((reply) => ({
-            id: reply.id,
-            username: reply.writerNickname,
-            reply: reply.content,
-          }))
-        ) || localReplies
-      }
+      replies={replies?.pages.flatMap((page) => page.content)}
       onReplyEdit={handleReplyEdit}
       onReplyDelete={handleReplyDelete}
       hasMoreReplies={hasNextPage}
