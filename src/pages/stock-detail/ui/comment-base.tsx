@@ -15,11 +15,11 @@ type CommentBaseProps = {
   user?: User;
   isReply?: boolean;
   onEdit?: (id: string | undefined, newContent: string) => void;
-  onDelete?: (id: string | undefined) => void;
+  onDelete?: (id: string) => void;
   onAddReply?: (content: string) => void;
   replies?: Comment[];
   onReplyEdit?: (id: string | undefined, newContent: string) => void;
-  onReplyDelete?: (id: string | undefined) => void;
+  onReplyDelete?: (id: string) => void;
   hasMoreReplies?: boolean;
   isFetchingMoreReplies?: boolean;
   onLoadMoreReplies?: () => void;

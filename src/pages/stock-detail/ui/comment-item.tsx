@@ -1,6 +1,10 @@
 import { CommentBase } from './comment-base';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { communityQueries } from '../api/query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
+import { commentMutation, communityQueries } from '../api/query';
 import { Comment } from '../api/schema';
 import { User } from '@/shared/api/schema';
 
@@ -17,13 +21,24 @@ export function CommentItem({
   onEdit,
   onDelete,
 }: CommentItemProps) {
+  const queryClient = useQueryClient();
+
   const {
     data: replies,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    ...communityQueries.replyList({ id: comment.id, page: 1 }),
+    ...communityQueries.replyList({ id: comment.id }),
+  });
+
+  const deleteReply = useMutation({
+    ...commentMutation.delete,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['community', 'all', 'replies', { id: comment.id }],
+      });
+    },
   });
 
   const handleAddReply = (content: string) => {
@@ -37,10 +52,9 @@ export function CommentItem({
     console.log('대댓글 수정:', { id, newContent });
   };
 
-  const handleReplyDelete = (id: string | undefined) => {
+  const handleReplyDelete = (id: string) => {
     if (!id) return;
-    // TODO : 대댓글 삭제 로직 구현현
-    console.log('대댓글 삭제:', { id });
+    deleteReply.mutate(id);
   };
 
   return (
@@ -52,7 +66,7 @@ export function CommentItem({
       onAddReply={handleAddReply}
       replies={replies?.pages.flatMap((page) => page.content)}
       onReplyEdit={handleReplyEdit}
-      onReplyDelete={handleReplyDelete}
+      onReplyDelete={(id) => handleReplyDelete(id)}
       hasMoreReplies={hasNextPage}
       isFetchingMoreReplies={isFetchingNextPage}
       onLoadMoreReplies={() => fetchNextPage()}

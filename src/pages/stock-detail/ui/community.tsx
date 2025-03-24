@@ -4,12 +4,16 @@ import { CommentForm } from './comment-form';
 import { Profile } from '@/shared/ui/profile';
 import { useEffect, useState } from 'react';
 import { ArrowDownUp, Loader2 } from 'lucide-react';
-import { communityQueries } from '../api/query';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { communityQueries, commentMutation } from '../api/query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 export function Community({ stockCode }: { stockCode: string }) {
   const user = useUser();
-
+  const queryClient = useQueryClient();
   const {
     data: comments,
     fetchNextPage,
@@ -18,11 +22,22 @@ export function Community({ stockCode }: { stockCode: string }) {
   } = useInfiniteQuery({
     ...communityQueries.list({ stockCode }),
   });
+
   const [sort, setSort] = useState<'최신순' | '인기순'>('최신순');
 
   const handleSortBtnClick = () => {
     setSort((prev) => (prev === '인기순' ? '최신순' : '인기순'));
   };
+
+  const deleteComment = useMutation({
+    ...commentMutation.delete,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['community', 'all', 'lists', { stockCode }],
+      });
+      alert('댓글이 삭제되었습니다.');
+    },
+  });
 
   const handleAddComment = (content: string) => {
     // 댓글 추가 로직은 API 연동 후 구현
@@ -35,8 +50,7 @@ export function Community({ stockCode }: { stockCode: string }) {
   };
 
   const handleDeleteComment = (id: string) => {
-    // 댓글 삭제 로직은 API 연동 후 구현
-    console.log('댓글 삭제:', id);
+    deleteComment.mutate(id);
   };
 
   useEffect(() => {
