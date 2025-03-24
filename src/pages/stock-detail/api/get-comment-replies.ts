@@ -3,7 +3,7 @@ import { CommunityResponse } from './schema';
 
 export type GetCommentRepliesRequestParams = {
   id: string;
-  page: number;
+  page?: number;
 };
 
 export const getCommentReplies = async (

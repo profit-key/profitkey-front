@@ -10,6 +10,7 @@ import {
   getCommentReplies,
   GetCommentRepliesRequestParams,
 } from './get-comment-replies';
+import { deleteComment } from './delete-comment';
 
 export const stockFavoriteMutation = {
   like: {
@@ -61,4 +62,13 @@ export const communityQueries = {
         return lastPage.number + 2;
       },
     }),
+};
+
+export const commentMutation = {
+  delete: {
+    mutationFn: (commentId: string) => deleteComment(commentId),
+    onError: (error: Error) => {
+      alert('삭제 실패 : ' + error.message);
+    },
+  },
 };

@@ -1,27 +1,16 @@
-import { useState } from 'react';
 import { CommentBase } from './comment-base';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { communityQueries } from '../api/query';
-
-type Reply = {
-  id: string;
-  username: string;
-  reply: string;
-};
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
+import { commentMutation, communityQueries } from '../api/query';
+import { Comment } from '../api/schema';
+import { User } from '@/shared/api/schema';
 
 type CommentItemProps = {
-  comment: {
-    id: string;
-    writerNickname: string;
-    likeCount: number;
-    replieCount: number;
-    content: string;
-  };
-  user: {
-    id: string;
-    nickname: string;
-    imgUrl: string;
-  };
+  comment: Comment;
+  user?: User;
   onEdit?: (content: string) => void;
   onDelete?: () => void;
 };
@@ -32,7 +21,7 @@ export function CommentItem({
   onEdit,
   onDelete,
 }: CommentItemProps) {
-  const [localReplies, setLocalReplies] = useState<Reply[]>([]);
+  const queryClient = useQueryClient();
 
   const {
     data: replies,
@@ -40,32 +29,32 @@ export function CommentItem({
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    ...communityQueries.replyList({ id: comment.id, page: 1 }),
+    ...communityQueries.replyList({ id: comment.id }),
+  });
+
+  const deleteReply = useMutation({
+    ...commentMutation.delete,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['community', 'all', 'replies', { id: comment.id }],
+      });
+    },
   });
 
   const handleAddReply = (content: string) => {
-    setLocalReplies((prev) => [
-      ...prev,
-      {
-        id: Date.now().toString(),
-        username: user.nickname,
-        reply: content,
-      },
-    ]);
+    // TODO : 대댓글 추가 로직 구현
+    console.log('대댓글 추가:', { content });
   };
 
   const handleReplyEdit = (id: string | undefined, newContent: string) => {
     if (!id) return;
-    setLocalReplies((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, reply: newContent } : item
-      )
-    );
+    // TODO : 대댓글 수정 로직 구현
+    console.log('대댓글 수정:', { id, newContent });
   };
 
-  const handleReplyDelete = (id: string | undefined) => {
+  const handleReplyDelete = (id: string) => {
     if (!id) return;
-    setLocalReplies((prev) => prev.filter((item) => item.id !== id));
+    deleteReply.mutate(id);
   };
 
   return (
@@ -75,17 +64,9 @@ export function CommentItem({
       onEdit={(_, newContent) => onEdit?.(newContent)}
       onDelete={() => onDelete?.()}
       onAddReply={handleAddReply}
-      replies={
-        replies?.pages.flatMap((page) =>
-          page.content.map((reply) => ({
-            id: reply.id,
-            username: reply.writerNickname,
-            reply: reply.content,
-          }))
-        ) || localReplies
-      }
+      replies={replies?.pages.flatMap((page) => page.content)}
       onReplyEdit={handleReplyEdit}
-      onReplyDelete={handleReplyDelete}
+      onReplyDelete={(id) => handleReplyDelete(id)}
       hasMoreReplies={hasNextPage}
       isFetchingMoreReplies={isFetchingNextPage}
       onLoadMoreReplies={() => fetchNextPage()}

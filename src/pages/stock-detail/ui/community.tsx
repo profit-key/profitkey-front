@@ -1,17 +1,19 @@
+import { useUser } from '@/app/providers/user-provider';
 import { CommentItem } from './comment-item';
 import { CommentForm } from './comment-form';
 import { Profile } from '@/shared/ui/profile';
 import { useEffect, useState } from 'react';
 import { ArrowDownUp, Loader2 } from 'lucide-react';
-import { communityQueries } from '../api/query';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { communityQueries, commentMutation } from '../api/query';
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQueryClient,
+} from '@tanstack/react-query';
 
 export function Community({ stockCode }: { stockCode: string }) {
-  const user = {
-    id: 'user-id',
-    nickname: '사용자',
-    imgUrl: 'https://github.com/shadcn.png',
-  };
+  const user = useUser();
+  const queryClient = useQueryClient();
   const {
     data: comments,
     fetchNextPage,
@@ -20,11 +22,22 @@ export function Community({ stockCode }: { stockCode: string }) {
   } = useInfiniteQuery({
     ...communityQueries.list({ stockCode }),
   });
+
   const [sort, setSort] = useState<'최신순' | '인기순'>('최신순');
 
   const handleSortBtnClick = () => {
     setSort((prev) => (prev === '인기순' ? '최신순' : '인기순'));
   };
+
+  const deleteComment = useMutation({
+    ...commentMutation.delete,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['community', 'all', 'lists', { stockCode }],
+      });
+      alert('댓글이 삭제되었습니다.');
+    },
+  });
 
   const handleAddComment = (content: string) => {
     // 댓글 추가 로직은 API 연동 후 구현
@@ -37,8 +50,7 @@ export function Community({ stockCode }: { stockCode: string }) {
   };
 
   const handleDeleteComment = (id: string) => {
-    // 댓글 삭제 로직은 API 연동 후 구현
-    console.log('댓글 삭제:', id);
+    deleteComment.mutate(id);
   };
 
   useEffect(() => {
@@ -67,15 +79,19 @@ export function Community({ stockCode }: { stockCode: string }) {
       <div className="flex items-start gap-5">
         <div className="flex-none">
           <Profile
-            username={user.nickname}
-            imgUrl={user.imgUrl}
+            username={user ? user.nickname : ''}
+            imgUrl={user ? user.profileImage : ''}
             orientation="vertical"
           />
         </div>
         <div className="grow">
           <CommentForm
             rows={2}
-            placeholder={`${user.nickname}님\n댓글을 남겨보세요`}
+            placeholder={
+              user
+                ? `${user.nickname}님\n댓글을 남겨보세요`
+                : '로그인 후 댓글을 작성해보세요'
+            }
             onSubmit={handleAddComment}
           />
         </div>
@@ -96,7 +112,7 @@ export function Community({ stockCode }: { stockCode: string }) {
               <CommentItem
                 key={comment.id}
                 comment={comment}
-                user={user}
+                user={user ? user : undefined}
                 onEdit={(newContent) =>
                   handleEditComment(comment.id, newContent)
                 }
