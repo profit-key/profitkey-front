@@ -9,7 +9,7 @@ import { cn } from '@/shared/lib/utils.ts';
 import { Loader2 } from 'lucide-react';
 import { Comment } from '../api/schema';
 import { User } from '@/shared/api/schema.ts';
-
+import { useNavigate } from 'react-router';
 type CommentBaseProps = {
   comment: Comment;
   user?: User;
@@ -39,6 +39,8 @@ export function CommentBase({
   isFetchingMoreReplies,
   onLoadMoreReplies,
 }: CommentBaseProps) {
+  const navigate = useNavigate();
+
   // 상태 관리
   const [isLiked, setIsLiked] = useState(false);
   const [likeCount, setLikeCount] = useState(comment.likeCount);
@@ -46,6 +48,14 @@ export function CommentBase({
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [content, setContent] = useState(comment.content);
+
+  const handleFormClick = () => {
+    if (!user) {
+      if (confirm('로그인이 필요한 서비스입니다. 로그인 하시겠습니까?')) {
+        navigate('/login');
+      }
+    }
+  };
 
   // 좋아요 버튼 처리
   const handleLikeButton = () => {
@@ -184,7 +194,12 @@ export function CommentBase({
                 placeholder={
                   user ? `댓글을 남겨보세요` : '로그인 후 댓글을 작성해보세요'
                 }
-                onSubmit={onAddReply}
+                onSubmit={(content) => {
+                  if (!user) return;
+                  onAddReply?.(content);
+                }}
+                onClick={handleFormClick}
+                disabled={!user}
               />
             </div>
           </div>

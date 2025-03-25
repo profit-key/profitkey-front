@@ -6,6 +6,8 @@ type CommentFormProps = {
   rows?: number;
   onSubmit?: (content: string) => void;
   onCancel?: () => void;
+  onClick?: () => void;
+  disabled?: boolean;
 };
 
 export function CommentForm({
@@ -14,6 +16,8 @@ export function CommentForm({
   rows = 1,
   onSubmit,
   onCancel,
+  onClick,
+  disabled,
 }: CommentFormProps): JSX.Element {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -60,10 +64,10 @@ export function CommentForm({
     const formData = new FormData(form);
     const content = formData.get('content') as string;
 
-    if (content.trim() && onSubmit) {
+    if (content.trim() && onSubmit && !disabled) {
       onSubmit(content);
-      form.reset(); // 폼 초기화
-      adjustHeight(); // reset 후 높이 조절 함수 호출
+      form.reset(); // 로그인한 상태일 때만 폼 초기화
+      adjustHeight();
     }
   };
 
@@ -73,7 +77,7 @@ export function CommentForm({
       e.preventDefault();
       const content = e.currentTarget.value;
 
-      if (content.trim() && onSubmit) {
+      if (content.trim() && onSubmit && !disabled) {
         onSubmit(content);
         e.currentTarget.form?.reset();
         adjustHeight();
@@ -84,7 +88,7 @@ export function CommentForm({
   const postTextAreaId = useId();
 
   return (
-    <form method="post" onSubmit={handleSubmit}>
+    <form method="post" onSubmit={handleSubmit} onClick={onClick}>
       <label htmlFor={postTextAreaId} className="sr-only">
         댓글 작성
       </label>

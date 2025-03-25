@@ -71,3 +71,16 @@ export const CommunityResponse = z.object({
   empty: z.boolean(),
 });
 export type CommunityResponse = z.infer<typeof CommunityResponse>;
+
+export const PostComment = z.object({
+  id: z.string(),
+  writerId: z.number(),
+  writerNickname: z.string(),
+  writerImageUrl: z.string(),
+  parentId: z.string(),
+  content: z.string(),
+  liked: z.boolean(),
+  likeCount: z.number(),
+  replieCount: z.number(),
+});
+export type PostComment = z.infer<typeof PostComment>;
