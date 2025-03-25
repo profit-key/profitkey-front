@@ -10,10 +10,13 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
+import { useNavigate } from 'react-router';
 
 export function Community({ stockCode }: { stockCode: string }) {
   const user = useUser();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
+
   const {
     data: comments,
     fetchNextPage,
@@ -29,6 +32,15 @@ export function Community({ stockCode }: { stockCode: string }) {
     setSort((prev) => (prev === '인기순' ? '최신순' : '인기순'));
   };
 
+  const postComment = useMutation({
+    ...commentMutation.post,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['community', 'all', 'lists', { stockCode }],
+      });
+    },
+  });
+
   const deleteComment = useMutation({
     ...commentMutation.delete,
     onSuccess: () => {
@@ -39,9 +51,15 @@ export function Community({ stockCode }: { stockCode: string }) {
     },
   });
 
-  const handleAddComment = (content: string) => {
-    // 댓글 추가 로직은 API 연동 후 구현
-    console.log('댓글 추가:', { content, user });
+  const handleAddComment = (stockCode: string, content: string) => {
+    if (!user) return;
+
+    postComment.mutate({
+      stockCode,
+      writerId: user.userId,
+      parentId: '0',
+      content,
+    });
   };
 
   const handleEditComment = (id: string, newContent: string) => {
@@ -51,6 +69,14 @@ export function Community({ stockCode }: { stockCode: string }) {
 
   const handleDeleteComment = (id: string) => {
     deleteComment.mutate(id);
+  };
+
+  const handleFormClick = () => {
+    if (!user) {
+      if (confirm('로그인이 필요한 서비스입니다. 로그인 하시겠습니까?')) {
+        navigate('/login');
+      }
+    }
   };
 
   useEffect(() => {
@@ -92,7 +118,12 @@ export function Community({ stockCode }: { stockCode: string }) {
                 ? `${user.nickname}님\n댓글을 남겨보세요`
                 : '로그인 후 댓글을 작성해보세요'
             }
-            onSubmit={handleAddComment}
+            onSubmit={(content) => {
+              if (!user) return;
+              handleAddComment(stockCode, content);
+            }}
+            onClick={handleFormClick}
+            disabled={!user}
           />
         </div>
       </div>
@@ -113,6 +144,7 @@ export function Community({ stockCode }: { stockCode: string }) {
                 key={comment.id}
                 comment={comment}
                 user={user ? user : undefined}
+                stockCode={stockCode}
                 onEdit={(newContent) =>
                   handleEditComment(comment.id, newContent)
                 }

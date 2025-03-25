@@ -11,13 +11,15 @@ import { User } from '@/shared/api/schema';
 type CommentItemProps = {
   comment: Comment;
   user?: User;
-  onEdit?: (content: string) => void;
-  onDelete?: () => void;
+  stockCode: string;
+  onEdit: (newContent: string) => void;
+  onDelete: () => void;
 };
 
 export function CommentItem({
   comment,
   user,
+  stockCode,
   onEdit,
   onDelete,
 }: CommentItemProps) {
@@ -32,6 +34,15 @@ export function CommentItem({
     ...communityQueries.replyList({ id: comment.id }),
   });
 
+  const postReply = useMutation({
+    ...commentMutation.post,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['community', 'all', 'replies', { id: comment.id }],
+      });
+    },
+  });
+
   const deleteReply = useMutation({
     ...commentMutation.delete,
     onSuccess: () => {
@@ -42,8 +53,14 @@ export function CommentItem({
   });
 
   const handleAddReply = (content: string) => {
-    // TODO : 대댓글 추가 로직 구현
-    console.log('대댓글 추가:', { content });
+    if (!user) return;
+
+    postReply.mutate({
+      stockCode,
+      writerId: user.userId,
+      parentId: comment.id,
+      content,
+    });
   };
 
   const handleReplyEdit = (id: string | undefined, newContent: string) => {
@@ -61,8 +78,8 @@ export function CommentItem({
     <CommentBase
       comment={comment}
       user={user}
-      onEdit={(_, newContent) => onEdit?.(newContent)}
-      onDelete={() => onDelete?.()}
+      onEdit={(_, newContent) => onEdit(newContent)}
+      onDelete={() => onDelete()}
       onAddReply={handleAddReply}
       replies={replies?.pages.flatMap((page) => page.content)}
       onReplyEdit={handleReplyEdit}

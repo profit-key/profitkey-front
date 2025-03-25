@@ -11,6 +11,7 @@ import {
   GetCommentRepliesRequestParams,
 } from './get-comment-replies';
 import { deleteComment } from './delete-comment';
+import { postComment, type PostCommentRequestParams } from './post-comment';
 
 export const stockFavoriteMutation = {
   like: {
@@ -65,6 +66,12 @@ export const communityQueries = {
 };
 
 export const commentMutation = {
+  post: {
+    mutationFn: (comment: PostCommentRequestParams) => postComment(comment),
+    onError: (error: Error) => {
+      alert('댓글 등록 실패 : ' + error.message);
+    },
+  },
   delete: {
     mutationFn: (commentId: string) => deleteComment(commentId),
     onError: (error: Error) => {
