@@ -43,6 +43,15 @@ export function CommentItem({
     },
   });
 
+  const putReply = useMutation({
+    ...commentMutation.put,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['community', 'all', 'replies', { id: comment.id }],
+      });
+    },
+  });
+
   const deleteReply = useMutation({
     ...commentMutation.delete,
     onSuccess: () => {
@@ -64,9 +73,14 @@ export function CommentItem({
   };
 
   const handleReplyEdit = (id: string | undefined, newContent: string) => {
-    if (!id) return;
-    // TODO : 대댓글 수정 로직 구현
-    console.log('대댓글 수정:', { id, newContent });
+    if (!user || !id) return;
+
+    putReply.mutate({
+      id,
+      writerId: user.userId,
+      parentId: comment.id,
+      content: newContent,
+    });
   };
 
   const handleReplyDelete = (id: string) => {
