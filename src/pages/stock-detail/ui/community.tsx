@@ -41,6 +41,16 @@ export function Community({ stockCode }: { stockCode: string }) {
     },
   });
 
+  const putComment = useMutation({
+    ...commentMutation.put,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['community', 'all', 'lists', { stockCode }],
+      });
+      alert('댓글이 수정되었습니다.');
+    },
+  });
+
   const deleteComment = useMutation({
     ...commentMutation.delete,
     onSuccess: () => {
@@ -63,8 +73,14 @@ export function Community({ stockCode }: { stockCode: string }) {
   };
 
   const handleEditComment = (id: string, newContent: string) => {
-    // 댓글 수정 로직은 API 연동 후 구현
-    console.log('댓글 수정:', id, newContent);
+    if (!user) return;
+
+    putComment.mutate({
+      id,
+      writerId: user.userId,
+      parentId: '0',
+      content: newContent,
+    });
   };
 
   const handleDeleteComment = (id: string) => {

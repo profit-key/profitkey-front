@@ -119,6 +119,7 @@ export const StockDetailResponse = z.object({
   division: z.string(),
   endingPrice: z.number(),
   openingPrice: z.number(),
+  prdyCtrt: z.number(),
   highPrice: z.number(),
   lowPrice: z.number(),
   tradingVolume: z.number(),

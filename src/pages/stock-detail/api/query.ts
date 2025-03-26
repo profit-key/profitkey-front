@@ -12,6 +12,7 @@ import {
 } from './get-comment-replies';
 import { deleteComment } from './delete-comment';
 import { postComment, type PostCommentRequestParams } from './post-comment';
+import { putComment, type PutCommentRequestParams } from './put-comment';
 
 export const stockFavoriteMutation = {
   like: {
@@ -70,6 +71,12 @@ export const commentMutation = {
     mutationFn: (comment: PostCommentRequestParams) => postComment(comment),
     onError: (error: Error) => {
       alert('댓글 등록 실패 : ' + error.message);
+    },
+  },
+  put: {
+    mutationFn: (comment: PutCommentRequestParams) => putComment(comment),
+    onError: (error: Error) => {
+      alert('댓글 수정 실패 : ' + error.message);
     },
   },
   delete: {

@@ -84,3 +84,18 @@ export const PostComment = z.object({
   replieCount: z.number(),
 });
 export type PostComment = z.infer<typeof PostComment>;
+
+export const PutComment = z.object({
+  id: z.string(),
+  writerId: z.number(),
+  writerNickname: z.string(),
+  writerImageUrl: z.string(),
+  parentId: z.string(),
+  content: z.string(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
+  liked: z.boolean(),
+  likeCount: z.number(),
+  replieCount: z.number(),
+});
+export type PutComment = z.infer<typeof PutComment>;
