@@ -38,6 +38,7 @@ export const Comment = z.object({
   createdAt: z.string(),
   updatedAt: z.string(),
   likeCount: z.number(),
+  liked: z.boolean(),
   replieCount: z.number(),
 });
 export type Comment = z.infer<typeof Comment>;
@@ -99,3 +100,10 @@ export const PutComment = z.object({
   replieCount: z.number(),
 });
 export type PutComment = z.infer<typeof PutComment>;
+
+export const CommentLiked = z.object({
+  commentId: z.string(),
+  userId: z.number().int().positive(),
+  liked: z.boolean(),
+});
+export type CommentLiked = z.infer<typeof CommentLiked>;

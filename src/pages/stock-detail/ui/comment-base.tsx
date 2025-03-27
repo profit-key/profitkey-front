@@ -10,7 +10,11 @@ import { Loader2 } from 'lucide-react';
 import { Comment } from '../api/schema';
 import { User } from '@/shared/api/schema.ts';
 import { useNavigate } from 'react-router';
+import { commentMutation } from '../api/query.ts';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+
 type CommentBaseProps = {
+  stockCode: string;
   comment: Comment;
   user?: User;
   isReply?: boolean;
@@ -26,6 +30,7 @@ type CommentBaseProps = {
 };
 
 export function CommentBase({
+  stockCode,
   comment,
   user,
   isReply = false,
@@ -39,15 +44,26 @@ export function CommentBase({
   isFetchingMoreReplies,
   onLoadMoreReplies,
 }: CommentBaseProps) {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   // 상태 관리
-  const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(comment.likeCount);
   const [isReplyVisible, setIsReplyVisible] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [content, setContent] = useState(comment.content);
+
+  const postLiked = useMutation({
+    ...commentMutation.like,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['community', 'all', 'lists', { stockCode }],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ['community', 'all', 'replies'],
+      });
+    },
+  });
 
   const handleFormClick = () => {
     if (!user) {
@@ -57,14 +73,19 @@ export function CommentBase({
     }
   };
 
-  // 좋아요 버튼 처리
   const handleLikeButton = () => {
-    setIsLiked(!isLiked);
-    if (isLiked) {
-      setLikeCount((c) => c - 1);
+    if (!user) {
+      if (confirm('로그인이 필요한 서비스입니다. 로그인 하시겠습니까?')) {
+        navigate('/login');
+      }
       return;
     }
-    setLikeCount((c) => c + 1);
+
+    postLiked.mutate({
+      commentId: comment.id,
+      userId: user.userId,
+      liked: !comment.liked,
+    });
   };
 
   // 댓글 수정 제출
@@ -96,7 +117,6 @@ export function CommentBase({
     setContent(comment.content);
   };
 
-  // 대댓글 컨텐츠 렌더링
   const renderContent = () => (
     <>
       {isEditing ? (
@@ -125,10 +145,10 @@ export function CommentBase({
                 <HeartIcon
                   className={cn(
                     'fill-neutral-300 hover:fill-[#D94F70]',
-                    isLiked ? 'fill-[#D94F70]' : ''
+                    comment.liked ? 'fill-[#D94F70]' : ''
                   )}
                 />
-                <span>{likeCount ? likeCount : null}</span>
+                <span>{comment.likeCount ? comment.likeCount : null}</span>
               </button>
               {!isReply && (
                 <button
@@ -163,6 +183,7 @@ export function CommentBase({
               {replies.map((reply) => (
                 <CommentBase
                   key={reply.id}
+                  stockCode={stockCode}
                   user={user}
                   comment={reply}
                   isReply={true}

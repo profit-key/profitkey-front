@@ -90,6 +90,7 @@ export function CommentItem({
 
   return (
     <CommentBase
+      stockCode={stockCode}
       comment={comment}
       user={user}
       onEdit={(_, newContent) => onEdit(newContent)}
