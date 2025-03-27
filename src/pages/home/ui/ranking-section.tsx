@@ -1,6 +1,15 @@
 import { StockCard } from './stock-card';
+import { rankQueries } from '../api/query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 export function RankingSection() {
+  const { data: marketCapRanks } = useSuspenseQuery(
+    rankQueries.list({ division: 'MARKET_CAP' })
+  );
+  const { data: htsTopRanks } = useSuspenseQuery(
+    rankQueries.list({ division: 'HTS_TOP' })
+  );
+
   return (
     <div className="border-b border-[#d4d4d4] py-24">
       <div className="mx-auto grid max-w-5xl grid-cols-3 gap-x-2">
@@ -9,42 +18,16 @@ export function RankingSection() {
             급등주
           </h2>
           <div className="grid grid-cols-2 gap-2">
-            <StockCard
-              className="col-span-2"
-              rank={1}
-              name="SM LIFE DESIGN"
-              price={10000}
-              change={10}
-              marketCap={100000}
-            />
-            <StockCard
-              rank={2}
-              name="SM LIFE DESIGN"
-              price={10000}
-              change={10}
-              marketCap={100000}
-            />
-            <StockCard
-              rank={3}
-              name="SM LIFE DESIGN"
-              price={-10000}
-              change={-10}
-              marketCap={100000}
-            />
-            <StockCard
-              rank={4}
-              name="SM LIFE DESIGN"
-              price={10000}
-              change={10}
-              marketCap={100000}
-            />
-            <StockCard
-              rank={5}
-              name="SM LIFE DESIGN"
-              price={0}
-              change={0}
-              marketCap={100000}
-            />
+            {marketCapRanks.map((rank, idx) => (
+              <StockCard
+                className={idx === 0 ? 'col-span-2' : ''}
+                rank={idx + 1}
+                name={rank.stockName}
+                price={rank.openingPrice - rank.endingPrice}
+                change={rank.prdyCtrt}
+                marketCap={rank.openingPrice}
+              />
+            ))}
           </div>
         </div>
         <div>
@@ -52,42 +35,16 @@ export function RankingSection() {
             주식 TOP5
           </h2>
           <div className="grid grid-cols-2 gap-2">
-            <StockCard
-              className="col-span-2"
-              rank={1}
-              name="SM LIFE DESIGN"
-              price={10000}
-              change={10}
-              marketCap={100000}
-            />
-            <StockCard
-              rank={2}
-              name="SM LIFE DESIGN"
-              price={10000}
-              change={10}
-              marketCap={100000}
-            />
-            <StockCard
-              rank={3}
-              name="SM LIFE DESIGN"
-              price={10000}
-              change={10}
-              marketCap={100000}
-            />
-            <StockCard
-              rank={4}
-              name="SM LIFE DESIGN"
-              price={10000}
-              change={10}
-              marketCap={100000}
-            />
-            <StockCard
-              rank={5}
-              name="SM LIFE DESIGN"
-              price={10000}
-              change={10}
-              marketCap={100000}
-            />
+            {htsTopRanks.map((rank, idx) => (
+              <StockCard
+                className={idx === 0 ? 'col-span-2' : ''}
+                rank={idx + 1}
+                name={rank.stockName}
+                price={rank.openingPrice - rank.endingPrice}
+                change={rank.prdyCtrt}
+                marketCap={rank.openingPrice}
+              />
+            ))}
           </div>
         </div>
         <div>
