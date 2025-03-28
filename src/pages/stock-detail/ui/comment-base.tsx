@@ -179,7 +179,7 @@ export function CommentBase({
       isReplyVisible && (
         <div className="flex flex-col gap-5 ps-16">
           {replies && (
-            <div className="replies-list flex max-h-[520px] flex-col gap-5 overflow-y-auto pb-1 pr-1">
+            <div className="replies-list flex flex-col gap-5 pb-1 pr-1">
               {replies.map((reply) => (
                 <CommentBase
                   key={reply.id}

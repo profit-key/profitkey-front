@@ -1,15 +1,32 @@
-import { useState } from 'react';
-import { EllipsisVertical, Trash2, Pencil } from 'lucide-react';
+import { EllipsisVertical, Pencil, Trash2 } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { Modal } from './modal';
 
-type CommentMenuProps = {
+interface CommentMenuProps {
   onEdit: () => void;
   onDelete: () => void;
-};
+}
 
 export function CommentMenu({ onEdit, onDelete }: CommentMenuProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuOpen]);
 
   const handleEdit = () => {
     onEdit();
@@ -27,7 +44,7 @@ export function CommentMenu({ onEdit, onDelete }: CommentMenuProps) {
   };
 
   return (
-    <div className="relative">
+    <div className="relative" ref={menuRef}>
       <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
         <EllipsisVertical className="h-6 w-6 rotate-90" />
       </button>
