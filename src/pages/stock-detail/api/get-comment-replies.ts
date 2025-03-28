@@ -4,6 +4,7 @@ import { CommunityResponse } from './schema';
 export type GetCommentRepliesRequestParams = {
   id: string;
   page?: number;
+  order?: 'latest' | 'popular';
 };
 
 export const getCommentReplies = async (

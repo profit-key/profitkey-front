@@ -1,4 +1,4 @@
-import { StockFavorite } from './schema';
+import { CommentLiked, StockFavorite } from './schema';
 import { postStockFavorite } from './post-stock-favorite';
 import { getStockFavorite } from './get-stock-favorite';
 import { queryOptions, infiniteQueryOptions } from '@tanstack/react-query';
@@ -13,6 +13,7 @@ import {
 import { deleteComment } from './delete-comment';
 import { postComment, type PostCommentRequestParams } from './post-comment';
 import { putComment, type PutCommentRequestParams } from './put-comment';
+import { postCommentLike } from './post-comment-like';
 
 export const stockFavoriteMutation = {
   like: {
@@ -83,6 +84,12 @@ export const commentMutation = {
     mutationFn: (commentId: string) => deleteComment(commentId),
     onError: (error: Error) => {
       alert('삭제 실패 : ' + error.message);
+    },
+  },
+  like: {
+    mutationFn: (comment: CommentLiked) => postCommentLike(comment),
+    onError: (error: Error) => {
+      alert('좋아요 처리 중 오류가 발생했습니다 : ' + error.message);
     },
   },
 };

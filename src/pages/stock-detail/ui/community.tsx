@@ -16,6 +16,7 @@ export function Community({ stockCode }: { stockCode: string }) {
   const user = useUser();
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const [sort, setSort] = useState<'최신순' | '인기순'>('최신순');
 
   const {
     data: comments,
@@ -23,10 +24,11 @@ export function Community({ stockCode }: { stockCode: string }) {
     hasNextPage,
     isFetchingNextPage,
   } = useInfiniteQuery({
-    ...communityQueries.list({ stockCode }),
+    ...communityQueries.list({
+      stockCode,
+      order: sort === '최신순' ? 'LATEST' : 'POPULAR',
+    }),
   });
-
-  const [sort, setSort] = useState<'최신순' | '인기순'>('최신순');
 
   const handleSortBtnClick = () => {
     setSort((prev) => (prev === '인기순' ? '최신순' : '인기순'));
