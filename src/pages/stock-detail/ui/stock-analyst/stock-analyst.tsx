@@ -1,11 +1,11 @@
-import { StockAnalysisTable } from './stock-analysis-table';
-import { FinancialTable } from './financial-table';
-import { InvestorOpinionTable } from './investor-opinion-table';
-import { InvestorOpinionChart } from './investor-opinion-chart';
 import { Suspense } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { stockQueries } from '@/entities/stock';
 import { openaiQueries } from '@/entities/openai';
+import { StockAnalysisTable } from './stock-analysis-table';
+import { FinancialTable } from './financial-table';
+import { InvestorOpinionChart } from './investor-opinion-chart';
+import { InvestorOpinionTable } from './investor-opinion-table';
 
 type StockProps = {
   stockCode: string;

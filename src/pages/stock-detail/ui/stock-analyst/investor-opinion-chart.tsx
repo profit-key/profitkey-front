@@ -9,7 +9,7 @@ import {
 import { Bar } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
-import { INVESTMENT_OPINION } from './utill';
+import { INVESTMENT_OPINION } from '../utill';
 import { type InvestorOpinion } from '@/entities/stock';
 
 ChartJS.register(

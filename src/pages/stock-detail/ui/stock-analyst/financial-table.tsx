@@ -9,7 +9,7 @@ import { useMemo } from 'react';
 import { ColumnDef } from '@tanstack/react-table';
 import { Table } from '@/shared/ui/table';
 import { useQuery } from '@tanstack/react-query';
-import { financialDataQueries } from '../api/query';
+import { financialDataQueries } from '../../api/query';
 
 type FinancialMetric = {
   metricName: string; // 지표명

@@ -1,6 +1,6 @@
 import { EllipsisVertical, Pencil, Trash2 } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { Modal } from './modal';
+import { Modal } from '../modal';
 
 interface CommentMenuProps {
   onEdit: () => void;

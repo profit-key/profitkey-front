@@ -3,7 +3,7 @@ import { CommentForm } from './comment-form';
 import { Profile } from '@/shared/ui/profile';
 import { useEffect, useState } from 'react';
 import { ArrowDownUp, Loader2 } from 'lucide-react';
-import { communityQueries, commentMutation } from '../api/query';
+import { communityQueries, commentMutation } from '../../api/query';
 import {
   useInfiniteQuery,
   useMutation,

@@ -1,9 +1,10 @@
 import { useParams } from 'react-router';
 import { useQueryState } from 'nuqs';
 import { Tab, Tabs } from '@/shared/ui';
-import { StockAnalyst } from './stock-analyst';
-import { Community } from './community';
+import { StockAnalyst } from './stock-analyst/stock-analyst';
+
 import { StockHeader } from './stock-header';
+import { Community } from './community/community';
 
 export function StockDetailPage() {
   const { stockCode } = useParams<{ stockCode: string }>();

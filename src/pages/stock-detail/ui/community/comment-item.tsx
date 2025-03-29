@@ -4,8 +4,8 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
-import { commentMutation, communityQueries } from '../api/query';
-import { Comment } from '../api/schema';
+import { commentMutation, communityQueries } from '../../api/query';
+import { Comment } from '../../api/schema';
 import { type User } from '@/shared/api';
 
 type CommentItemProps = {
