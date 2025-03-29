@@ -6,7 +6,7 @@ import {
 } from '@tanstack/react-query';
 import { commentMutation, communityQueries } from '../api/query';
 import { Comment } from '../api/schema';
-import { User } from '@/shared/api/schema';
+import { type User } from '@/shared/api';
 
 type CommentItemProps = {
   comment: Comment;

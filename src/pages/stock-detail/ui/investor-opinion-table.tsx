@@ -2,8 +2,8 @@ import { Table } from '@/shared/ui/table';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useMemo } from 'react';
 import { formatDateString } from './date';
-import { InvestorOpinion } from '@/entities/stock/api/schema';
 import { INVESTMENT_OPINION } from './utill';
+import { type InvestorOpinion } from '@/entities/stock';
 
 /**
  * 숫자 문자열에 천 단위 구분자 추가

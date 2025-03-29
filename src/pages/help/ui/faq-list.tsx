@@ -1,4 +1,3 @@
-import { faqQueries } from '@/entities/faq';
 import {
   Accordion,
   AccordionContent,
@@ -8,6 +7,7 @@ import {
 import { Skeleton } from '@/shared/ui/skeleton';
 
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { faqQueries } from '../api/query';
 
 function FaqList() {
   const { data } = useSuspenseQuery(faqQueries.list({ page: 1, size: 20 }));

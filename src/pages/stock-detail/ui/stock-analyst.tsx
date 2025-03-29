@@ -4,7 +4,7 @@ import { InvestorOpinionTable } from './investor-opinion-table';
 import { InvestorOpinionChart } from './investor-opinion-chart';
 import { Suspense } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { stockQueries } from '@/entities/stock/api/query';
+import { stockQueries } from '@/entities/stock';
 
 type StockProps = {
   stockCode: string;
