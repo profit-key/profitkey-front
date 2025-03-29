@@ -1,6 +1,8 @@
 import { openaiQueries } from '@/entities/openai';
 import { Skeleton } from '@/shared/ui/skeleton';
 import { useSuspenseQuery } from '@tanstack/react-query';
+import { StockSummary } from './stock-summary';
+import { Suspense } from 'react';
 
 function AiRecommendStock() {
   const { data } = useSuspenseQuery(openaiQueries.marketOpinion());
@@ -9,8 +11,9 @@ function AiRecommendStock() {
     <div className="mt-8 max-w-[514px] p-5 shadow-[0px_2px_8px_0px_#63636333]">
       <div className="flex items-center gap-7">
         <span className="text-base font-bold">{data.stockCode.stockName}</span>
-        <div className="rounded-lg bg-[#D9001B33] px-1 py-3">+15%</div>
-        <span className="text-xl font-bold">45,600원</span>
+        <Suspense fallback={<StockSummary.Loading />}>
+          <StockSummary stockCode={data.stockCode.stockCode} />
+        </Suspense>
       </div>
       <iframe
         className="mt-4 h-[320px] w-[474px] border-none"

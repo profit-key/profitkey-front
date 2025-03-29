@@ -3,6 +3,7 @@ import medal from './medal.png';
 import koFlag from './KO.png';
 import usFlag from './US.png';
 import { Link } from 'react-router';
+import { formatNumberWithCommas } from '@/shared/lib/number';
 
 type StockCardProps = {
   rank?: number;
@@ -87,7 +88,7 @@ export const StockCard = ({
             )}
           >
             <div className={cn('text-gray-900', statusStyle.text[status])}>
-              {price.toLocaleString()}원
+              {formatNumberWithCommas(price)}원
             </div>
             <div
               className={cn(
@@ -100,7 +101,7 @@ export const StockCard = ({
               {change}%
             </div>
           </div>
-          <div>{marketCap.toLocaleString()}원</div>
+          <div>{formatNumberWithCommas(marketCap)}원</div>
         </div>
       </div>
     </Link>

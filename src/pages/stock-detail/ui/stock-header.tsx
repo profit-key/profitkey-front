@@ -10,6 +10,7 @@ import { stockFavoriteMutation, stockFavoriteQueries } from '../api/query';
 import { useNavigate } from 'react-router';
 import { userQueries } from '@/shared/api';
 import { stockQueries } from '@/entities/stock';
+import { formatNumberWithCommas } from '@/shared/lib/number';
 
 type StockProps = {
   stockCode: string;
@@ -97,7 +98,10 @@ export function StockHeader({ stockCode }: StockProps) {
             <span className="code text-neutral-600">{stockCode}</span>)
           </h2>
           <div className={`flex items-end gap-2 ${priceColor}`}>
-            <p className="text-3xl font-bold"> {stock.price}원 </p>
+            <p className="text-3xl font-bold">
+              {' '}
+              {formatNumberWithCommas(+stock.price)}원{' '}
+            </p>
             <p className="font-bold">
               {priceSymbol} {stock.change}
             </p>
