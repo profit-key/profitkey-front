@@ -1,12 +1,14 @@
 import { Link, Outlet } from 'react-router';
 import { Avatar } from './avatar';
 import { useUser } from '../providers';
+import { ScrollToTop } from '../lib/scroll-to-top';
 
 export function Layout() {
   const user = useUser();
 
   return (
     <>
+      <ScrollToTop />
       <header className="border-b border-[#d4d4d4] px-4 py-4">
         <div className="mx-auto flex max-w-5xl items-center justify-between">
           <div className="flex items-center gap-24">
