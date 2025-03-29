@@ -1,4 +1,4 @@
-import { useUser } from '@/app/providers/user-provider';
+import { useUser } from '@/shared/providers';
 import { Tab, Tabs } from '@/shared/ui';
 import { Avatar } from '@/shared/ui/avatar';
 import { useLocation, useNavigate } from 'react-router';
