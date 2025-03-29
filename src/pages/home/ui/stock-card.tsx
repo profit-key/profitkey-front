@@ -2,9 +2,11 @@ import { cn } from '@/shared/lib/utils';
 import medal from './medal.png';
 import koFlag from './KO.png';
 import usFlag from './US.png';
+import { Link } from 'react-router';
 
 type StockCardProps = {
   rank?: number;
+  code?: string;
   name: string;
   price: number;
   change: number;
@@ -15,6 +17,7 @@ type StockCardProps = {
 
 export const StockCard = ({
   rank,
+  code,
   name,
   price,
   change,
@@ -43,7 +46,8 @@ export const StockCard = ({
   };
 
   return (
-    <div
+    <Link
+      to={code ? `/stocks/${code}` : '#'}
       className={cn(
         'cursor-pointer rounded-md bg-neutral-100 p-2 transition-all hover:bg-neutral-50',
         className
@@ -99,6 +103,6 @@ export const StockCard = ({
           <div>{marketCap.toLocaleString()}원</div>
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
