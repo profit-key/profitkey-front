@@ -14,6 +14,12 @@ export function Mypage() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  const handleLogoutClick = () => {
+    localStorage.removeItem('TOKEN');
+    navigate('/');
+    window.location.reload();
+  };
+
   if (!user) {
     navigate('/login', { replace: true });
     return;
@@ -77,6 +83,7 @@ export function Mypage() {
 
       <div className="mt-11 flex flex-col items-end gap-10">
         <button
+          onClick={handleLogoutClick}
           type="button"
           className="rounded-md px-4 py-2 text-[16px] font-bold text-[#333333] shadow-lg"
         >
