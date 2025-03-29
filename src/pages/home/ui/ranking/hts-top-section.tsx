@@ -5,30 +5,12 @@ import { Skeleton } from '@/shared/ui/skeleton';
 import { RotateCw } from 'lucide-react';
 import { rankQueries } from '../../api/query';
 
-export function HtsTopSection() {
+function HtsTopSection() {
   const {
     data: htsTopRanks,
-    isLoading,
     isError,
     refetch,
   } = useSuspenseQuery(rankQueries.list({ division: 'HTS_TOP' }));
-
-  if (isLoading) {
-    return (
-      <div>
-        <h2 className="mb-5 text-center text-[40px] font-bold text-[#333333]">
-          주식 TOP5
-        </h2>
-        <div className="grid grid-cols-2 gap-2">
-          <Skeleton className="col-span-2 h-24 w-full" />
-          <Skeleton className="h-24 w-full" />
-          <Skeleton className="h-24 w-full" />
-          <Skeleton className="h-24 w-full" />
-          <Skeleton className="h-24 w-full" />
-        </div>
-      </div>
-    );
-  }
 
   if (isError || htsTopRanks.length === 0) {
     return (
@@ -71,3 +53,24 @@ export function HtsTopSection() {
     </div>
   );
 }
+
+function Loading() {
+  return (
+    <div>
+      <h2 className="mb-5 text-center text-[40px] font-bold text-[#333333]">
+        주식 TOP5
+      </h2>
+      <div className="grid grid-cols-2 gap-2">
+        <Skeleton className="col-span-2 h-24 w-full" />
+        <Skeleton className="h-24 w-full" />
+        <Skeleton className="h-24 w-full" />
+        <Skeleton className="h-24 w-full" />
+        <Skeleton className="h-24 w-full" />
+      </div>
+    </div>
+  );
+}
+
+HtsTopSection.Loading = Loading;
+
+export { HtsTopSection };
