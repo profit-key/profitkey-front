@@ -5,30 +5,12 @@ import { Skeleton } from '@/shared/ui/skeleton';
 import { RotateCw } from 'lucide-react';
 import { rankQueries } from '../../api/query';
 
-export function MarketCapSection() {
+function MarketCapSection() {
   const {
     data: marketCapRanks,
-    isLoading,
     isError,
     refetch,
   } = useSuspenseQuery(rankQueries.list({ division: 'MARKET_CAP' }));
-
-  if (isLoading) {
-    return (
-      <div>
-        <h2 className="mb-5 text-center text-[40px] font-bold text-[#333333]">
-          급등주
-        </h2>
-        <div className="grid grid-cols-2 gap-2">
-          <Skeleton className="col-span-2 h-24 w-full" />
-          <Skeleton className="h-24 w-full" />
-          <Skeleton className="h-24 w-full" />
-          <Skeleton className="h-24 w-full" />
-          <Skeleton className="h-24 w-full" />
-        </div>
-      </div>
-    );
-  }
 
   if (isError || marketCapRanks.length === 0) {
     return (
@@ -71,3 +53,24 @@ export function MarketCapSection() {
     </div>
   );
 }
+
+function Loading() {
+  return (
+    <div>
+      <h2 className="mb-5 text-center text-[40px] font-bold text-[#333333]">
+        급등주
+      </h2>
+      <div className="grid grid-cols-2 gap-2">
+        <Skeleton className="col-span-2 h-24 w-full" />
+        <Skeleton className="h-24 w-full" />
+        <Skeleton className="h-24 w-full" />
+        <Skeleton className="h-24 w-full" />
+        <Skeleton className="h-24 w-full" />
+      </div>
+    </div>
+  );
+}
+
+MarketCapSection.Loading = Loading;
+
+export { MarketCapSection };
