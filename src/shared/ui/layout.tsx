@@ -1,10 +1,22 @@
-import { Link, Outlet } from 'react-router';
+import { Link, Outlet, useNavigate } from 'react-router';
 import { Avatar } from './avatar';
 import { useUser } from '../providers';
 import { ScrollToTop } from '../lib/scroll-to-top';
+import { openaiQueries } from '@/entities/openai';
+import { useQueryClient } from '@tanstack/react-query';
 
 export function Layout() {
+  const queryClient = useQueryClient();
   const user = useUser();
+  const navigate = useNavigate();
+
+  const handleStockAnalysisClick = async () => {
+    const {
+      stockCode: { stockCode },
+    } = await queryClient.ensureQueryData(openaiQueries.marketOpinion());
+
+    navigate(`/stocks/${stockCode}`);
+  };
 
   return (
     <>
@@ -22,12 +34,12 @@ export function Layout() {
 
           <div className="flex items-center gap-16">
             <div className="flex items-center gap-10">
-              <Link
+              <button
                 className="text-[18px] text-[#333333] transition-all duration-200 hover:text-[#ffb400]"
-                to="/stocks/035720"
+                onClick={handleStockAnalysisClick}
               >
                 종목분석
-              </Link>
+              </button>
               <Link
                 className="text-[18px] text-[#333333] transition-all duration-200 hover:text-[#ffb400]"
                 to="/news"
