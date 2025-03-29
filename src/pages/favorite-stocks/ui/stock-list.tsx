@@ -13,7 +13,7 @@ function StockList() {
           key={stock.stockCode}
           className="flex items-center px-4 py-6 shadow-[0px_2px_8px_0px_#63636333]"
         >
-          <Heart className="mr-2 h-6 w-6" />
+          <Heart className="mr-2 h-6 w-6" fill="#D94F70" stroke="#D94F70" />
           <span className="mr-2 text-[16px] font-bold text-[#6e6e6e]">
             {index + 1}
           </span>
