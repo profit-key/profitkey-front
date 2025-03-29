@@ -59,6 +59,7 @@ export function HtsTopSection() {
             key={rank.stockName}
             className={idx === 0 ? 'col-span-2' : ''}
             rank={idx + 1}
+            code={rank.stockCode}
             name={rank.stockName}
             price={rank.openingPrice - rank.endingPrice}
             change={rank.prdyCtrt}
