@@ -5,6 +5,7 @@ import { InvestorOpinionChart } from './investor-opinion-chart';
 import { Suspense } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { stockQueries } from '@/entities/stock';
+import { openaiQueries } from '@/entities/openai';
 
 type StockProps = {
   stockCode: string;
@@ -29,8 +30,9 @@ export function StockAnalyst({ stockCode }: StockProps) {
     dividendYield: stockDetail.diviRate,
   };
 
-  const aiComment =
-    '매출액 증가율(21.74%)은 299910보다 낮지만, 자기자본 증가율(46.63%)과 총자산 증가율(27.50%)이 긍정적임 수익성 지표에서 총자본 순이익율(4.81%), 자기자본 순이익율(11.69%), 매출액 순이익율(6.24%)이 양호하며, 299910의 수익성 지표가 모두 음수인 것과 대조됨 안정성 지표에서 부채 비율(109.58%)이 299910(806.53%)보다 낮고, 차입금 의존도(13.31%)도 양호함 유동 비율(151.64%)이 299910(86.72%)보다 높아 재무 건전성이 우수함';
+  const { data: aiComment } = useSuspenseQuery(
+    openaiQueries.stockOpinion(stockCode)
+  );
 
   const {
     data: { output: investorOpinions },
@@ -58,7 +60,7 @@ export function StockAnalyst({ stockCode }: StockProps) {
       <section className="flex flex-col gap-4">
         <h3 className="text-3xl font-bold">AI 코멘트</h3>
         <div className="min-h-[50px] w-full break-words rounded-[5px] bg-[#FFB40033] p-4">
-          {aiComment}
+          {aiComment.aiResponse}
         </div>
       </section>
 

@@ -1,8 +1,8 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { openaiQueries } from '../../api/query';
+import { openaiQueries } from '@/entities/openai';
 
 export function AiRecommendSection() {
-  const { data } = useSuspenseQuery(openaiQueries.opinion());
+  const { data } = useSuspenseQuery(openaiQueries.marketOpinion());
 
   return (
     <div className="border-b border-[#d4d4d4] pb-28 pt-20">
