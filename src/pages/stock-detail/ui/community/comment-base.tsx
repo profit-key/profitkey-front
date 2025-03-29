@@ -1,15 +1,15 @@
 import { Profile } from '@/shared/ui/profile.tsx';
-import { formatDate } from './date.ts';
+import { formatDate } from '../date.ts';
 import { HeartIcon, CommentIcon } from '@/shared/ui/icon.tsx';
 import { CommentForm } from './comment-form.tsx';
 import { useState } from 'react';
 import { CommentMenu } from './comment-menu';
-import { Modal } from './modal';
+import { Modal } from '../modal';
 import { cn } from '@/shared/lib/utils.ts';
 import { Loader2 } from 'lucide-react';
-import { Comment } from '../api/schema';
+import { Comment } from '../../api/schema';
 import { useNavigate } from 'react-router';
-import { commentMutation } from '../api/query.ts';
+import { commentMutation } from '../../api/query.ts';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { type User } from '@/shared/api';
 
