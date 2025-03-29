@@ -12,7 +12,7 @@ export function LoginPage() {
   };
 
   return (
-    <div className="flex flex-grow flex-col items-center justify-center">
+    <div className="mt-56 flex flex-grow flex-col items-center justify-center">
       <img src={login} className="h-[104px] w-[303px]" />
 
       <div className="mt-6 flex flex-col gap-4">
