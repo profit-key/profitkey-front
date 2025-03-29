@@ -1,9 +1,9 @@
-import { useUser } from '@/app/providers/user-provider';
 import { Tab, Tabs } from '@/shared/ui';
 import { useNavigate } from 'react-router';
 import { StockList } from './stock-list';
 import { Suspense } from 'react';
 import { Avatar } from '@/shared/ui/avatar';
+import { useUser } from '@/shared/providers';
 
 const tabs = [
   { label: '내 관심종목', path: '/profile/stocks' },

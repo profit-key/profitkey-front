@@ -1,6 +1,6 @@
-import { useUser } from '@/app/providers/user-provider';
 import { Link, Outlet } from 'react-router';
 import { Avatar } from './avatar';
+import { useUser } from '../providers';
 
 export function Layout() {
   const user = useUser();

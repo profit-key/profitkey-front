@@ -1,4 +1,3 @@
-import { useUser } from '@/app/providers/user-provider';
 import { CommentItem } from './comment-item';
 import { CommentForm } from './comment-form';
 import { Profile } from '@/shared/ui/profile';
@@ -11,6 +10,7 @@ import {
   useQueryClient,
 } from '@tanstack/react-query';
 import { useNavigate } from 'react-router';
+import { useUser } from '@/shared/providers';
 
 export function Community({ stockCode }: { stockCode: string }) {
   const user = useUser();

@@ -1,9 +1,9 @@
+import { UserProvider } from '@/shared/providers';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { NuqsAdapter } from 'nuqs/adapters/react';
 
 import { type PropsWithChildren } from 'react';
-import { UserProvider } from './user-provider';
 
 const queryClient = new QueryClient();
 
