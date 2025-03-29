@@ -5,10 +5,11 @@ import {
   useMutation,
   useQueryClient,
 } from '@tanstack/react-query';
-import { stockQueries } from '@/entities/stock/api/query.ts';
-import { userQueries } from '@/shared/api/query';
+
 import { stockFavoriteMutation, stockFavoriteQueries } from '../api/query';
 import { useNavigate } from 'react-router';
+import { userQueries } from '@/shared/api';
+import { stockQueries } from '@/entities/stock';
 
 type StockProps = {
   stockCode: string;

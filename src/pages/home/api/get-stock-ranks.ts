@@ -1,4 +1,4 @@
-import { httpClient } from '@/shared/api/http-client';
+import { httpClient } from '@/shared/api';
 import { StockRank } from './schema';
 
 export type GetStockRanksRequestParams = {

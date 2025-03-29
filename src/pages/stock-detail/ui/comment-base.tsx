@@ -8,10 +8,10 @@ import { Modal } from './modal';
 import { cn } from '@/shared/lib/utils.ts';
 import { Loader2 } from 'lucide-react';
 import { Comment } from '../api/schema';
-import { User } from '@/shared/api/schema.ts';
 import { useNavigate } from 'react-router';
 import { commentMutation } from '../api/query.ts';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { type User } from '@/shared/api';
 
 type CommentBaseProps = {
   stockCode: string;
