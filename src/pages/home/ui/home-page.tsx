@@ -1,6 +1,6 @@
-import { AiRecommendSection } from './ai-recommend-section';
-import { RankingSection } from './ranking-section';
-import { NewsSection } from './news-section';
+import { AiRecommendSection } from './ai-opinion/ai-recommend-section';
+import { NewsSection } from './news/news-section';
+import { RankingSection } from './ranking/ranking-section';
 
 export function HomePage() {
   return (

@@ -1,5 +1,5 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
-import { openaiQueries } from '../api/query';
+import { openaiQueries } from '../../api/query';
 
 export function AiRecommendSection() {
   const { data } = useSuspenseQuery(openaiQueries.opinion());
