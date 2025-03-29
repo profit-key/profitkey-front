@@ -1,8 +1,17 @@
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { openaiQueries } from '@/entities/openai';
+import { useStockCode } from '@/shared/providers';
+import { useEffect, startTransition } from 'react';
 
 export function AiRecommendSection() {
   const { data } = useSuspenseQuery(openaiQueries.marketOpinion());
+  const { setStockCode } = useStockCode();
+
+  useEffect(() => {
+    startTransition(() => {
+      setStockCode(data.stockCode.stockCode);
+    });
+  }, [data.stockCode.stockCode, setStockCode]);
 
   return (
     <div className="border-b border-[#d4d4d4] pb-28 pt-20">
