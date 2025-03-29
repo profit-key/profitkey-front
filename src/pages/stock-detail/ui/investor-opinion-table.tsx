@@ -4,14 +4,7 @@ import { useMemo } from 'react';
 import { formatDateString } from './date';
 import { INVESTMENT_OPINION } from './utill';
 import { type InvestorOpinion } from '@/entities/stock';
-
-/**
- * 숫자 문자열에 천 단위 구분자 추가
- */
-const formatWithComma = (value: string): string => {
-  const num = parseInt(value, 10);
-  return num.toLocaleString();
-};
+import { formatNumberWithCommas } from '@/shared/lib/number';
 
 // 컬럼 정의
 const columnHelper = createColumnHelper<InvestorOpinion>();
@@ -28,7 +21,7 @@ const columns = [
     header: '목표주가',
     cell: (info) => {
       const value = info.getValue();
-      return `${formatWithComma(value)}원`;
+      return `${formatNumberWithCommas(+value)}원`;
     },
   }),
   columnHelper.accessor('stck_bsop_date', {
