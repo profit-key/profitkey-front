@@ -1,8 +1,8 @@
 import { Table } from '@/shared/ui/table';
 import { createColumnHelper } from '@tanstack/react-table';
 import { useMemo } from 'react';
-import { formatDateString } from '../date';
-import { INVESTMENT_OPINION } from '../utill';
+import { formatDateString } from './date';
+import { INVESTMENT_OPINION } from './utill';
 import { type InvestorOpinion } from '@/entities/stock';
 import { formatNumberWithCommas } from '@/shared/lib/number';
 
