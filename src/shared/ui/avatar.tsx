@@ -25,7 +25,7 @@ export function Avatar({ src, className, fallbackSize }: Props) {
     <img
       src={src}
       alt="프로필 사진"
-      className={cn('h-[52px] w-[52px] rounded-full', className)}
+      className={cn('h-[52px] w-[52px] rounded-full object-cover', className)}
     />
   );
 }
