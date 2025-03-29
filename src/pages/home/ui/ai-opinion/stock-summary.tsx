@@ -1,6 +1,5 @@
 import { stockQueries } from '@/entities/stock';
 import { formatNumberWithCommas } from '@/shared/lib/number';
-import { Skeleton } from '@/shared/ui/skeleton';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
 type Props = {
@@ -8,29 +7,38 @@ type Props = {
 };
 
 function StockSummary({ stockCode }: Props) {
-  const { data: stockSummary } = useSuspenseQuery(
-    stockQueries.summary(stockCode)
-  );
+  const {
+    data: { fiftyTwoWeekHigh, fiftyTwoWeekLow, per, pbr, eps, bps },
+  } = useSuspenseQuery(stockQueries.detail(stockCode));
 
   return (
-    <>
-      <div className="rounded-lg bg-[#D9001B33] px-1 py-3">
-        {stockSummary.changeRate}%
-      </div>
-      <span className="text-xl font-bold">
-        {formatNumberWithCommas(+stockSummary.price)}원
+    <div className="mt-6 grid grid-cols-[auto_auto_auto_auto_auto_auto]">
+      <span className="text-base text-[#333]">최고가</span>
+      <span className="text-base font-bold text-[#333]">
+        {formatNumberWithCommas(fiftyTwoWeekHigh)}원
       </span>
-    </>
+      <span className="text-base text-[#333]">최저가</span>
+      <span className="text-base font-bold text-[#333]">
+        {formatNumberWithCommas(fiftyTwoWeekLow)}원
+      </span>
+      <span className="text-base text-[#333]">PER</span>
+      <span className="text-base font-bold text-[#333]">{per}배</span>
+      <span className="text-base text-[#333]">PBR</span>
+      <span className="text-base font-bold text-[#333]">{pbr}배</span>
+      <span className="text-base text-[#333]">EPS</span>
+      <span className="text-base font-bold text-[#333]">
+        {formatNumberWithCommas(eps)}
+      </span>
+      <span className="text-base text-[#333]">BPS</span>
+      <span className="text-base font-bold text-[#333]">
+        {formatNumberWithCommas(bps)}
+      </span>
+    </div>
   );
 }
 
 function Loading() {
-  return (
-    <>
-      <Skeleton className="h-12 w-12" />
-      <Skeleton className="h-7 w-20" />
-    </>
-  );
+  return <div></div>;
 }
 
 StockSummary.Loading = Loading;
