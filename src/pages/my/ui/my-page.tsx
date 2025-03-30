@@ -27,7 +27,9 @@ export function Mypage() {
     window.location.reload();
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
     if (!nickname || isPending) return;
 
     mutate(nickname);
@@ -64,7 +66,7 @@ export function Mypage() {
           </div>
         </div>
 
-        <form className="flex flex-col gap-8">
+        <form className="flex flex-col gap-8" onSubmit={handleSubmit}>
           <div className="flex flex-col gap-5">
             <label className="text-[24px] font-bold text-[#333333]">
               닉네임 변경
@@ -77,10 +79,7 @@ export function Mypage() {
                 className="h-9 w-80 rounded-md border-b border-[#333333] bg-[#d4d4d4] px-4"
                 onChange={(e) => setNickname(e.target.value)}
               />
-              <button
-                className="ml-4 h-9 w-16 rounded-md border border-[#ffffff] bg-[#ffb400]"
-                onClick={handleSubmit}
-              >
+              <button className="ml-4 h-9 w-16 rounded-md border border-[#ffffff] bg-[#ffb400]">
                 등록
               </button>
             </div>
