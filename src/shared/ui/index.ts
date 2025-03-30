@@ -6,3 +6,4 @@ export {
   AccordionTrigger,
 } from './accordion';
 export { Tab, Tabs } from './tab';
+export { Modal } from './modal';
