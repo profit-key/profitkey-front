@@ -1,14 +1,21 @@
 import { Link, useNavigate } from 'react-router';
-import logo from './logo.svg';
-import { useQueryClient } from '@tanstack/react-query';
+import logo from '@/shared/ui/logo.svg';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useUser } from '@/shared/providers';
 import { openaiQueries } from '@/entities/openai';
 import { Avatar } from '@/shared/ui/avatar';
+import { useState } from 'react';
+import { stockQueries } from '@/entities/stock';
 
 export function Header() {
   const queryClient = useQueryClient();
   const user = useUser();
   const navigate = useNavigate();
+  const [query, setQuery] = useState('');
+  const { data } = useQuery({
+    ...stockQueries.search(query),
+    enabled: Boolean(query.length > 0),
+  });
 
   const handleStockAnalysisClick = async () => {
     const {
@@ -18,6 +25,11 @@ export function Header() {
     navigate(`/stocks/${stockCode}`);
   };
 
+  const handleStockClick = (code: string) => {
+    setQuery('');
+    navigate(`/stocks/${code}`);
+  };
+
   return (
     <header className="border-b border-[#d4d4d4] px-4 py-4">
       <div className="mx-auto flex max-w-5xl items-center justify-between">
@@ -25,7 +37,25 @@ export function Header() {
           <Link to="/">
             <img src={logo} className="h-10 w-32" />
           </Link>
-          <input className="h-14 w-72 rounded-2xl border-[1px] border-[#cfcfcf] px-5 py-4" />
+          <div className="relative">
+            <input
+              value={query}
+              className="h-14 w-72 rounded-2xl border-[1px] border-[#cfcfcf] px-5 py-4"
+              onChange={(e) => setQuery(e.target.value)}
+            />
+            {query.length > 0 && (
+              <div className="absolute flex w-full flex-col gap-2 rounded-md border bg-white p-3 shadow-lg">
+                {data?.map((stock) => (
+                  <button
+                    className="rounded-sm p-1 text-start hover:bg-gray-200"
+                    onClick={() => handleStockClick(stock.stockCode)}
+                  >
+                    {stock.stockName}({stock.stockCode})
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="flex items-center gap-16">
