@@ -6,12 +6,13 @@ import { Suspense } from 'react';
 import { useSuspenseQuery } from '@tanstack/react-query';
 import { stockQueries } from '@/entities/stock';
 import { openaiQueries } from '@/entities/openai';
+import { Skeleton } from '@/shared/ui/skeleton';
 
 type StockProps = {
   stockCode: string;
 };
 
-export function StockAnalyst({ stockCode }: StockProps) {
+function StockAnalyst({ stockCode }: StockProps) {
   const { data: stockDetail } = useSuspenseQuery(
     stockQueries.detail(stockCode)
   );
@@ -91,3 +92,31 @@ export function StockAnalyst({ stockCode }: StockProps) {
     </div>
   );
 }
+
+function Loading() {
+  return (
+    <div>
+      <div className="flex">
+        <div className="w-1/2">
+          <div className="flex w-full flex-col items-start justify-start gap-5">
+            <Skeleton className="h-12 w-full" />
+            <Skeleton className="h-12 w-full" />
+            <Skeleton className="h-12 w-full" />
+            <Skeleton className="h-12 w-full" />
+            <Skeleton className="h-12 w-full" />
+          </div>
+        </div>
+        <div className="ml-8 w-1/2">
+          <Skeleton className="h-[320px] w-full" />
+        </div>
+      </div>
+      <div className="mt-8">
+        <Skeleton className="h-[640px] w-full" />
+      </div>
+    </div>
+  );
+}
+
+StockAnalyst.Loading = Loading;
+
+export { StockAnalyst };
