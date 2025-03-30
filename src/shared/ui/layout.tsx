@@ -1,5 +1,6 @@
 import { Link, Outlet, useNavigate } from 'react-router';
 import { Avatar } from './avatar';
+import logo from './logo.svg';
 import { useUser } from '../providers';
 import { ScrollToTop } from '../lib/scroll-to-top';
 import { openaiQueries } from '@/entities/openai';
@@ -25,9 +26,7 @@ export function Layout() {
         <div className="mx-auto flex max-w-5xl items-center justify-between">
           <div className="flex items-center gap-24">
             <Link to="/">
-              <h1 className="text-[24px] font-bold text-[#fbbf24]">
-                ProfitKey
-              </h1>
+              <img src={logo} className="h-10 w-32" />
             </Link>
             <input className="h-14 w-72 rounded-2xl border-[1px] border-[#cfcfcf] px-5 py-4" />
           </div>

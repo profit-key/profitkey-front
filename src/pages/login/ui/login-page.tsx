@@ -1,4 +1,4 @@
-import login from './login.png';
+import logo from '@/shared/ui/logo.svg';
 import google from './google.png';
 import kakao from './kakao.png';
 import naver from './naver.png';
@@ -13,7 +13,7 @@ export function LoginPage() {
 
   return (
     <div className="mt-56 flex flex-grow flex-col items-center justify-center">
-      <img src={login} className="h-[104px] w-[303px]" />
+      <img src={logo} className="h-28 w-96" />
 
       <div className="mt-6 flex flex-col gap-4">
         <button className="flex h-[61px] w-[414px] items-center justify-center gap-4 rounded-md border border-[#747775] text-[20px] font-bold text-[#1f1f1f] hover:opacity-80">
