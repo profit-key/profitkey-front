@@ -163,3 +163,10 @@ export const InvestorOpinionResponse = z.object({
   msg1: z.string(),
 });
 export type InvestorOpinionResponse = z.infer<typeof InvestorOpinionResponse>;
+
+export const StockCode = z.object({
+  stockCode: z.string(),
+  stockName: z.string(),
+  marketCategory: z.string(),
+});
+export type StockCode = z.infer<typeof StockCode>;
