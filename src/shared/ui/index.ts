@@ -1,4 +1,3 @@
-export { Layout } from './layout';
 export {
   Accordion,
   AccordionContent,

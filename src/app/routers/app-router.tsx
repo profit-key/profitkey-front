@@ -3,13 +3,13 @@ import { HelpPage } from '@/pages/help';
 import { HomePage } from '@/pages/home';
 import { LoginPage } from '@/pages/login';
 import { StockDetailPage } from '@/pages/stock-detail';
-import { Layout } from '@/shared/ui';
 import { BrowserRouter, Route, Routes } from 'react-router';
 import { AnnouncementDetailPage } from '@/pages/announcement-detail';
 import { NewsPage } from '@/pages/news';
 import { Mypage } from '@/pages/my';
 import { FavoriteStocksPage } from '@/pages/favorite-stocks';
 import { MyCommentPage } from '@/pages/my-comment';
+import { Layout } from '@/widgets/layout';
 
 export function AppRouter() {
   return (
