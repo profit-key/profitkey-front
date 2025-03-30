@@ -11,12 +11,13 @@ import { useNavigate } from 'react-router';
 import { userQueries } from '@/shared/api';
 import { stockQueries } from '@/entities/stock';
 import { formatNumberWithCommas } from '@/shared/lib/number';
+import { Skeleton } from '@/shared/ui/skeleton';
 
 type StockProps = {
   stockCode: string;
 };
 
-export function StockHeader({ stockCode }: StockProps) {
+function StockHeader({ stockCode }: StockProps) {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const { data: stock } = useSuspenseQuery(stockQueries.summary(stockCode));
@@ -111,3 +112,29 @@ export function StockHeader({ stockCode }: StockProps) {
     </div>
   );
 }
+
+function Loading() {
+  return (
+    <div className="mb-8 flex flex-col gap-4">
+      <div className="w-fit rounded-[5px] bg-[#FFB400] px-4 py-1 font-bold text-white">
+        <Skeleton className="h-6 w-12" />
+      </div>
+      <div className="flex items-center gap-4">
+        <div className="flex items-center justify-center p-1">
+          <HeartIcon className={'h-6 w-6 fill-neutral-300'} />
+        </div>
+        <div className="flex gap-6">
+          <Skeleton className="h-12 w-64" />
+          <div className="flex items-end gap-2">
+            <Skeleton className="h-8 w-24" />
+            <Skeleton className="h-6 w-24" />
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+StockHeader.Loading = Loading;
+
+export { StockHeader };
