@@ -23,8 +23,7 @@ export function StockHeader({ stockCode }: StockProps) {
   const { data: user } = useQuery(userQueries.me());
   const { data: favoriteStocks } = useQuery({
     ...stockFavoriteQueries.isLiked({ stockCode }),
-    refetchOnWindowFocus: false,
-    placeholderData: (prev) => prev,
+    enabled: !!user,
   });
 
   const addFavoriteMutation = useMutation({
@@ -42,7 +41,7 @@ export function StockHeader({ stockCode }: StockProps) {
   });
 
   const handleLikeButton = () => {
-    if (!user?.userId) {
+    if (!user) {
       // 로그인하지 않은 경우 확인 대화상자 표시
       const confirmLogin = window.confirm(
         '로그인이 필요한 서비스입니다. 로그인을 하시겠습니까?'
